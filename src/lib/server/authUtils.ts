@@ -1,6 +1,6 @@
 import db from '@/db';
 import { eq, or } from 'drizzle-orm';
-import { passwordResetTokensTable, usersTable } from '@/db/schema/usersSchema';
+import { passwordResetTokensTable, usersTable } from '@/db/schema';
 import type { UserInsertSchema } from '@/db/schema/usersSchema/users';
 import { generateId, type Lucia } from 'lucia';
 import type { Cookies } from '@sveltejs/kit';

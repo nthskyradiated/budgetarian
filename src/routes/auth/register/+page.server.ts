@@ -4,7 +4,7 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 import { generateIdFromEntropySize } from 'lucia';
 import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '@/db/index';
-import { usersTable } from '@/db/schema/usersSchema';
+import { usersTable } from '@/db/schema';
 import { eq } from 'drizzle-orm/expressions';
 import { Argon2id } from 'oslo/password';
 import { RegisterUserZodSchema } from '@/lib/zodValidators/zodAuthValidation';

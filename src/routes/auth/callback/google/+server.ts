@@ -3,7 +3,7 @@ import { OAuth2RequestError } from 'arctic';
 import { and, eq } from 'drizzle-orm';
 import { route } from '@/lib/router';
 import { db } from '@/db';
-import { oAuthTable, usersTable } from '@/db/schema/usersSchema';
+import { oAuthTable, usersTable } from '@/db/schema';
 import { createAndSetSession } from '@/lib/server/authUtils';
 import {
 	google,

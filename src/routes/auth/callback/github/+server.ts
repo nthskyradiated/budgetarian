@@ -3,7 +3,7 @@ import { lucia } from '@/lib/server/luciaUtils';
 import { OAuth2RequestError } from 'arctic';
 import { type RequestEvent } from '@sveltejs/kit';
 import { db } from '@/db';
-import { oAuthTable, usersTable } from '@/db/schema/usersSchema';
+import { oAuthTable, usersTable } from '@/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { generateIdFromEntropySize } from 'lucia';
 import { route } from '@/lib/router';
