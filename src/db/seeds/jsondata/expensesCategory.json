@@ -1,26 +1,26 @@
 [
-  {
-    "name": "Utilities"
-  },
-  {
-    "name": "Groceries"
-  },
-  {
-    "name": "Health Expenses"
-  },
-  {
-    "name": "Loan Payments"
-  },
-  {
-    "name": "Emergency Expenses"
-  },
-  {
-    "name": "Transport Expenses"
-  },
-  {
-    "name": "Leisure"
-  },
-  {
-    "name": "Medical Expenses"
-  }
+	{
+		"name": "Utilities"
+	},
+	{
+		"name": "Groceries"
+	},
+	{
+		"name": "Health Expenses"
+	},
+	{
+		"name": "Loan Payments"
+	},
+	{
+		"name": "Emergency Expenses"
+	},
+	{
+		"name": "Transport Expenses"
+	},
+	{
+		"name": "Leisure"
+	},
+	{
+		"name": "Medical Expenses"
+	}
 ]

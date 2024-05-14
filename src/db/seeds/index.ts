@@ -1,4 +1,2 @@
-
 export { default as expensesCategories } from './expensesCategories';
-export { default as inflowCategories } from "./inflowsCategories";
-
+export { default as inflowCategories } from './inflowsCategories';

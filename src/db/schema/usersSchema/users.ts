@@ -1,7 +1,7 @@
 import { type InferSelectModel, relations, sql } from 'drizzle-orm';
 import { text, int, sqliteTable } from 'drizzle-orm/sqlite-core';
 import session from './sessions';
-import funds from '../fundsSchema/funds'
+import funds from '../fundsSchema/funds';
 
 const usersTable = sqliteTable('users', {
 	id: text('id').primaryKey().notNull(),
