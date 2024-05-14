@@ -1,7 +1,7 @@
 import { alphabet, generateRandomString } from 'oslo/crypto';
 import { emailVerificationCodeLen } from '../zodValidators/zodParams';
 import db from '@/db';
-import { emailVerificationCodesTable } from '@/db/schema';
+import { emailVerificationCodesTable } from '@/db/schema/usersSchema';
 import { createDate, isWithinExpirationDate, TimeSpan } from 'oslo';
 import type { EmailParams } from '../types';
 import { Resend } from 'resend';

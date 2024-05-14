@@ -1,5 +1,12 @@
-export { default as usersTable } from './users';
-export { default as sessionsTable } from './sessions';
-export { default as emailVerificationCodesTable } from './emailVerificationCodes';
-export { default as passwordResetTokensTable } from './passwordResetTokens';
-export { default as oAuthTable } from './oAuth';
+export { default as usersTable } from './usersSchema/users';
+export { default as sessionsTable } from './usersSchema/sessions';
+export { default as emailVerificationCodesTable } from './usersSchema/emailVerificationCodes';
+export { default as passwordResetTokensTable } from './usersSchema/passwordResetTokens';
+export { default as oAuthTable } from './usersSchema/oAuth';
+export { default as expensesTable } from './fundsSchema/expenses';
+export { default as inflowsTable } from './fundsSchema/inflows';
+export { default as fundsTable } from './fundsSchema/funds';
+export { default as expensesCategoriesTable } from './fundsSchema/expensesCategories';
+export { default as inflowsCategoriesTable } from './fundsSchema/inflowsCategories';
+export { default as fundsInflowsCategoriesTable } from './fundsSchema/fundsInflowsCategories';
+export { default as fundsExpensesCategoriesTable } from './fundsSchema/fundsExpensesCategories';

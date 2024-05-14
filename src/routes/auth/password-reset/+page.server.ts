@@ -18,7 +18,7 @@ import {
 	type passwordResetZodSchema
 } from '@/lib/zodValidators/zodAuthValidation';
 import { zod } from 'sveltekit-superforms/adapters';
-import { passwordResetTokensTable, usersTable } from '@/db/schema';
+import { passwordResetTokensTable, usersTable } from '@/db/schema/usersSchema';
 import { DASHBOARD_ROUTE } from '@/lib/utils/navLinks';
 
 export const load = (async (event) => {

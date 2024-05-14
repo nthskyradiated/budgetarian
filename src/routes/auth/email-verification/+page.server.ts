@@ -13,7 +13,7 @@ import { EmailVerificationCodeZodSchema } from '@/lib/zodValidators/zodAuthValid
 import { zod } from 'sveltekit-superforms/adapters';
 import { sendCodeRateLimiter, verifyCodeRateLimiter } from '@/lib/server/rateLimiterUtils';
 import db from '@/db';
-import { usersTable } from '@/db/schema';
+import { usersTable } from '@/db/schema/usersSchema';
 import { eq } from 'drizzle-orm';
 import { lucia } from '@/lib/server/luciaUtils';
 import { createAndSetSession } from '@/lib/server/authUtils';

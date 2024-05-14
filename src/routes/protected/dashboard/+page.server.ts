@@ -5,7 +5,7 @@ import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms/client';
 import { route } from '$lib/router';
 import { lucia } from '$lib/server/luciaUtils';
-import { usersTable } from '@/db/schema';
+import { usersTable } from '@/db/schema/usersSchema';
 import type { AlertMessageType } from '@/lib/types';
 import { db } from '@/db/index';
 import {
