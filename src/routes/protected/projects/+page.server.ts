@@ -4,12 +4,13 @@ import { route } from '@/lib/router';
 import db from '@/db';
 import { eq } from 'drizzle-orm';
 import projects from '@/db/schema/projectsSchema/projects';
-import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation.js';
+import { CreateProjectZodSchema, type createProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation.js';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
 import { lucia } from '@/lib/server/luciaUtils';
 import type { Actions } from './$types';
 import { insertNewProject } from '@/lib/server/projectUtils';
+import type { AlertMessageType } from '@/lib/types';
 
 export const load = async ({locals}) => {
     if (!locals.user){
@@ -23,7 +24,8 @@ export const load = async ({locals}) => {
 	if (allProjects.length === 0) {
 		return {
 				projects: [],
-				message: 'No projects found. Please create a new project.'
+				message: 'No projects found. Please create a new project.',
+				createProjectFormData: await superValidate(zod(CreateProjectZodSchema)),
 			}
 		}
 	

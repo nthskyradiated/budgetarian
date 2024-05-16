@@ -9,33 +9,29 @@
 	import { buttonVariants } from '@/lib/components/ui/button';
     import { zod } from 'sveltekit-superforms/adapters';
 	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
-	import { maxNameLen } from '@/lib/zodValidators/zodParams';
+	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
     import SuperDebug from 'sveltekit-superforms';
 
     export let data: PageData 
     
-    
-    if (data.createProjectFormData){
-
-     return {
-         const {enhance,
-         form,
-         errors,
-         message,
-         delayed
+         const {
+        enhance: createProjectEnhance,
+         form: createProjectForm,
+         errors: createProjectErrors,
+         message: createProjectMessage,
+         delayed: createProjectDelayed
      } = superForm(data.createProjectFormData, {
          createProjectForm: true,
          taintedMessage: null,
          validators: zod(CreateProjectZodSchema),
 
-     }
-    
-        });
-    }	// For password reset form
+ 
+        })
+    	// For password reset form
     onUpdated: () => {
-        if (!$message) return;
+        if (!$createProjectMessage) return;
 
-        const { alertType, alertText } = $message;
+        const { alertType, alertText } = $createProjectMessage;
 
         if (alertType === 'error') {
             toast.error(alertText);
@@ -51,7 +47,7 @@
     <h1>{project?.id}</h1>
 {/each}
 <h1>{data.projects}</h1> -->
-<SuperDebug data={$form} />
+<SuperDebug data={$createProjectForm} />
 <div class="flex flex-wrap justify-between gap-4">
 
     <Dialog.Root>
@@ -68,19 +64,37 @@
 
             <form
                 method="post"
-                use:enhance
+                use:createProjectEnhance
                 action='?/createProject'
                 class="space-y-4"
             >
-            <label for="name">Name</label>
-            <input type="text" name="name" bind:value={$form['name']} />
-          
-            <label for="details">details</label>
-            <input type="text" name="details" bind:value={$form['details']} />
-            <label for="totalFunds">funds</label>
-            <input type="text" name="totalFunds" bind:value={$form['totalFunds']} />
+            <InputField
+            type="text"
+            name="name"
+            label="Project Name"
+            bind:value={$createProjectForm.name}
+            errorMessage={$createProjectErrors.name}
+            maxlength={maxNameLen}
+            minlength={minNameLen}
+        />
+            <InputField
+            type="text"
+            name="details"
+            label="Project Details"
+            bind:value={$createProjectForm.details}
+            errorMessage={$createProjectErrors.details}
+            maxlength={maxNameLen}
+            minlength={minNameLen}
+        />
+            <InputField
+            type="text"
+            name="totalFunds"
+            label="Total Funds"
+            bind:value={$createProjectForm.totalFunds}
+            errorMessage={$createProjectErrors.totalFunds}
+        />
 
-                <SubmitButton disabled={$delayed}>Create A New Project</SubmitButton>
+                <SubmitButton disabled={$createProjectDelayed}>Create A New Project</SubmitButton>
             </form>
         </Dialog.Content>
     </Dialog.Root>
