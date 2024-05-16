@@ -66,7 +66,7 @@
             <form
                 method="post"
                 use:createProjectEnhance
-                action='?/createProject'
+                action={route('createProject /protected/projects')}
                 class="space-y-4"
             >
             <InputField

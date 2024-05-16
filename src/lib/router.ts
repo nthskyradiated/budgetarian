@@ -37,7 +37,7 @@ const ACTIONS = {
 	'logIn /auth/login': `?/logIn`,
 	'sendPasswordResetEmail /auth/login': `?/sendPasswordResetEmail`,
 	'register /auth/register': `?/register`,
-	'createProject /protected/projects': `?/createProjects`,
+	'createProject /protected/projects': `?/createProject`,
 	'resetPassword /auth/reset-password': `?/resetPassword`,
 	'logout /dashboard': `?/logout`,
 	'changePassword /dashboard': `?/changePassword`,
