@@ -10,10 +10,12 @@
     import { zod } from 'sveltekit-superforms/adapters';
 	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
-    // import SuperDebug from 'sveltekit-superforms';
+    import SuperDebug from 'sveltekit-superforms';
 
     export let data: PageData 
     
+    const {allProjects} = data
+
          const {
         enhance: createProjectEnhance,
          form: createProjectForm,
@@ -44,11 +46,13 @@
 
 
 </script>
-<!-- {#each projects as project}
-    <h1>{project?.id}</h1>
+{#if allProjects}
+{#each allProjects as project}
+    <h1>{project?.name}</h1>
+    <h1>{project?.details}</h1> 
 {/each}
-<h1>{data.projects}</h1> -->
-<!-- <SuperDebug data={$createProjectForm} /> -->
+{/if}
+<SuperDebug data={$createProjectForm} />
 <div class="flex flex-wrap justify-between gap-4">
 
     <Dialog.Root>

@@ -29,19 +29,10 @@ export const load = async ({locals}) => {
 			}
 		}
 	
-		
-		allProjects.map((project) => {
-			return {
-				id: project.id,
-				name: project.name,
-				details: project.details,
-				totalFunds: project.totalFunds,
-				timestamp: project.createdAt
-			}
-	})
-	return {
-		createProjectFormData: await superValidate(zod(CreateProjectZodSchema)),
-	};
+		return {
+			allProjects,
+			createProjectFormData: await superValidate(zod(CreateProjectZodSchema)),
+		}
 }
 
 export const actions : Actions = {
