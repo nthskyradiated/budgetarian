@@ -11,10 +11,12 @@
 	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
     import SuperDebug from 'sveltekit-superforms';
-
+    // import { getAllProjects } from '@/lib/utils/projectUtils';
     export let data: PageData 
     
     const {allProjects} = data
+    let newProjects: any[] = []
+    $: newProjects = newProjects.concat(...newProjects, allProjects)
 
          const {
         enhance: createProjectEnhance,
@@ -43,11 +45,9 @@
  
         })
 
-
-
 </script>
-{#if allProjects}
-{#each allProjects as project}
+{#if newProjects}
+{#each newProjects as project}
     <h1>{project?.name}</h1>
     <h1>{project?.details}</h1> 
 {/each}

@@ -9,7 +9,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
 import { lucia } from '@/lib/server/luciaUtils';
 import type { Actions } from './$types';
-import { insertNewProject } from '@/lib/server/projectUtils';
+import { insertNewProject } from '@/lib/utils/projectUtils';
 import type { AlertMessageType } from '@/lib/types';
 
 export const load = async ({locals}) => {
