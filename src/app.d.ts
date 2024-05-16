@@ -11,10 +11,11 @@ declare global {
 		interface Locals {
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
+			projects: import('@/db/schema/projectsSchema/projects').Projects | null;
 		}
 		interface PageData {
 			pageMetaTags?: MetaTagsProps;
-			// isUserLoggedIn: boolean;
+			isUserLoggedIn: boolean;
 			flash?: { type: 'success' | 'error'; message: string };
 		}
 	}

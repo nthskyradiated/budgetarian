@@ -54,3 +54,10 @@ export type GoogleUser = {
 	email_verified: boolean;
 	locale: string;
 };
+
+export type Project = {
+	id: number;
+	name: string;
+	details: string;
+	totalFunds: string;
+}

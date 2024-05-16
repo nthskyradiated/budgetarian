@@ -14,7 +14,8 @@ const PAGES = {
 	'/auth/login': `/auth/login`,
 	'/auth/register': `/auth/register`,
 	'/auth/password-reset': `/auth/password-reset`,
-	'/protected/dashboard': `/protected/dashboard`
+	'/protected/dashboard': `/protected/dashboard`,
+	'/protected/projects': `/protected/projects`
 };
 
 /**
@@ -36,6 +37,7 @@ const ACTIONS = {
 	'logIn /auth/login': `?/logIn`,
 	'sendPasswordResetEmail /auth/login': `?/sendPasswordResetEmail`,
 	'register /auth/register': `?/register`,
+	'createProject /protected/projects': `?/createProjects`,
 	'resetPassword /auth/reset-password': `?/resetPassword`,
 	'logout /dashboard': `?/logout`,
 	'changePassword /dashboard': `?/changePassword`,
@@ -133,6 +135,7 @@ export type KIT_ROUTES = {
 		'/auth/register': never;
 		'/auth/password-reset': never;
 		'/protected/dashboard': never;
+		'/protected/projects': never;
 	};
 	SERVERS: {
 		'GET /auth/oauth/github': never;
@@ -150,6 +153,7 @@ export type KIT_ROUTES = {
 		'logout /dashboard': never;
 		'changePassword /dashboard': never;
 		'deleteAllUsers /dashboard': never;
+		'createProject protected/projects': never;
 	};
 	LINKS: Record<string, never>;
 	Params: Record<string, never>;

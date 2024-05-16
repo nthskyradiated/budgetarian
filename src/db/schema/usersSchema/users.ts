@@ -1,7 +1,7 @@
 import { type InferSelectModel, relations, sql } from 'drizzle-orm';
 import { text, int, sqliteTable } from 'drizzle-orm/sqlite-core';
 import session from './sessions';
-import funds from '../fundsSchema/funds';
+import projects from '../projectsSchema/projects';
 
 const usersTable = sqliteTable('users', {
 	id: text('id').primaryKey().notNull(),
@@ -18,7 +18,7 @@ const usersTable = sqliteTable('users', {
 
 export const userRelations = relations(usersTable, ({ many }) => ({
 	sessions: many(session),
-	funds: many(funds)
+	projects: many(projects)
 }));
 
 export default usersTable;

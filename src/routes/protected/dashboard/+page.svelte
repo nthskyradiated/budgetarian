@@ -32,6 +32,9 @@
 			<form method="post" action={route('logout /dashboard')}>
 				<SubmitButton>Logout</SubmitButton>
 			</form>
+			<form method="post" action={route('logout /dashboard')}>
+				<SubmitButton>Funds Page</SubmitButton>
+			</form>
 
 			{#if isOnlyOauthUser === false}
 				<Dialog.Root>

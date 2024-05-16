@@ -17,35 +17,26 @@ CREATE TABLE `expenses` (
 	`name` text(64) NOT NULL,
 	`category` text(64) NOT NULL,
 	`amount` real NOT NULL,
-	`fund_id` text NOT NULL,
+	`project_id` text NOT NULL,
 	`is_recurring` integer DEFAULT false NOT NULL,
 	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
-	FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON UPDATE no action ON DELETE cascade
+	FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `funds_expenses_categories` (
+CREATE TABLE `projects_expenses_categories` (
 	`id` integer PRIMARY KEY NOT NULL,
-	`fund_id` text NOT NULL,
+	`project_id` text NOT NULL,
 	`expense_category_id` text NOT NULL,
-	FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`expense_category_id`) REFERENCES `expenses_categories`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `funds_inflows_categories` (
+CREATE TABLE `projects_inflows_categories` (
 	`id` integer PRIMARY KEY NOT NULL,
-	`fund_id` text NOT NULL,
+	`project_id` text NOT NULL,
 	`inflow_category_id` text NOT NULL,
-	FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`inflow_category_id`) REFERENCES `inflows_categories`(`id`) ON UPDATE no action ON DELETE cascade
-);
---> statement-breakpoint
-CREATE TABLE `funds` (
-	`id` integer PRIMARY KEY NOT NULL,
-	`name` text(255) NOT NULL,
-	`total_funds` real DEFAULT 0 NOT NULL,
-	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
-	`user_id` text NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `inflows_categories` (
@@ -58,10 +49,10 @@ CREATE TABLE `inflows` (
 	`name` text(64) NOT NULL,
 	`category` text(64) NOT NULL,
 	`amount` real NOT NULL,
-	`fund_id` text NOT NULL,
+	`project_id` text NOT NULL,
 	`is_recurring` integer DEFAULT false NOT NULL,
 	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
-	FOREIGN KEY (`fund_id`) REFERENCES `funds`(`id`) ON UPDATE no action ON DELETE cascade
+	FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `oauth_users` (
@@ -77,6 +68,16 @@ CREATE TABLE `password_reset_tokens` (
 	`user_id` text NOT NULL,
 	`expires_at` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `projects` (
+	`id` integer PRIMARY KEY NOT NULL,
+	`name` text(255) NOT NULL,
+	`details` text(255),
+	`total_funds` integer NOT NULL,
+	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
+	`user_id` text NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `session` (
@@ -102,6 +103,7 @@ CREATE TABLE `users` (
 CREATE UNIQUE INDEX `expenses_categories_name_unique` ON `expenses_categories` (`name`);--> statement-breakpoint
 CREATE UNIQUE INDEX `inflows_categories_name_unique` ON `inflows_categories` (`name`);--> statement-breakpoint
 CREATE UNIQUE INDEX `password_reset_tokens_id_unique` ON `password_reset_tokens` (`id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `projects_name_unique` ON `projects` (`name`);--> statement-breakpoint
 CREATE UNIQUE INDEX `users_username_unique` ON `users` (`username`);--> statement-breakpoint
 CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint
 CREATE UNIQUE INDEX `users_stripe_customer_id_unique` ON `users` (`stripe_customer_id`);
