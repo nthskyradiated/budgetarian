@@ -73,7 +73,7 @@ CREATE TABLE `password_reset_tokens` (
 CREATE TABLE `projects` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`name` text(255) NOT NULL,
-	`details` text(255),
+	`details` text(255) NOT NULL,
 	`total_funds` integer NOT NULL,
 	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
 	`user_id` text NOT NULL,

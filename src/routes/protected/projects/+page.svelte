@@ -10,7 +10,7 @@
     import { zod } from 'sveltekit-superforms/adapters';
 	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
-    import SuperDebug from 'sveltekit-superforms';
+    // import SuperDebug from 'sveltekit-superforms';
 
     export let data: PageData 
     
@@ -18,20 +18,17 @@
         enhance: createProjectEnhance,
          form: createProjectForm,
          errors: createProjectErrors,
-         message: createProjectMessage,
+         message,
          delayed: createProjectDelayed
      } = superForm(data.createProjectFormData, {
-         createProjectForm: true,
+        resetForm: true,
          taintedMessage: null,
          validators: zod(CreateProjectZodSchema),
 
- 
-        })
-    	// For password reset form
     onUpdated: () => {
-        if (!$createProjectMessage) return;
+        if (!$message) return;
 
-        const { alertType, alertText } = $createProjectMessage;
+        const { alertType, alertText } = $message;
 
         if (alertType === 'error') {
             toast.error(alertText);
@@ -41,13 +38,17 @@
             toast.success(alertText);
         }
     }
+ 
+        })
+
+
 
 </script>
 <!-- {#each projects as project}
     <h1>{project?.id}</h1>
 {/each}
 <h1>{data.projects}</h1> -->
-<SuperDebug data={$createProjectForm} />
+<!-- <SuperDebug data={$createProjectForm} /> -->
 <div class="flex flex-wrap justify-between gap-4">
 
     <Dialog.Root>
@@ -87,7 +88,7 @@
             minlength={minNameLen}
         />
             <InputField
-            type="text"
+            type="number"
             name="totalFunds"
             label="Total Funds"
             bind:value={$createProjectForm.totalFunds}

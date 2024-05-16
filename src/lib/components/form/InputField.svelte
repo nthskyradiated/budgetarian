@@ -7,7 +7,7 @@
 	let className: HTMLInputAttributes['class'] = undefined;
 	export { className as class };
 	export let type: HTMLInputAttributes['type'];
-	export let value: string | null | undefined = '';
+	export let value: string | number | null | undefined = '';
 	export let name: string = '';
 	export let label: string = '';
 	export let placeholder: string = '';
@@ -17,7 +17,7 @@
 	export let maxlength: number | undefined = undefined;
 	export let errorMessage: object | undefined = undefined;
 
-	$: valueLength = value?.length;
+	$: valueLength = value?.toString().length;
 </script>
 
 <label
