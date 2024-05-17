@@ -1,7 +1,7 @@
-import db from "@/db";
-import { projectsTable } from "@/db/schema";
-import type { ProjectInsertSchema } from "@/db/schema/projectsSchema/projects";
-import projects from "@/db/schema/projectsSchema/projects";
+import db from '@/db';
+import { projectsTable } from '@/db/schema';
+import type { ProjectInsertSchema } from '@/db/schema/projectsSchema/projects';
+import projects from '@/db/schema/projectsSchema/projects';
 import { eq } from 'drizzle-orm';
 
 export const insertNewProject = async (project: ProjectInsertSchema) => {
@@ -9,6 +9,5 @@ export const insertNewProject = async (project: ProjectInsertSchema) => {
 };
 
 export const getAllProjects = async (id: string) => {
-	return await db.select().from(projects).where(eq(projects.userId, id))
-
-}
+	return await db.select().from(projects).where(eq(projects.userId, id));
+};

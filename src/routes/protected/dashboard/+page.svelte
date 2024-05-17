@@ -33,8 +33,8 @@
 			<form method="post" action={route('logout /dashboard')}>
 				<SubmitButton>Logout</SubmitButton>
 			</form>
-	
-				<Button href={route('projects')}>Projects Page</Button>
+
+			<Button href={route('projects')}>Projects Page</Button>
 
 			{#if isOnlyOauthUser === false}
 				<Dialog.Root>

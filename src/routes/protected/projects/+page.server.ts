@@ -4,7 +4,10 @@ import { route } from '@/lib/router';
 import db from '@/db';
 import { eq } from 'drizzle-orm';
 import projects from '@/db/schema/projectsSchema/projects';
-import { CreateProjectZodSchema, type createProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation.js';
+import {
+	CreateProjectZodSchema,
+	type createProjectZodSchema
+} from '@/lib/zodValidators/zodProjectValidation.js';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
 import { lucia } from '@/lib/server/luciaUtils';
@@ -12,37 +15,39 @@ import type { Actions } from './$types';
 import { insertNewProject } from '@/lib/utils/projectUtils';
 import type { AlertMessageType } from '@/lib/types';
 
-export const load = async ({locals}) => {
-    if (!locals.user){
-        throw redirect( 302,route('/auth/login'));
-    }
+export const load = async ({ locals }) => {
+	if (!locals.user) {
+		throw redirect(302, route('/auth/login'));
+	}
 
 	const allProjects = await db.select().from(projects).where(eq(projects.userId, locals.user.id));
 	if (!allProjects) {
-		throw new Error("invalid response from database"); 
+		throw new Error('invalid response from database');
 	}
 	if (allProjects.length === 0) {
 		return {
-				projects: [],
-				message: 'No projects found. Please create a new project.',
-				createProjectFormData: await superValidate(zod(CreateProjectZodSchema)),
-			}
-		}
-	
-		return {
-			allProjects,
-			createProjectFormData: await superValidate(zod(CreateProjectZodSchema)),
-		}
-}
+			projects: [],
+			message: 'No projects found. Please create a new project.',
+			createProjectFormData: await superValidate(zod(CreateProjectZodSchema))
+		};
+	}
 
-export const actions : Actions = {
+	return {
+		allProjects,
+		createProjectFormData: await superValidate(zod(CreateProjectZodSchema))
+	};
+};
 
-	createProject: async ({locals, request}) => {
+export const actions: Actions = {
+	createProject: async ({ locals, request }) => {
 		const userId = locals.user?.id;
 		const currentSessionId = locals.session?.id;
 		if (!userId || !currentSessionId) return;
 
-		const createProjectFormData = await superValidate<createProjectZodSchema, AlertMessageType>(request, zod(CreateProjectZodSchema));
+		const createProjectFormData = await superValidate<createProjectZodSchema, AlertMessageType>(
+			request,
+			zod(CreateProjectZodSchema)
+		);
 
 		if (createProjectFormData.valid === false) {
 			return message(createProjectFormData, {
@@ -50,14 +55,14 @@ export const actions : Actions = {
 				alertText: 'There was a problem with your submission.'
 			});
 		}
-		console.log('value:',createProjectFormData.data);
+		console.log('value:', createProjectFormData.data);
 
 		const allUserSessions = await lucia.getUserSessions(userId);
 
 		try {
 			for (const session of allUserSessions) {
 				if (session.id === currentSessionId) continue;
-	
+
 				await lucia.invalidateSession(session.id);
 			}
 
@@ -86,8 +91,5 @@ export const actions : Actions = {
 			alertType: 'success',
 			alertText: 'New Project Added.'
 		});
-
-}
-}		
-		
-
+	}
+};

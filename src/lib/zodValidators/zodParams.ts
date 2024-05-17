@@ -13,6 +13,5 @@ export const PASSWORD_MIN_ERROR_MESSAGE = `Password must be at least ${minPwrdLe
 export const PASSWORD_MAX_ERROR_MESSAGE = `Password must be less than ${maxPwrdLen} characters long`;
 export const PASSWORD_SPECIAL_CHARS_MESSAGE = ` Requires a special character: (${pwrdChars.split('').join(', ')})`;
 
-
 export const PROJECT_NAME_MIN_ERROR_MESSAGE = `Project name must be at least ${minNameLen} characters long`;
 export const PROJECT_NAME_MAX_ERROR_MESSAGE = `Project name must be less than ${maxNameLen} characters long`;

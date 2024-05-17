@@ -1,125 +1,128 @@
 <script lang="ts">
 	import { route } from '@/lib/router';
-    import type { PageData } from './$types';
+	import type { PageData } from './$types';
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
-    import { toast } from 'svelte-sonner';
+	import { toast } from 'svelte-sonner';
 	import { superForm } from 'sveltekit-superforms/client';
-    import * as Dialog from '$lib/components/ui/dialog';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import InputField from '@/lib/components/form/InputField.svelte';
 	import { buttonVariants } from '@/lib/components/ui/button';
-    import { zod } from 'sveltekit-superforms/adapters';
+	import { zod } from 'sveltekit-superforms/adapters';
 	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
-    import SuperDebug from 'sveltekit-superforms';
+	// import SuperDebug from 'sveltekit-superforms';
 	import { goto } from '$app/navigation';
-    // import { getAllProjects } from '@/lib/utils/projectUtils';
-    export let data: PageData 
-    
-    const {allProjects= []} = data
-    let newProjects = [...allProjects];
+	import Card from '@/lib/components/ui/card/card.svelte';
+	export let data: PageData;
 
-         const {
-        enhance: createProjectEnhance,
-         form: createProjectForm,
-         errors: createProjectErrors,
-         message,
-         delayed: createProjectDelayed
-     } = superForm(data.createProjectFormData, {
-        resetForm: true,
-         taintedMessage: null,
-         validators: zod(CreateProjectZodSchema),
+	const { allProjects = [] } = data;
+	let newProjects = [...allProjects];
 
-    onUpdated: async () => {
-        if (!$message) return;
+	const {
+		enhance: createProjectEnhance,
+		form: createProjectForm,
+		errors: createProjectErrors,
+		message,
+		delayed: createProjectDelayed
+	} = superForm(data.createProjectFormData, {
+		resetForm: true,
+		taintedMessage: null,
+		validators: zod(CreateProjectZodSchema),
 
-        const { alertType, alertText } = $message;
+		onUpdated: async () => {
+			if (!$message) return;
 
-        if (alertType === 'error') {
-            toast.error(alertText);
-        }
+			const { alertType, alertText } = $message;
 
-        if (alertType === 'success') {
-            toast.success(alertText);
-            try {
-                    const response = await fetch('/protected/projects');
-                    if (response.ok) {
-                        const updatedData = await response.json();
-                        newProjects = updatedData.allProjects;
-                    } else {
-                        console.error('Failed to fetch updated projects');
-                    }
-                } catch (error) {
-                    console.error('Error fetching updated projects:', error);
-                }
+			if (alertType === 'error') {
+				toast.error(alertText);
+			}
 
-                goto('/protected/projects');
-        }
-    }
- 
-        })
+			if (alertType === 'success') {
+				toast.success(alertText);
+				try {
+					const response = await fetch('/protected/projects');
+					if (response.ok) {
+						const updatedData = await response.json();
+						newProjects = updatedData.allProjects;
+					} else {
+						console.error('Failed to fetch updated projects');
+					}
+				} catch (error) {
+					console.error('Error fetching updated projects:', error);
+				}
 
+				goto('/protected/projects');
+			}
+		}
+	});
+
+	const mySelectionHandler = (event: Number) => {
+		const ID = event;
+		goto(`/protected/project/${ID}`);
+	};
 </script>
+
 {#if newProjects.length === 0}
-<h1>{data.message}</h1>
+	<h1>{data.message}</h1>
 {:else}
-    {#each newProjects as project}
-        <h1>{project?.name}</h1>
-        <h1>{project?.details}</h1> 
-        <h1>{project?.startingFunds}</h1> 
-        <h1>{project?.totalFunds}</h1> 
-    {/each}
+	{#each newProjects as project}
+		<Card class="my-2 w-96 p-4" on:click={() => mySelectionHandler(project.id)}>
+			<h1>{project?.name}</h1>
+			<h1>{project?.details}</h1>
+			<h1>{project?.startingFunds}</h1>
+			<h1>{project?.totalFunds}</h1>
+		</Card>
+	{/each}
 {/if}
 
-<SuperDebug data={$createProjectForm} />
-<div class="flex flex-wrap justify-between gap-4">
+<!-- <SuperDebug data={$createProjectForm} /> -->
+<div class="my-8 flex flex-wrap justify-between gap-4">
+	<Dialog.Root>
+		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>Create Project</Dialog.Trigger>
+		<Dialog.Content>
+			<Dialog.Header>
+				<Dialog.Title>Create a new project?</Dialog.Title>
+				<Dialog.Description>
+					Input all the necessary information to create a new project.
+				</Dialog.Description>
+			</Dialog.Header>
 
-    <Dialog.Root>
-        <Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
-            Create Project
-        </Dialog.Trigger>
-        <Dialog.Content>
-            <Dialog.Header>
-                <Dialog.Title>Create a new project?</Dialog.Title>
-                <Dialog.Description>
-                    Input all the necessary information to create a new project.
-                </Dialog.Description>
-            </Dialog.Header>
+			<form
+				method="post"
+				use:createProjectEnhance
+				action={route('createProject /protected/projects')}
+				class="space-y-4"
+			>
+				<InputField
+					type="text"
+					name="name"
+					label="Project Name"
+					bind:value={$createProjectForm.name}
+					errorMessage={$createProjectErrors.name}
+					maxlength={maxNameLen}
+					minlength={minNameLen}
+				/>
+				<InputField
+					type="text"
+					name="details"
+					label="Project Details"
+					bind:value={$createProjectForm.details}
+					errorMessage={$createProjectErrors.details}
+					maxlength={maxNameLen}
+					minlength={minNameLen}
+				/>
+				<InputField
+					type="number"
+					name="startingFunds"
+					label="Initial Amount"
+					step="0.01"
+					bind:value={$createProjectForm.startingFunds}
+					errorMessage={$createProjectErrors.startingFunds}
+				/>
 
-            <form
-                method="post"
-                use:createProjectEnhance
-                action={route('createProject /protected/projects')}
-                class="space-y-4"
-            >
-            <InputField
-            type="text"
-            name="name"
-            label="Project Name"
-            bind:value={$createProjectForm.name}
-            errorMessage={$createProjectErrors.name}
-            maxlength={maxNameLen}
-            minlength={minNameLen}
-        />
-            <InputField
-            type="text"
-            name="details"
-            label="Project Details"
-            bind:value={$createProjectForm.details}
-            errorMessage={$createProjectErrors.details}
-            maxlength={maxNameLen}
-            minlength={minNameLen}
-        />
-            <InputField
-            type="number"
-            name="startingFunds"
-            label="Initial Amount"
-            step="0.01"
-            bind:value={$createProjectForm.startingFunds}
-            errorMessage={$createProjectErrors.startingFunds}
-        />
-
-                <SubmitButton disabled={$createProjectDelayed}>Create A New Project</SubmitButton>
-            </form>
-        </Dialog.Content>
-    </Dialog.Root>
+				<SubmitButton disabled={$createProjectDelayed}>Create A New Project</SubmitButton>
+			</form>
+		</Dialog.Content>
+	</Dialog.Root>
 </div>

@@ -62,5 +62,5 @@ export type Project = {
 	totalFunds: string | number;
 	createdAt: string | null;
 	userId: string;
-}
-export type ProjectArr= Project[] | undefined
+};
+export type ProjectArr = Project[] | undefined;

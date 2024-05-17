@@ -7,7 +7,6 @@ export const load: LayoutServerLoad = loadFlash(async ({ url, locals: { session,
 	return {
 		user,
 		isUserLoggedIn: session !== null,
-		baseMetaTags: Object.freeze(baseMetaTags),
-		
+		baseMetaTags: Object.freeze(baseMetaTags)
 	};
 });
