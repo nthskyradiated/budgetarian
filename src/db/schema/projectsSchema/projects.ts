@@ -8,6 +8,7 @@ const projectsTable = sqliteTable('projects', {
 	id: int('id').primaryKey().notNull(),
 	name: text('name', { length: 255 }).notNull().unique(),
 	details: text('details', { length: 255 }).notNull(),
+	startingFunds: real('starting_funds').notNull(),
 	totalFunds: real('total_funds').notNull(),
 	createdAt: text('timestamp').default(sql`(CURRENT_TIMESTAMP)`),
 	userId: text('user_id')

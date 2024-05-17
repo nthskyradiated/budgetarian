@@ -74,7 +74,8 @@ CREATE TABLE `projects` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`name` text(255) NOT NULL,
 	`details` text(255) NOT NULL,
-	`total_funds` integer NOT NULL,
+	`starting_funds` real NOT NULL,
+	`total_funds` real NOT NULL,
 	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
 	`user_id` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade

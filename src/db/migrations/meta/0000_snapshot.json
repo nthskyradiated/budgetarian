@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "33253dc6-ed23-4902-8d01-dde984f4a2db",
+  "id": "9ad3e98b-ff29-45dd-a884-4231242e710f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "email_verification_codes": {
@@ -514,9 +514,16 @@
           "notNull": true,
           "autoincrement": false
         },
+        "starting_funds": {
+          "name": "starting_funds",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "total_funds": {
           "name": "total_funds",
-          "type": "integer",
+          "type": "real",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

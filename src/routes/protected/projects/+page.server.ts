@@ -64,7 +64,8 @@ export const actions : Actions = {
 			await insertNewProject({
 				name: createProjectFormData.data.name,
 				details: createProjectFormData.data.details,
-				totalFunds: createProjectFormData.data.totalFunds,
+				startingFunds: createProjectFormData.data.startingFunds,
+				totalFunds: createProjectFormData.data.startingFunds,
 				userId
 			});
 		} catch (error) {

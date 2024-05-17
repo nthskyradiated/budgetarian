@@ -12,7 +12,7 @@ export const CreateProjectZodSchema = z.object({
 		.string()
 		.min(zodVal.minNameLen, zodVal.NAME_MIN_ERROR_MESSAGE)
 		.max(zodVal.maxNameLen, zodVal.NAME_MAX_ERROR_MESSAGE),
-	totalFunds: z
+	startingFunds: z
 		.coerce.number().positive()
 });
 

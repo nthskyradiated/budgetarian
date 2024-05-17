@@ -65,6 +65,7 @@
     {#each newProjects as project}
         <h1>{project?.name}</h1>
         <h1>{project?.details}</h1> 
+        <h1>{project?.startingFunds}</h1> 
         <h1>{project?.totalFunds}</h1> 
     {/each}
 {/if}
@@ -110,11 +111,11 @@
         />
             <InputField
             type="number"
-            name="totalFunds"
-            label="Total Funds"
+            name="startingFunds"
+            label="Initial Amount"
             step="0.01"
-            bind:value={$createProjectForm.totalFunds}
-            errorMessage={$createProjectErrors.totalFunds}
+            bind:value={$createProjectForm.startingFunds}
+            errorMessage={$createProjectErrors.startingFunds}
         />
 
                 <SubmitButton disabled={$createProjectDelayed}>Create A New Project</SubmitButton>
