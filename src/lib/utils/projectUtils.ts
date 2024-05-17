@@ -5,9 +5,10 @@ import projects from "@/db/schema/projectsSchema/projects";
 import { eq } from 'drizzle-orm';
 
 export const insertNewProject = async (project: ProjectInsertSchema) => {
-	return await db.insert(projectsTable).values(project);
+	return await db.insert(projectsTable).values(project).returning();
 };
 
 export const getAllProjects = async (id: string) => {
-	await db.select().from(projects).where(eq(projects.userId, id))
+	return await db.select().from(projects).where(eq(projects.userId, id))
+
 }

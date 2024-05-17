@@ -1,5 +1,5 @@
 import { type InferSelectModel, relations, sql } from 'drizzle-orm';
-import { text, int, sqliteTable, numeric } from 'drizzle-orm/sqlite-core';
+import { text, int, sqliteTable, real } from 'drizzle-orm/sqlite-core';
 import users from '../usersSchema/users';
 import expenses from './expenses';
 import inflows from './inflows';
@@ -8,7 +8,7 @@ const projectsTable = sqliteTable('projects', {
 	id: int('id').primaryKey().notNull(),
 	name: text('name', { length: 255 }).notNull().unique(),
 	details: text('details', { length: 255 }).notNull(),
-	totalFunds: int('total_funds').notNull(),
+	totalFunds: real('total_funds').notNull(),
 	createdAt: text('timestamp').default(sql`(CURRENT_TIMESTAMP)`),
 	userId: text('user_id')
 		.notNull()
