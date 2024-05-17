@@ -11,12 +11,12 @@
 	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
     import SuperDebug from 'sveltekit-superforms';
+	import { goto } from '$app/navigation';
     // import { getAllProjects } from '@/lib/utils/projectUtils';
     export let data: PageData 
     
-    const {allProjects} = data
-    let newProjects: any[] = []
-    $: newProjects = newProjects.concat(...newProjects, allProjects)
+    const {allProjects= []} = data
+    let newProjects = [...allProjects];
 
          const {
         enhance: createProjectEnhance,
@@ -29,7 +29,7 @@
          taintedMessage: null,
          validators: zod(CreateProjectZodSchema),
 
-    onUpdated: () => {
+    onUpdated: async () => {
         if (!$message) return;
 
         const { alertType, alertText } = $message;
@@ -40,20 +40,33 @@
 
         if (alertType === 'success') {
             toast.success(alertText);
+            try {
+                    const response = await fetch('/protected/projects');
+                    if (response.ok) {
+                        const updatedData = await response.json();
+                        newProjects = updatedData.allProjects;
+                    } else {
+                        console.error('Failed to fetch updated projects');
+                    }
+                } catch (error) {
+                    console.error('Error fetching updated projects:', error);
+                }
+
+                goto('/protected/projects');
         }
     }
  
         })
 
 </script>
-{#if allProjects === undefined}
+{#if newProjects.length === 0}
 <h1>{data.message}</h1>
-{:else if allProjects && allProjects.length > 0}
-{#each newProjects as project}
-    <h1>{project?.name}</h1>
-    <h1>{project?.details}</h1> 
-    <h1>{project?.totalFunds}</h1> 
-{/each}
+{:else}
+    {#each newProjects as project}
+        <h1>{project?.name}</h1>
+        <h1>{project?.details}</h1> 
+        <h1>{project?.totalFunds}</h1> 
+    {/each}
 {/if}
 
 <SuperDebug data={$createProjectForm} />

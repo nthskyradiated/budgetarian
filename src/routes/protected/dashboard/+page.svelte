@@ -6,6 +6,7 @@
 	import * as Dialog from '@/lib/components/ui/dialog';
 	import { route } from '@/lib/router';
 	import PasswordResetForm from '@/lib/components/form/PasswordResetForm.svelte';
+	import Button from '@/lib/components/ui/button/button.svelte';
 	export let data: PageData;
 
 	const { loggedInUser } = data;
@@ -32,9 +33,8 @@
 			<form method="post" action={route('logout /dashboard')}>
 				<SubmitButton>Logout</SubmitButton>
 			</form>
-			<form method="post" action={route('logout /dashboard')}>
-				<SubmitButton>Funds Page</SubmitButton>
-			</form>
+	
+				<Button href={route('projects')}>Projects Page</Button>
 
 			{#if isOnlyOauthUser === false}
 				<Dialog.Root>
