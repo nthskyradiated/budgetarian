@@ -60,4 +60,6 @@ export type Project = {
 	name: string;
 	details: string;
 	totalFunds: string;
+	createdAt: string | null;
+	userId: string;
 }
