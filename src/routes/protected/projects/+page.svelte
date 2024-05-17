@@ -46,12 +46,16 @@
         })
 
 </script>
-{#if newProjects}
+{#if allProjects === undefined}
+<h1>{data.message}</h1>
+{:else if allProjects && allProjects.length > 0}
 {#each newProjects as project}
     <h1>{project?.name}</h1>
     <h1>{project?.details}</h1> 
+    <h1>{project?.totalFunds}</h1> 
 {/each}
 {/if}
+
 <SuperDebug data={$createProjectForm} />
 <div class="flex flex-wrap justify-between gap-4">
 
@@ -95,6 +99,7 @@
             type="number"
             name="totalFunds"
             label="Total Funds"
+            step="0.01"
             bind:value={$createProjectForm.totalFunds}
             errorMessage={$createProjectErrors.totalFunds}
         />
