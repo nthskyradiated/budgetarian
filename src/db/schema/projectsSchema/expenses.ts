@@ -11,7 +11,8 @@ const expensesTable = sqliteTable('expenses', {
 		.notNull()
 		.references(() => projects.id, { onDelete: 'cascade' }),
 	isRecurring: int('is_recurring', { mode: 'boolean' }).notNull().default(false),
-	createdAt: text('timestamp').default(sql`(CURRENT_TIMESTAMP)`)
+	createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
+	updatedAt: text('updated_at').default(sql`(CURRENT_TIMESTAMP)`)
 });
 
 export const expensesRelations = relations(expensesTable, ({ one }) => ({

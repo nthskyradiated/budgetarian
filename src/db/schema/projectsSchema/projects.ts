@@ -10,7 +10,8 @@ const projectsTable = sqliteTable('projects', {
 	details: text('details', { length: 255 }).notNull(),
 	startingFunds: real('starting_funds').notNull(),
 	totalFunds: real('total_funds').notNull(),
-	createdAt: text('timestamp').default(sql`(CURRENT_TIMESTAMP)`),
+	createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
+	updatedAt: text('updated_at').default(sql`(CURRENT_TIMESTAMP)`),
 	userId: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' })

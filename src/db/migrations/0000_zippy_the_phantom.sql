@@ -19,7 +19,8 @@ CREATE TABLE `expenses` (
 	`amount` real NOT NULL,
 	`project_id` text NOT NULL,
 	`is_recurring` integer DEFAULT false NOT NULL,
-	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
+	`created_at` text DEFAULT (CURRENT_TIMESTAMP),
+	`updated_at` text DEFAULT (CURRENT_TIMESTAMP),
 	FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
@@ -51,7 +52,8 @@ CREATE TABLE `inflows` (
 	`amount` real NOT NULL,
 	`project_id` text NOT NULL,
 	`is_recurring` integer DEFAULT false NOT NULL,
-	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
+	`created_at` text DEFAULT (CURRENT_TIMESTAMP),
+	`updated_at` text DEFAULT (CURRENT_TIMESTAMP),
 	FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
@@ -76,7 +78,8 @@ CREATE TABLE `projects` (
 	`details` text(255) NOT NULL,
 	`starting_funds` real NOT NULL,
 	`total_funds` real NOT NULL,
-	`timestamp` text DEFAULT (CURRENT_TIMESTAMP),
+	`created_at` text DEFAULT (CURRENT_TIMESTAMP),
+	`updated_at` text DEFAULT (CURRENT_TIMESTAMP),
 	`user_id` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
 );

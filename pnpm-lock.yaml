@@ -63,12 +63,12 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(tailwindcss@3.4.3)
     devDependencies:
-      '@bobbymannino/svelte-progress':
-        specifier: ^2.3.0
-        version: 2.3.0
       '@playwright/test':
         specifier: ^1.28.1
         version: 1.44.0
+      '@prgm/sveltekit-progress-bar':
+        specifier: ^2.0.0
+        version: 2.0.0(@sveltejs/kit@2.5.9(@sveltejs/vite-plugin-svelte@3.1.0(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12)))(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12)))(svelte@5.0.0-next.136)
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
         version: 3.2.0(@sveltejs/kit@2.5.9(@sveltejs/vite-plugin-svelte@3.1.0(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12)))(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12)))
@@ -154,8 +154,8 @@ importers:
         specifier: ^2.4.1
         version: 2.6.2
       tsx:
-        specifier: ^4.10.4
-        version: 4.10.4
+        specifier: ^4.10.5
+        version: 4.10.5
       typescript:
         specifier: ^5.0.0
         version: 5.4.5
@@ -182,9 +182,6 @@ packages:
   '@babel/runtime@7.24.5':
     resolution: {integrity: sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==}
     engines: {node: '>=6.9.0'}
-
-  '@bobbymannino/svelte-progress@2.3.0':
-    resolution: {integrity: sha512-WONB/rhKh3Rxo509bNqNxhBXv5OpVXlEsxM2K8/sj9kqEf6BD+Q6ugx7egzX1Qg2nxNmZpzd4JCD4k1uWggMUA==}
 
   '@emnapi/core@0.45.0':
     resolution: {integrity: sha512-DPWjcUDQkCeEM4VnljEOEcXdAD7pp8zSZsgOujk/LGIwCXWbXJngin+MO4zbH429lzeC3WbYLGjE2MaUOwzpyw==}
@@ -909,6 +906,13 @@ packages:
   '@poppinss/macroable@1.0.2':
     resolution: {integrity: sha512-xhhEcEvhQC8mP5oOr5hbE4CmUgmw/IPV1jhpGg2xSkzoFrt9i8YVqBQt9744EFesi5F7pBheWozg63RUBM/5JA==}
     engines: {node: '>=18.16.0'}
+
+  '@prgm/sveltekit-progress-bar@2.0.0':
+    resolution: {integrity: sha512-N9SlYDfpqaY9MyG85Wk38R9/BipIUdTJ4U7LVPY5cFn5cwGZrVA1lsXC3I2kmGtwz+DF6v/DvySkYOWCPmJV4A==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@sveltejs/kit': ^2.0.0
+      svelte: ^4.0.0
 
   '@react-email/render@0.0.12':
     resolution: {integrity: sha512-S8WRv/PqECEi6x0QJBj0asnAb5GFtJaHlnByxLETLkgJjc76cxMYDH4r9wdbuJ4sjkcbpwP3LPnVzwS+aIjT7g==}
@@ -2862,8 +2866,8 @@ packages:
   tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
-  tsx@4.10.4:
-    resolution: {integrity: sha512-Gtg9qnZWNqC/OtcgiXfoAUdAKx3/cgKOYvEocAsv+m21MV/eKpV/WUjRXe6/sDCaGBl2/v8S6v29BpUnGMCX5A==}
+  tsx@4.10.5:
+    resolution: {integrity: sha512-twDSbf7Gtea4I2copqovUiNTEDrT8XNFXsuHpfGbdpW/z9ZW4fTghzzhAG0WfrCuJmJiOEY1nLIjq4u3oujRWQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -3056,8 +3060,6 @@ snapshots:
   '@babel/runtime@7.24.5':
     dependencies:
       regenerator-runtime: 0.14.1
-
-  '@bobbymannino/svelte-progress@2.3.0': {}
 
   '@emnapi/core@0.45.0':
     dependencies:
@@ -3551,6 +3553,11 @@ snapshots:
 
   '@poppinss/macroable@1.0.2':
     optional: true
+
+  '@prgm/sveltekit-progress-bar@2.0.0(@sveltejs/kit@2.5.9(@sveltejs/vite-plugin-svelte@3.1.0(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12)))(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12)))(svelte@5.0.0-next.136)':
+    dependencies:
+      '@sveltejs/kit': 2.5.9(@sveltejs/vite-plugin-svelte@3.1.0(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12)))(svelte@5.0.0-next.136)(vite@5.2.11(@types/node@20.12.12))
+      svelte: 5.0.0-next.136
 
   '@react-email/render@0.0.12':
     dependencies:
@@ -5550,7 +5557,7 @@ snapshots:
 
   tslib@2.6.2: {}
 
-  tsx@4.10.4:
+  tsx@4.10.5:
     dependencies:
       esbuild: 0.20.2
       get-tsconfig: 4.7.5

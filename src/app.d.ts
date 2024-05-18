@@ -17,6 +17,7 @@ declare global {
 			pageMetaTags?: MetaTagsProps;
 			isUserLoggedIn: boolean;
 			flash?: { type: 'success' | 'error'; message: string };
+			isDialogOpen?: boolean;
 		}
 	}
 }

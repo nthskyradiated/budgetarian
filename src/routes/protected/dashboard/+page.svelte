@@ -7,17 +7,26 @@
 	import { route } from '@/lib/router';
 	import PasswordResetForm from '@/lib/components/form/PasswordResetForm.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
+	import Card from '@/lib/components/ui/card/card.svelte';
+	import { goto } from '$app/navigation';
 	export let data: PageData;
-
-	const { loggedInUser } = data;
-
+	
+	
+	const { loggedInUser, recentProjects } = data;
+	
 	const nameInitial = data.user?.name?.charAt(0).toUpperCase();
 	const emailInitial = data.user?.email.charAt(0).toUpperCase();
 	const isOnlyOauthUser = !loggedInUser.authMethods.includes('email');
+
+	const mySelectionHandler = (event: Number) => {
+		const ID = event;
+		goto(`/protected/project/${ID}`);
+	};
+
 </script>
 
-<section class="flex flex-wrap items-center gap-4">
-	<div>
+<section class="flex flex-wrap items-center gap-4 mb-8">
+	<div class="flex flex-col gap-8">
 		<h1 class="mb-5 text-2xl">
 			<span class="font-bold"
 				>{loggedInUser.name || loggedInUser.username || loggedInUser.email}'s Dashboard</span
@@ -56,4 +65,23 @@
 			{/if}
 		</div>
 	</div>
+</section>
+
+<section class="flex flex-col gap-4 w-full">
+	<h1 class="text-2xl">Recently Updated:</h1>
+	{#if recentProjects.length === 0}
+	<h1 class="mb-5 text-lg">{data.message}</h1>
+{:else}
+	{#each recentProjects as project}
+		<Card class="my-2 w-1/2 p-6" on:click={() => mySelectionHandler(project.id)}>
+			<div class="flex flex-col gap-4">
+				<div class='flex justify-between px-4'><span class="font-bold">Project Name: </span><p class="inline pl-12">{project?.name}</p></div>
+				<div class='flex justify-between px-4'><span class="font-bold">Project Details: </span><p class="inline pl-12">{project?.details}</p></div>
+				<div class='flex justify-between px-4'><span class="font-bold">Current Balance: </span><p class="inline pl-12">{project?.totalFunds}</p></div>
+				<div class='flex justify-between px-4'><span class="font-bold">Last Updated: </span><p class="inline pl-12">{project?.updatedAt}</p>
+				</div>
+			</div>
+		</Card>
+	{/each}
+{/if}
 </section>

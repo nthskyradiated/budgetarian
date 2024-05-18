@@ -9,7 +9,7 @@
 	import { setupViewTransition } from 'sveltekit-view-transition';
 	import { ModeWatcher } from 'mode-watcher';
 	import extend from 'just-extend';
-	import { Bar } from '@bobbymannino/svelte-progress';
+	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 	export let data: PageData;
 
 	const flash = getFlash(page);
@@ -21,13 +21,13 @@
 	setupViewTransition();
 </script>
 
-<Bar color="#4caf50" size="small" speed="fast" />
+<ProgressBar color="#7F57F1" zIndex={100} intervalTime={100} />
 <MetaTags {...metaTags} />
 <Toaster richColors closeButton position={'bottom-right'} />
 <ModeWatcher />
 <div class="mx-64 flex min-h-[100%] w-auto flex-col">
 	{#if data.user}
-		<h1 class="py-10">Logged in as :: {data.user?.name ?? data.user.username}</h1>
+		<h1 class="py-10 text-right">Logged in as :: {data.user?.name ?? data.user.username}</h1>
 	{/if}
 	<slot />
 </div>

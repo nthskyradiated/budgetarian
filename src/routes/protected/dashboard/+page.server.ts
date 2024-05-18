@@ -1,5 +1,5 @@
 import type { Actions, PageServerLoad } from './$types';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import { Argon2id } from 'oslo/password';
 import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms/client';
@@ -15,6 +15,7 @@ import {
 import { passwordResetDashboardPageActionRateLimiter } from '@/lib/server/rateLimiterUtils';
 import { zod } from 'sveltekit-superforms/adapters';
 import { deleteSessionCookie, isSameAsOldPassword } from '@/lib/server/authUtils';
+import projects from '@/db/schema/projectsSchema/projects';
 
 export const load = (async (event) => {
 	const { locals, cookies } = event;
@@ -29,7 +30,20 @@ export const load = (async (event) => {
 		);
 	}
 	await passwordResetDashboardPageActionRateLimiter.cookieLimiter?.preflight(event);
+	const recentProjects = await db.select().from(projects).where(eq(projects.userId, locals.user.id)).limit(3).orderBy(desc(projects.updatedAt));
+	if (!recentProjects) {
+		throw new Error('invalid response from database');
+	}
+	if (recentProjects.length === 0) {
+		return {
+			recentProjects: [],
+			message: 'No projects found. Please create a new project.',
+			loggedInUser: locals.user,
+			passwordResetFormData: await superValidate(zod(PasswordResetZodSchema))
+		};
+	}
 	return {
+		recentProjects,
 		loggedInUser: locals.user,
 		passwordResetFormData: await superValidate(zod(PasswordResetZodSchema))
 	};
@@ -49,7 +63,7 @@ export const actions: Actions = {
 	changePassword: async (event) => {
 		const userId = event.locals.user?.id;
 		const currentSessionId = event.locals.session?.id;
-
+		
 		if (!userId) return;
 
 		const passwordResetFormData = await superValidate<passwordResetZodSchema, AlertMessageType>(
@@ -61,7 +75,9 @@ export const actions: Actions = {
 			return message(passwordResetFormData, {
 				alertType: 'error',
 				alertText: 'There was a problem with your submission.'
-			});
+			},
+
+		);
 		}
 		try {
 			// Check if the rate limit for password reset action has been exceeded

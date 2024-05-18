@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 
 import { route } from '@/lib/router';
 import db from '@/db';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import projects from '@/db/schema/projectsSchema/projects';
 import {
 	CreateProjectZodSchema,
@@ -20,7 +20,7 @@ export const load = async ({ locals }) => {
 		redirect(302, route('/auth/login'));
 	}
 
-	const allProjects = await db.select().from(projects).where(eq(projects.userId, locals.user.id));
+	const allProjects = await db.select().from(projects).where(eq(projects.userId, locals.user.id)).orderBy(desc(projects.createdAt));
 	if (!allProjects) {
 		throw new Error('invalid response from database');
 	}
