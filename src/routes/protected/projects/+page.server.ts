@@ -17,7 +17,7 @@ import type { AlertMessageType } from '@/lib/types';
 
 export const load = async ({ locals }) => {
 	if (!locals.user) {
-		throw redirect(302, route('/auth/login'));
+		redirect(302, route('/auth/login'));
 	}
 
 	const allProjects = await db.select().from(projects).where(eq(projects.userId, locals.user.id));

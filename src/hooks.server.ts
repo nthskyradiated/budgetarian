@@ -29,7 +29,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	if (session && AUTH_ROUTES.includes(event.url.pathname)) {
-		throw redirect(303, DASHBOARD_ROUTE);
+		redirect(303, DASHBOARD_ROUTE);
 	}
 
 	event.locals.user = user;

@@ -8,7 +8,7 @@ export const load = (async ({ locals }) => {
 		description: 'Home page description'
 	});
 	if (locals.user) {
-		throw redirect(302, '/protected/dashboard');
+		redirect(302, '/protected/dashboard');
 	}
 	return {
 		pageMetaTags: Object.freeze(pageMetaTags)

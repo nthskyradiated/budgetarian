@@ -19,7 +19,7 @@ import { route } from '@/lib/router';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) {
-		throw redirect(302, 'protected/dashboard');
+		redirect(302, 'protected/dashboard');
 	}
 
 	return {
@@ -103,6 +103,6 @@ export const actions: Actions = {
 			});
 		}
 
-		throw redirect(303, route('/auth/email-verification'));
+		redirect(303, route('/auth/email-verification'));
 	}
 };

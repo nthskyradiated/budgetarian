@@ -106,7 +106,7 @@ export const actions: Actions = {
 			path: route('/auth/email-verification')
 		});
 
-		throw redirect(303, DASHBOARD_ROUTE);
+		redirect(303, DASHBOARD_ROUTE);
 	},
 
 	sendNewCode: async (event) => {

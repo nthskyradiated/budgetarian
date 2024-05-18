@@ -29,7 +29,7 @@ const NO_REGISTERED_ACCOUNT_ERROR_MESSAGE =
 
 export const load = (async (event) => {
 	if (event.locals.user) {
-		throw redirect(302, 'protected/dashboard');
+		redirect(302, 'protected/dashboard');
 	}
 
 	await passwordResetEmailRateLimiter.cookieLimiter?.preflight(event);
@@ -99,7 +99,7 @@ export const actions: Actions = {
 
 		await createAndSetSession(lucia, existingUser.id, cookies);
 
-		throw redirect(303, DASHBOARD_ROUTE);
+		redirect(303, DASHBOARD_ROUTE);
 	},
 
 	sendPasswordResetEmail: async (event) => {
