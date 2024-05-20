@@ -8,11 +8,10 @@
 	import SubmitButton from './SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
-	import { TransactionZodSchema, TransactionTypeRadioZodSchema, type transactionZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+	import { TransactionZodSchema, type transactionZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
 	import { Label } from '../ui/label';
-	import { page } from '$app/stores';
 	
 	export let formData: SuperValidated<transactionZodSchema>;
 	export let formAction: string;
