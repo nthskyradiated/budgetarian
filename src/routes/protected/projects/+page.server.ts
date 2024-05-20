@@ -14,6 +14,7 @@ import { lucia } from '@/lib/server/luciaUtils';
 import type { Actions } from './$types';
 import { insertNewProject } from '@/lib/utils/projectUtils';
 import type { AlertMessageType } from '@/lib/types';
+import { generateIdFromEntropySize } from 'lucia';
 
 export const load = async ({ locals }) => {
 	if (!locals.user) {
@@ -65,8 +66,9 @@ export const actions: Actions = {
 
 				await lucia.invalidateSession(session.id);
 			}
-
+			const projectId = generateIdFromEntropySize(10);
 			await insertNewProject({
+				id: projectId,
 				name: createProjectFormData.data.name,
 				details: createProjectFormData.data.details,
 				startingFunds: createProjectFormData.data.startingFunds,

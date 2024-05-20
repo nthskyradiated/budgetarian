@@ -15,7 +15,8 @@ const PAGES = {
 	'/auth/register': `/auth/register`,
 	'/auth/password-reset': `/auth/password-reset`,
 	'/protected/dashboard': `/protected/dashboard`,
-	projects: `/protected/projects`
+	'/protected/projects' : `/protected/projects`,
+	'/protected/project/[ID]' : `/protected/project/[ID]`
 };
 
 /**
@@ -38,6 +39,9 @@ const ACTIONS = {
 	'sendPasswordResetEmail /auth/login': `?/sendPasswordResetEmail`,
 	'register /auth/register': `?/register`,
 	'createProject /protected/projects': `?/createProject`,
+	'createTransaction /protected/project/[ID]': `?/createTransaction`,
+	'deleteTransaction /protected/project/[ID]': `?/deleteTransaction`,
+	'updateTransaction /protected/project/[ID]': `?/updateTransaction`,
 	'resetPassword /auth/reset-password': `?/resetPassword`,
 	'logout /dashboard': `?/logout`,
 	'changePassword /dashboard': `?/changePassword`,
@@ -154,6 +158,9 @@ export type KIT_ROUTES = {
 		'changePassword /dashboard': never;
 		'deleteAllUsers /dashboard': never;
 		'createProject protected/projects': never;
+		'createTransaction protected/project/[ID]': never;
+		'deleteTransaction protected/project/[ID]': never;
+		'updateTransaction protected/project/[ID]': never;
 	};
 	LINKS: Record<string, never>;
 	Params: Record<string, never>;

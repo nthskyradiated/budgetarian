@@ -43,7 +43,7 @@
 				<SubmitButton>Logout</SubmitButton>
 			</form>
 
-			<Button href={route('projects')}>Projects Page</Button>
+			<Button href={route('/protected/projects')}>Projects Page</Button>
 
 			{#if isOnlyOauthUser === false}
 				<Dialog.Root>

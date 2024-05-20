@@ -2,6 +2,8 @@
 	import Card from '@/lib/components/ui/card/card.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import type { PageData } from './$types';
+	import TransactionForm from '$lib/components/form/TransactionForm.svelte'
+	import { route } from '@/lib/router';
 
 	export let data: PageData;
 	const {project} = data
@@ -26,3 +28,10 @@
 		<Button variant={'destructive'}>Remove transaction</Button>
 	</div>
 </Card>
+
+<TransactionForm
+	formData={data.transactionFormData}
+	formAction={route('createTransaction /protected/project/[ID]')}
+	dialogTitle="Add Transaction"
+	dialogDescription="Input all the necessary information to create a new transaction."
+/>

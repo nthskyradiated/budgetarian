@@ -3,6 +3,9 @@
 		"name": "Utilities"
 	},
 	{
+		"name": "Food"
+	},
+	{
 		"name": "Groceries"
 	},
 	{
@@ -18,9 +21,12 @@
 		"name": "Transport Expenses"
 	},
 	{
-		"name": "Leisure"
+		"name": "Entertainment"
 	},
 	{
 		"name": "Medical Expenses"
+	},
+	{
+		"name": "Other"
 	}
 ]

@@ -1,11 +1,11 @@
 import { type InferSelectModel, relations, sql } from 'drizzle-orm';
-import { text, int, sqliteTable, real } from 'drizzle-orm/sqlite-core';
+import { text, sqliteTable, real } from 'drizzle-orm/sqlite-core';
 import users from '../usersSchema/users';
 import expenses from './expenses';
 import inflows from './inflows';
 
 const projectsTable = sqliteTable('projects', {
-	id: int('id').primaryKey().notNull(),
+	id: text('id').primaryKey().notNull(),
 	name: text('name', { length: 255 }).notNull().unique(),
 	details: text('details', { length: 255 }).notNull(),
 	startingFunds: real('starting_funds').notNull(),

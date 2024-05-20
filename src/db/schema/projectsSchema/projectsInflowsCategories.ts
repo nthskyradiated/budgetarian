@@ -9,7 +9,7 @@ const projectsInflowsCategoriesTable = sqliteTable('projects_inflows_categories'
 	projectId: text('project_id')
 		.notNull()
 		.references(() => projects.id, { onDelete: 'cascade' }),
-	categoryId: text('inflow_category_id')
+	categoryId: int('inflow_category_id')
 		.notNull()
 		.references(() => inflowsCategories.id, { onDelete: 'cascade' })
 });

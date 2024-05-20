@@ -3,6 +3,9 @@
 		"name": "Salary"
 	},
 	{
+		"name": "Bonus"
+	},
+	{
 		"name": "Allowances"
 	},
 	{
@@ -16,5 +19,8 @@
 	},
 	{
 		"name": "Credits and Reimbursements"
+	},
+	{
+		"name": "Other"
 	}
 ]
