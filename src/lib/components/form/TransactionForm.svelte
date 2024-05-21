@@ -62,7 +62,9 @@
 
 function handleTransactionTypeChange(event: 'income' | 'expenses') {
 	console.log(event)
-	return selectedTransactionType = event;
+	selectedTransactionType = event;
+	categoriesValues = selectedTransactionType === 'income' ? INFLOWS_CATEGORIES.options : EXPENSES_CATEGORIES.options;
+	console.log('values: ', categoriesValues)
 }
 
 $: {selectedTransactionType}
