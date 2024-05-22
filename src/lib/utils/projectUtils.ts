@@ -21,7 +21,6 @@ export const insertNewExpense = async (transaction: ExpenseInsertSchema) => {
 	return await db.insert(expensesTable).values(transaction).returning();
 };
 
-
 // export const income = await db.query.inflowsTable.findMany({
 // 	where: and(
 // 		eq(inflowsTable.projectId, ID),

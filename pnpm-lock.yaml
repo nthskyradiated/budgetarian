@@ -44,6 +44,9 @@ importers:
       lucia:
         specifier: ^3.2.0
         version: 3.2.0
+      lucide-svelte:
+        specifier: ^0.379.0
+        version: 0.379.0(svelte@5.0.0-next.136)
       mode-watcher:
         specifier: ^0.3.0
         version: 0.3.0(svelte@5.0.0-next.136)
@@ -2082,6 +2085,11 @@ packages:
 
   lucia@3.2.0:
     resolution: {integrity: sha512-eXMxXwk6hqtjRTj4W/x3EnTUtAztLPm0p2N2TEBMDEbakDLXiYnDQ9z/qahjPdPdhPguQc+vwO0/88zIWxlpuw==}
+
+  lucide-svelte@0.379.0:
+    resolution: {integrity: sha512-KnlxrmVJlzFDHNA2oOAvD/g2a5zYMtUsQ7g7A3b5m5Q7prwu+tuVm0MQ6SI7NwPfFZh6bkCnQ0freBOGI/9MiA==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
@@ -4802,6 +4810,10 @@ snapshots:
   lucia@3.2.0:
     dependencies:
       oslo: 1.2.0
+
+  lucide-svelte@0.379.0(svelte@5.0.0-next.136):
+    dependencies:
+      svelte: 5.0.0-next.136
 
   magic-string@0.30.10:
     dependencies:

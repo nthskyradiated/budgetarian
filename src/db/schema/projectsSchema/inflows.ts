@@ -23,7 +23,8 @@ const inflowsTable = sqliteTable('inflows', {
 export const expensesRelations = relations(inflowsTable, ({ one }) => ({
 	project: one(projects, {
 		fields: [inflowsTable.projectId],
-		references: [projects.id]}),
+		references: [projects.id]
+	}),
 	user: one(users, {
 		fields: [inflowsTable.userId],
 		references: [users.id]

@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import { goto } from '$app/navigation';
+	import { Icons } from '@/lib/components/icons';
+
+	let isLoading = false;
 </script>
 
 <header class="my-12 mb-10 w-full text-start">
@@ -22,17 +25,40 @@
 				goto('auth/register');
 			}}>Register</Button
 		>
+		<div class="flex items-center">
+			<div class="mr-3 flex-grow border-t border-gray-500"></div>
+			<div>Or</div>
+			<div class="ml-3 flex-grow border-t border-gray-500"></div>
+		</div>
 		<Button
+			variant="outline"
 			type="button"
+			disabled={isLoading}
 			on:click={() => {
 				goto('/auth/github');
-			}}>Continue with Github</Button
+			}}
 		>
+			{#if isLoading}
+				<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
+			{:else}
+				<Icons.gitHub class="mr-2 h-4 w-4" />
+			{/if}
+			Continue with GitHub
+		</Button>
 		<Button
+			variant="outline"
 			type="button"
+			disabled={isLoading}
 			on:click={() => {
-				goto('/auth/google');
-			}}>Continue with Google</Button
+				goto('/auth/github');
+			}}
 		>
+			{#if isLoading}
+				<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
+			{:else}
+				<Icons.google class="mr-2 h-4 w-4" />
+			{/if}
+			Continue with Google
+		</Button>
 	</div>
 </main>

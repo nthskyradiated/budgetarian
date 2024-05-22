@@ -32,9 +32,8 @@
 	export let dialogTriggerBtn: string;
 	export let dialogDescription: string;
 	export let dialogSubmitBtn: string;
-	
-	const dispatch = createEventDispatcher();
 
+	const dispatch = createEventDispatcher();
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
 		resetForm: true,
@@ -54,7 +53,6 @@
 			if (alertType === 'success') {
 				dispatch('transactionAdded');
 				toast.success(alertText);
-				
 			}
 		}
 	});
@@ -89,20 +87,19 @@
 				: undefined);
 	}
 
-
-	export const getTransactionHistory = async(ID: string) => {
+	export const getTransactionHistory = async (ID: string) => {
 		try {
-					const response = await fetch(`/protected/project/${ID}/`);
-					if (response.ok) {
-						const updatedData = await response.json();
-						return updatedData.allTransactions;
-					} else {
-						console.error('Failed to fetch updated projects');
-					}
-				} catch (error) {
-					console.error('Error fetching updated projects:', error);
-				}
-	}
+			const response = await fetch(`/protected/project/${ID}/`);
+			if (response.ok) {
+				const updatedData = await response.json();
+				return updatedData.allTransactions;
+			} else {
+				console.error('Failed to fetch updated projects');
+			}
+		} catch (error) {
+			console.error('Error fetching updated projects:', error);
+		}
+	};
 </script>
 
 <!-- <SuperDebug data={$form} /> -->
@@ -181,7 +178,9 @@
 				<input type="text" name="categories" bind:value={selectedCategory} /> -->
 
 				<DropdownMenu.Root>
-					<DropdownMenu.Trigger class="text-green-500 text-sm p-2 border rounded-md">{selectedCategory || 'Select Category'}</DropdownMenu.Trigger>
+					<DropdownMenu.Trigger class="rounded-md border p-2 text-sm text-green-500"
+						>{selectedCategory || 'Select Category'}</DropdownMenu.Trigger
+					>
 					<DropdownMenu.Content>
 						<DropdownMenu.RadioGroup bind:value={$form.transactionType.categories}>
 							{#each categoriesValues as category}
