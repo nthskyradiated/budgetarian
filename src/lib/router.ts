@@ -15,8 +15,8 @@ const PAGES = {
 	'/auth/register': `/auth/register`,
 	'/auth/password-reset': `/auth/password-reset`,
 	'/protected/dashboard': `/protected/dashboard`,
-	'/protected/projects' : `/protected/projects`,
-	'/protected/project/[ID]' : `/protected/project/[ID]`
+	'/protected/projects': `/protected/projects`,
+	'/protected/project/[ID]': `/protected/project/[ID]`
 };
 
 /**

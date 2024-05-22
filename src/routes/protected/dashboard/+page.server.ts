@@ -30,7 +30,12 @@ export const load = (async (event) => {
 		);
 	}
 	await passwordResetDashboardPageActionRateLimiter.cookieLimiter?.preflight(event);
-	const recentProjects = await db.select().from(projects).where(eq(projects.userId, locals.user.id)).limit(3).orderBy(desc(projects.updatedAt));
+	const recentProjects = await db
+		.select()
+		.from(projects)
+		.where(eq(projects.userId, locals.user.id))
+		.limit(3)
+		.orderBy(desc(projects.updatedAt));
 	if (!recentProjects) {
 		throw new Error('invalid response from database');
 	}
@@ -63,7 +68,7 @@ export const actions: Actions = {
 	changePassword: async (event) => {
 		const userId = event.locals.user?.id;
 		const currentSessionId = event.locals.session?.id;
-		
+
 		if (!userId) return;
 
 		const passwordResetFormData = await superValidate<passwordResetZodSchema, AlertMessageType>(
@@ -75,9 +80,7 @@ export const actions: Actions = {
 			return message(passwordResetFormData, {
 				alertType: 'error',
 				alertText: 'There was a problem with your submission.'
-			},
-
-		);
+			});
 		}
 		try {
 			// Check if the rate limit for password reset action has been exceeded

@@ -21,7 +21,11 @@ export const load = async ({ locals }) => {
 		redirect(302, route('/auth/login'));
 	}
 
-	const allProjects = await db.select().from(projects).where(eq(projects.userId, locals.user.id)).orderBy(desc(projects.createdAt));
+	const allProjects = await db
+		.select()
+		.from(projects)
+		.where(eq(projects.userId, locals.user.id))
+		.orderBy(desc(projects.createdAt));
 	if (!allProjects) {
 		throw new Error('invalid response from database');
 	}

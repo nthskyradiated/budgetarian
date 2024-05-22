@@ -11,17 +11,22 @@ const inflowsTable = sqliteTable('inflows', {
 	projectId: text('project_id')
 		.notNull()
 		.references(() => projects.id, { onDelete: 'cascade' }),
-		userId: text('user_id')
+	userId: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
 	isRecurring: int('is_recurring', { mode: 'boolean' }).notNull().default(false),
 	createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
-	updatedAt: text('updated_at').default(sql`(CURRENT_TIMESTAMP)`),
+	updatedAt: text('updated_at').default(sql`(CURRENT_TIMESTAMP)`)
 });
 
 export const expensesRelations = relations(inflowsTable, ({ one }) => ({
-	projects: one(projects),
-	users: one(users)
+	project: one(projects, {
+		fields: [inflowsTable.projectId],
+		references: [projects.id]}),
+	user: one(users, {
+		fields: [inflowsTable.userId],
+		references: [users.id]
+	})
 }));
 
 export default inflowsTable;

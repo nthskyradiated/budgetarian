@@ -20,8 +20,14 @@ const expensesTable = sqliteTable('expenses', {
 });
 
 export const expensesRelations = relations(expensesTable, ({ one }) => ({
-	projects: one(projects),
-	users: one(users)
+	project: one(projects, {
+		fields: [expensesTable.projectId],
+		references: [projects.id]
+	}),
+	user: one(users, {
+		fields: [expensesTable.userId],
+		references: [users.id]
+	})
 }));
 
 export default expensesTable;

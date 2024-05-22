@@ -14,7 +14,11 @@ export const GET: RequestHandler = async ({ locals }) => {
 	const userId = locals.user.id;
 
 	try {
-		const allProjects = await db.select().from(projects).where(eq(projects.userId, userId)).orderBy(desc(projects.createdAt));
+		const allProjects = await db
+			.select()
+			.from(projects)
+			.where(eq(projects.userId, userId))
+			.orderBy(desc(projects.createdAt));
 		return json({ allProjects }, { status: 200 });
 	} catch (error) {
 		console.error('Error fetching projects:', error);

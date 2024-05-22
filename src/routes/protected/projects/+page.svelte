@@ -66,20 +66,31 @@
 <section class="flex flex-col gap-4">
 	<h1 class="text-2xl">Recently Updated:</h1>
 	{#if newProjects.length === 0}
-	<h1 class="mb-5 text-lg">{data.message}</h1>
-{:else}
-	{#each newProjects as project}
-		<Card class="my-2 w-96 p-6" on:click={() => mySelectionHandler(project.id)}>
-			<div class="flex flex-col gap-4">
-				<div class='flex justify-between px-4'><span class="font-bold">Project Name: </span><p class="inline pl-12">{project?.name}</p></div>
-				<div class='flex justify-between px-4'><span class="font-bold">Project Details: </span><p class="inline pl-12">{project?.details}</p></div>
-				<div class='flex justify-between px-4'><span class="font-bold">Current Balance: </span><p class="inline pl-12">{project?.totalFunds}</p></div>
-				<div class='flex justify-between px-4'><span class="font-bold">Date Created: </span><p class="inline pl-12">{project?.createdAt}</p>
+		<h1 class="mb-5 text-lg">{data.message}</h1>
+	{:else}
+		{#each newProjects as project}
+			<Card class="my-2 w-96 p-6" on:click={() => mySelectionHandler(project.id)}>
+				<div class="flex flex-col gap-4">
+					<div class="flex justify-between px-4">
+						<span class="font-bold">Project Name: </span>
+						<p class="inline pl-12">{project?.name}</p>
+					</div>
+					<div class="flex justify-between px-4">
+						<span class="font-bold">Project Details: </span>
+						<p class="inline pl-12">{project?.details}</p>
+					</div>
+					<div class="flex justify-between px-4">
+						<span class="font-bold">Current Balance: </span>
+						<p class="inline pl-12">{project?.totalFunds}</p>
+					</div>
+					<div class="flex justify-between px-4">
+						<span class="font-bold">Date Created: </span>
+						<p class="inline pl-12">{project?.createdAt}</p>
+					</div>
 				</div>
-			</div>
-		</Card>
-	{/each}
-{/if}
+			</Card>
+		{/each}
+	{/if}
 </section>
 
 <!-- <SuperDebug data={$createProjectForm} /> -->
