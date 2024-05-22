@@ -6,7 +6,8 @@
 	import { route } from '@/lib/router';
 
 	export let data: PageData;
-	const { project } = data;
+	
+	const { project, transactionHistory = [] } = data;
 </script>
 
 <main>
@@ -61,9 +62,17 @@
 			<div class="flex flex-col gap-4">
 				<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>
 				<hr class="mb-8" />
-				<div class="flex justify-between px-4">
-					<span class="font-bold">Project Details: </span>
-					<p class="inline pl-12">{project?.details}</p>
+				<div class="flex flex-col justify-between px-4 gap-2">
+					<span class="font-bold">Transaction Details: </span>
+					{#each transactionHistory as transaction}
+					<p class="inline pl-12">{transaction.name} <span class="mr-0 text-right">{transaction.createdAt}</span> </p>
+					{#if transaction.type === 'income'}
+					<p class="inline pl-12 text-green-500"><small>+ </small> {transaction.amount}</p>
+					{:else if transaction.type === 'expense'}
+					<p class="inline pl-12 text-red-500"><small>- </small> {transaction.amount}</p>
+					{/if}
+					
+					{/each}
 				</div>
 			</div>
 			<div class="m-auto mt-12 flex w-auto justify-center gap-4 text-center">
@@ -76,17 +85,6 @@
 			dialogTriggerBtn="Add New Transaction"
 			dialogSubmitBtn="add"
 		/>
-				<TransactionForm
-			formData={data.transactionFormData}
-			formAction={route('createTransaction /protected/project/[ID]')}
-			dialogTitle="Update Transaction"
-			dialogDescription="Input all the necessary information to create a new transaction."
-			dialogTriggerBtn='Update Transaction'
-			dialogSubmitBtn='update'
-		
-		/>	
-		
-				<Button variant={'destructive'}>Remove transaction</Button>
 			</div>
 		</Card>
 	</div>

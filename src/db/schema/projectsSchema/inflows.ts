@@ -8,6 +8,7 @@ const inflowsTable = sqliteTable('inflows', {
 	name: text('name', { length: 64 }).notNull(),
 	category: text('category', { length: 64 }).notNull(),
 	amount: real('amount').notNull(),
+	remarks: text('remarks', { length: 255 }),
 	projectId: text('project_id')
 		.notNull()
 		.references(() => projects.id, { onDelete: 'cascade' }),

@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const minNameLen = 1;
 export const maxNameLen = 50;
 export const maxEmailLen = 254;
+export const maxRemarksLen = 254
 export const minPwrdLen = 8;
 export const maxPwrdLen = 128;
 export const pwrdChars = '@$!%*?&';

@@ -57,7 +57,7 @@
 		}
 	});
 
-	const mySelectionHandler = (event: Number) => {
+	const mySelectionHandler = (event: String) => {
 		const ID = event;
 		goto(`/protected/project/${ID}`);
 	};

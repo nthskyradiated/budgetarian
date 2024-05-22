@@ -33,13 +33,19 @@ export const load = (async ({ locals, params }) => {
 			eq(expensesTable.projectId, ID),
 			eq(expensesTable.userId, locals.user.id))
 	})
-console.log(expenses)
-console.log(income)
 
+	const incomeWithSource = income.map(entry => ({ ...entry, type: 'income' }));
+	const expensesWithSource = expenses.map(entry => ({ ...entry, type: 'expense' }));
+	const transactions = [...incomeWithSource, ...expensesWithSource];
+	const transactionHistory = transactions.sort((a, b) => {
+		const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
+  		const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
+		return createdAtA - createdAtB;
+	  }).reverse();
 
+	  console.log(transactionHistory)
 	return {
-		expenses,
-		income,
+		transactionHistory,
 		ID,
 		project: project[0],
 		transactionFormData: await superValidate(zod(TransactionZodSchema))
@@ -64,6 +70,7 @@ export const actions: Actions = {
 			const isRecurring = transactionFormData.data.isRecurring;
 			const transactionType = transactionFormData.data.transactionType.transactionType;
 			const category = transactionFormData.data.transactionType.categories;
+			const remarks = transactionFormData.data.remarks || null
 			const id = generateIdFromEntropySize(10);
 			const currentTotalFunds = await db
 				.select({ totalFunds: projects.totalFunds })
@@ -87,7 +94,8 @@ export const actions: Actions = {
 					name,
 					amount,
 					isRecurring,
-					category
+					category,
+					remarks
 				});
 			} else if (transactionType === 'expenses') {
 				if (currentTotalFunds[0] !== undefined) {
@@ -107,7 +115,8 @@ export const actions: Actions = {
 					name,
 					amount,
 					isRecurring,
-					category
+					category,
+					remarks
 				});
 			}
 		} catch (error) {

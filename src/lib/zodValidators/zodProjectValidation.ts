@@ -47,7 +47,10 @@ export const TransactionZodSchema = z.object({
 
 	isRecurring: z.boolean().default(false),
 
-	transactionType: z.discriminatedUnion('transactionType', [income, expenses])
+	transactionType: z.discriminatedUnion('transactionType', [income, expenses]),
+	
+	remarks: z.string()
+	.max(zodVal.maxRemarksLen)
 });
 
 export type transactionZodSchema = z.infer<typeof TransactionZodSchema>;

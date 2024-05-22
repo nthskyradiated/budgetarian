@@ -21,6 +21,7 @@
 	import { Label } from '../ui/label';
 	import { Switch } from '$lib/components/ui/switch/index';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { Textarea } from '../ui/textarea';
 	// import SuperDebug from 'sveltekit-superforms';
 	// import * as Select from "$lib/components/ui/select"
 
@@ -174,6 +175,7 @@
 						</DropdownMenu.RadioGroup>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
+				<Textarea placeholder="Type your remarks here." bind:value={$form.remarks} />
 
 				<SubmitButton disabled={$delayed}>{dialogSubmitBtn}</SubmitButton>
 			</form>
