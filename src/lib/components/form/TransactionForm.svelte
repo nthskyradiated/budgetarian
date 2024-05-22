@@ -22,7 +22,7 @@
 	import { Switch } from '$lib/components/ui/switch/index';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Textarea } from '../ui/textarea';
-	import { goto } from '$app/navigation';
+	import { createEventDispatcher } from 'svelte';
 	// import SuperDebug from 'sveltekit-superforms';
 	// import * as Select from "$lib/components/ui/select"
 
@@ -32,7 +32,9 @@
 	export let dialogTriggerBtn: string;
 	export let dialogDescription: string;
 	export let dialogSubmitBtn: string;
-	export let ID: string;
+	
+	const dispatch = createEventDispatcher();
+
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
 		resetForm: true,
@@ -50,8 +52,9 @@
 			}
 
 			if (alertType === 'success') {
+				dispatch('transactionAdded');
 				toast.success(alertText);
-				// getTransactionHistory()
+				
 			}
 		}
 	});
@@ -78,12 +81,6 @@
 				: EXPENSES_CATEGORIES.options;
 		console.log('values: ', categoriesValues);
 	}
-	// function handleCategoryChange(event: CustomEvent) {
-	// 	console.log(event.target)
-	// 	const selectedOption = event.target as HTMLSelectElement;
-	//     selectedCategory = selectedOption.value;
-	//     console.log(selectedCategory);
-	// }
 
 	$: {
 		selectedTransactionType,
@@ -93,13 +90,11 @@
 	}
 
 
-	export async function getTransactionHistory(e: CustomEvent<any>) {
-		e.preventDefault
+	export const getTransactionHistory = async(ID: string) => {
 		try {
 					const response = await fetch(`/protected/project/${ID}/`);
 					if (response.ok) {
 						const updatedData = await response.json();
-						goto(`/protected/project/${ID}`)
 						return updatedData.allTransactions;
 					} else {
 						console.error('Failed to fetch updated projects');
@@ -197,7 +192,7 @@
 				</DropdownMenu.Root>
 				<Textarea placeholder="Type your remarks here." bind:value={$form.remarks} />
 
-				<SubmitButton disabled={$delayed} on:click={getTransactionHistory}>{dialogSubmitBtn}</SubmitButton>
+				<SubmitButton disabled={$delayed}>{dialogSubmitBtn}</SubmitButton>
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>

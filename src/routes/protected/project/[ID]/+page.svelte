@@ -4,12 +4,31 @@
 	import type { PageData } from './$types';
 	import TransactionForm from '$lib/components/form/TransactionForm.svelte';
 	import { route } from '@/lib/router';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	
 	const { project, transactionHistory = [] } = data;
-	let allTransactions
 	$: allTransactions = [...transactionHistory];
+
+	async function fetchTransactions() {
+        try {
+            const response = await fetch(`/protected/project/${data.ID}/`);
+            if (response.ok) {
+                const updatedData = await response.json();
+                allTransactions = updatedData.allTransactions;
+            } else {
+                console.error('Failed to fetch updated transactions');
+            }
+        } catch (error) {
+            console.error('Error fetching updated transactions:', error);
+        }
+    }
+	onMount(fetchTransactions);
+
+    const handleTransactionAdded = async () => {
+        await fetchTransactions();
+    };
 </script>
 
 <main>
@@ -48,26 +67,31 @@
 			</div>
 			<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center">
 		
-				<TransactionForm
-			formData={data.transactionFormData}
-			formAction={route('createTransaction /protected/project/[ID]')}
-			dialogTitle="Add Transaction"
-			dialogDescription="Input all the necessary information to create a new transaction."
-			dialogTriggerBtn="New Transaction"
-			dialogSubmitBtn="add"
-		/>
-		
 			</div>
 		</Card>
 		
 		<Card class="my-2 w-2/3 p-6">
 			<div class="flex flex-col gap-4">
-				<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>
+				<div class="flex flex-row justify-between items-center">
+					<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>
+					<TransactionForm
+					formData={data.transactionFormData}
+					formAction={route('createTransaction /protected/project/[ID]')}
+					dialogTitle="Add Transaction"
+					dialogDescription="Input all the necessary information to create a new transaction."
+					dialogTriggerBtn="Add New Transaction"
+					dialogSubmitBtn="add"
+					DialogID={data.ID as string}
+					on:transactionAdded={handleTransactionAdded}
+				/>
+
+
+				</div>
 				<hr class="mb-8" />
 				<div class="flex flex-col justify-between px-4 gap-2">
 					<span class="font-bold">Transaction Details: </span>
 					{#each allTransactions as transaction}
-					<p class="inline pl-12">{transaction.name} <span class="mr-0 text-right">{transaction.createdAt}</span> </p>
+					<p class="inline pl-12 font-semibold">{transaction.name} <small class="ml-8 text-right">{transaction.createdAt}</small> </p>
 					{#if transaction.type === 'income'}
 					<p class="inline pl-12 text-green-500"><small>+ </small> {transaction.amount}</p>
 					{:else if transaction.type === 'expense'}
@@ -79,14 +103,7 @@
 			</div>
 			<div class="m-auto mt-12 flex w-auto justify-center gap-4 text-center">
 		
-				<TransactionForm
-			formData={data.transactionFormData}
-			formAction={route('createTransaction /protected/project/[ID]')}
-			dialogTitle="Add Transaction"
-			dialogDescription="Input all the necessary information to create a new transaction."
-			dialogTriggerBtn="Add New Transaction"
-			dialogSubmitBtn="add"
-		/>
+
 			</div>
 		</Card>
 	</div>

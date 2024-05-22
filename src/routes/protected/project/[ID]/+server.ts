@@ -25,13 +25,12 @@ export const GET: RequestHandler = async ({ locals, params }) => {
     
         const incomeWithSource = income.map(entry => ({ ...entry, type: 'income' }));
         const expensesWithSource = expenses.map(entry => ({ ...entry, type: 'expense' }));
-        const transactions = [...incomeWithSource, ...expensesWithSource];
-        const transactionHistory = transactions.sort((a, b) => {
+        const allTransactions = [...incomeWithSource, ...expensesWithSource].sort((a, b) => {
             const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
               const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
             return createdAtA - createdAtB;
           }).reverse();
-		return json({ transactionHistory }, { status: 200 });
+		return json({ allTransactions }, { status: 200 });
 	} catch (error) {
 		console.error('Error fetching projects:', error);
 		return json({ error: 'An error occurred while fetching projects.' }, { status: 500 });
