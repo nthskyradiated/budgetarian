@@ -8,6 +8,8 @@
 	export let data: PageData;
 	
 	const { project, transactionHistory = [] } = data;
+	let allTransactions
+	$: allTransactions = [...transactionHistory];
 </script>
 
 <main>
@@ -64,7 +66,7 @@
 				<hr class="mb-8" />
 				<div class="flex flex-col justify-between px-4 gap-2">
 					<span class="font-bold">Transaction Details: </span>
-					{#each transactionHistory as transaction}
+					{#each allTransactions as transaction}
 					<p class="inline pl-12">{transaction.name} <span class="mr-0 text-right">{transaction.createdAt}</span> </p>
 					{#if transaction.type === 'income'}
 					<p class="inline pl-12 text-green-500"><small>+ </small> {transaction.amount}</p>

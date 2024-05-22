@@ -22,6 +22,7 @@
 	import { Switch } from '$lib/components/ui/switch/index';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Textarea } from '../ui/textarea';
+	import { goto } from '$app/navigation';
 	// import SuperDebug from 'sveltekit-superforms';
 	// import * as Select from "$lib/components/ui/select"
 
@@ -31,6 +32,7 @@
 	export let dialogTriggerBtn: string;
 	export let dialogDescription: string;
 	export let dialogSubmitBtn: string;
+	export let ID: string;
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
 		resetForm: true,
@@ -38,7 +40,7 @@
 		validators: zod(TransactionZodSchema),
 		dataType: 'json',
 
-		onUpdated: () => {
+		onUpdated: async () => {
 			if (!$message) return;
 
 			const { alertType, alertText } = $message;
@@ -49,6 +51,7 @@
 
 			if (alertType === 'success') {
 				toast.success(alertText);
+				// getTransactionHistory()
 			}
 		}
 	});
@@ -87,6 +90,23 @@
 			(selectedCategory = $form.transactionType.categories
 				? $form.transactionType.categories
 				: undefined);
+	}
+
+
+	export async function getTransactionHistory(e: CustomEvent<any>) {
+		e.preventDefault
+		try {
+					const response = await fetch(`/protected/project/${ID}/`);
+					if (response.ok) {
+						const updatedData = await response.json();
+						goto(`/protected/project/${ID}`)
+						return updatedData.allTransactions;
+					} else {
+						console.error('Failed to fetch updated projects');
+					}
+				} catch (error) {
+					console.error('Error fetching updated projects:', error);
+				}
 	}
 </script>
 
@@ -177,7 +197,7 @@
 				</DropdownMenu.Root>
 				<Textarea placeholder="Type your remarks here." bind:value={$form.remarks} />
 
-				<SubmitButton disabled={$delayed}>{dialogSubmitBtn}</SubmitButton>
+				<SubmitButton disabled={$delayed} on:click={getTransactionHistory}>{dialogSubmitBtn}</SubmitButton>
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>
