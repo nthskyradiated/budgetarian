@@ -74,8 +74,9 @@
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-row justify-between items-center">
 					<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>
+					{#if data.transactionFormData}
 					<TransactionForm
-					formData={data.transactionFormData}
+    				formData={data.transactionFormData}
 					formAction={route('createTransaction /protected/project/[ID]')}
 					dialogTitle="Add Transaction"
 					dialogDescription="Input all the necessary information to create a new transaction."
@@ -84,6 +85,7 @@
 					DialogID={data.ID as string}
 					on:transactionAdded={handleTransactionAdded}
 				/>
+				{/if}
 
 
 				</div>

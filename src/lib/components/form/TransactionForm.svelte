@@ -181,7 +181,7 @@
 				<input type="text" name="categories" bind:value={selectedCategory} /> -->
 
 				<DropdownMenu.Root>
-					<DropdownMenu.Trigger>{selectedCategory || 'Select Category'}</DropdownMenu.Trigger>
+					<DropdownMenu.Trigger class="text-green-500 text-sm p-2 border rounded-md">{selectedCategory || 'Select Category'}</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
 						<DropdownMenu.RadioGroup bind:value={$form.transactionType.categories}>
 							{#each categoriesValues as category}
