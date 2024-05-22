@@ -17,7 +17,7 @@
 	const emailInitial = data.user?.email.charAt(0).toUpperCase();
 	const isOnlyOauthUser = !loggedInUser.authMethods.includes('email');
 
-	const mySelectionHandler = (event: Number) => {
+	const mySelectionHandler = (event: string) => {
 		const ID = event;
 		goto(`/protected/project/${ID}`);
 	};

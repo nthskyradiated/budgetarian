@@ -50,7 +50,7 @@
 			type="button"
 			disabled={isLoading}
 			on:click={() => {
-				goto('/auth/github');
+				goto('/auth/google');
 			}}
 		>
 			{#if isLoading}

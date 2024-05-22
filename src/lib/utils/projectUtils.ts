@@ -4,7 +4,7 @@ import type { ExpenseInsertSchema } from '@/db/schema/projectsSchema/expenses';
 import type { InflowInsertSchema } from '@/db/schema/projectsSchema/inflows';
 import type { ProjectInsertSchema } from '@/db/schema/projectsSchema/projects';
 import projects from '@/db/schema/projectsSchema/projects';
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 
 export const insertNewProject = async (project: ProjectInsertSchema) => {
 	return await db.insert(projectsTable).values(project).returning();
