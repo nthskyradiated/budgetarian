@@ -9,15 +9,19 @@
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 	import { TransactionZodSchema, type transactionZodSchema } from '@/lib/zodValidators/zodProjectValidation';
-	import SuperDebug from 'sveltekit-superforms';
 	import { maxNameLen, minNameLen, EXPENSES_CATEGORIES, INFLOWS_CATEGORIES } from '@/lib/zodValidators/zodParams';
 	import { Label } from '../ui/label';
 	import { Switch } from "$lib/components/ui/switch/index"
-	import * as Select from "$lib/components/ui/select"
+	import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+	import SuperDebug from 'sveltekit-superforms';
+	// import * as Select from "$lib/components/ui/select"
+
 	export let formData: SuperValidated<transactionZodSchema>;
-	export let formAction: string;
-	export let dialogTitle : string
-	export let dialogDescription : string
+		export let formAction: string;
+		export let dialogTitle : string
+		export let dialogTriggerBtn : string
+		export let dialogDescription : string
+		export let dialogSubmitBtn : string
 
 	
 
@@ -43,15 +47,10 @@
 	});
 
 
-
-
-
-
 	let selectedTransactionType =$form.transactionType.transactionType
-	let selectedCategory: string =$form.transactionType.categories
+	let selectedCategory: string | undefined = $form.transactionType.categories
 	let categoriesValues = selectedTransactionType === 'income' ? INFLOWS_CATEGORIES.options : EXPENSES_CATEGORIES.options;
 
-	//@todo
 	$: {
     if ($form.transactionType.transactionType === 'income') {
         categoriesValues = [...INFLOWS_CATEGORIES.options];
@@ -67,15 +66,15 @@ function handleTransactionTypeChange(event: 'income' | 'expenses') {
 	categoriesValues = selectedTransactionType === 'income' ? INFLOWS_CATEGORIES.options : EXPENSES_CATEGORIES.options;
 	console.log('values: ', categoriesValues)
 }
-function handleCategoryChange(event: CustomEvent) {
-	console.log(event.target)
-	const selectedOption = event.target as HTMLSelectElement;
-    selectedCategory = selectedOption.value;
-    console.log(selectedCategory);
-}
+// function handleCategoryChange(event: CustomEvent) {
+// 	console.log(event.target)
+// 	const selectedOption = event.target as HTMLSelectElement;
+//     selectedCategory = selectedOption.value;
+//     console.log(selectedCategory);
+// }
 
 $: {selectedTransactionType,
-	selectedCategory
+	selectedCategory = $form.transactionType.categories ? $form.transactionType.categories : undefined
 }
 
 </script>
@@ -83,7 +82,7 @@ $: {selectedTransactionType,
 
 <div class="my-8 flex flex-wrap justify-between gap-4">
 	<Dialog.Root>
-		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>Add a New Transaction</Dialog.Trigger>
+		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>{dialogTriggerBtn}</Dialog.Trigger>
 		<Dialog.Content>
 			<Dialog.Header>
 				<Dialog.Title>{dialogTitle}</Dialog.Title>
@@ -125,30 +124,39 @@ $: {selectedTransactionType,
 					  <Label for="r1">inflow</Label>
 					</div>
 					<div class="flex items-center space-x-2">
-					  <RadioGroup.Item value="expense" id="r2" on:click={() => handleTransactionTypeChange('expenses')}/>
+					  <RadioGroup.Item value="expenses" id="r2" on:click={() => handleTransactionTypeChange('expenses')}/>
 					  <Label for="r2">expense</Label>
 					</div>
 					<RadioGroup.Input name="spacing" />
 				  </RadioGroup.Root>
 				
-				  <Select.Root bind:selected={selectedOption}>
+				  <!-- @Todo check back with ShadCN-svelte team -->
+
+				  <!-- <Select.Root bind:selected={selectedCategory}>
 					<Select.Trigger class="w-[180px]">
 						<Select.Value placeholder="Category" />
 					</Select.Trigger>
 					<Select.Content>
-						{#if selectedTransactionType === 'income'}
 							{#each categoriesValues as category}
 								<Select.Item value={category} on:click={() => selectedCategory = category}>{category}</Select.Item>
 							{/each}
-						{:else if selectedTransactionType === 'expenses'}
-							{#each categoriesValues as category}
-								<Select.Item value={category} on:click={() => selectedCategory = category}>{category}</Select.Item>
-							{/each}
-						{/if}
 					</Select.Content>
 				</Select.Root>
-				<input type="text" name="categories" bind:value={selectedCategory} />
-				<SubmitButton disabled={$delayed}>Add Transaction</SubmitButton>
+				<input type="text" name="categories" bind:value={selectedCategory} /> -->
+
+
+				<DropdownMenu.Root>
+				<DropdownMenu.Trigger>{selectedCategory || 'Select Category'}</DropdownMenu.Trigger>
+				<DropdownMenu.Content>
+					<DropdownMenu.RadioGroup bind:value={$form.transactionType.categories}>
+						{#each categoriesValues as category}
+						<DropdownMenu.RadioItem value={category}>{category}</DropdownMenu.RadioItem>
+						{/each}
+					</DropdownMenu.RadioGroup>
+				</DropdownMenu.Content>
+			  </DropdownMenu.Root>
+
+				<SubmitButton disabled={$delayed}>{dialogSubmitBtn}</SubmitButton>
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>

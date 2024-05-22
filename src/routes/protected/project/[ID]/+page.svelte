@@ -23,15 +23,27 @@
 		</div>
 	</div>
 	<div class="flex gap-12 justify-center text-center mt-12 w-auto m-auto">
-		<Button variant={'outline'}>Add transaction</Button>
-		<Button variant={'outline'}>Update transaction</Button>
+
+		<!-- <TransactionForm
+	formData={data.transactionFormData}
+	formAction={route('createTransaction /protected/project/[ID]')}
+	dialogTitle="Update Transaction"
+	dialogDescription="Input all the necessary information to create a new transaction."
+	dialogTriggerBtn='Update Transaction'
+	dialogSubmitBtn='update'
+
+/>	 -->
+
 		<Button variant={'destructive'}>Remove transaction</Button>
 	</div>
 </Card>
 
 <TransactionForm
-	formData={data.transactionFormData}
-	formAction={route('createTransaction /protected/project/[ID]')}
-	dialogTitle="Add Transaction"
-	dialogDescription="Input all the necessary information to create a new transaction."
-/>
+formData={data.transactionFormData}
+formAction={route('createTransaction /protected/project/[ID]')}
+dialogTitle="Add Transaction"
+dialogDescription="Input all the necessary information to create a new transaction."
+dialogTriggerBtn='Add New Transaction'
+dialogSubmitBtn='add'
+
+/>	
