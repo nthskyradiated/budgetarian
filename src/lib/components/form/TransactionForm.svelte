@@ -48,6 +48,7 @@
 
 
 	let selectedTransactionType =$form.transactionType.transactionType
+	let selectedCategory: string =$form.transactionType.categories
 	let categoriesValues = selectedTransactionType === 'income' ? INFLOWS_CATEGORIES.options : EXPENSES_CATEGORIES.options;
 
 	//@todo
@@ -66,8 +67,17 @@ function handleTransactionTypeChange(event: 'income' | 'expenses') {
 	categoriesValues = selectedTransactionType === 'income' ? INFLOWS_CATEGORIES.options : EXPENSES_CATEGORIES.options;
 	console.log('values: ', categoriesValues)
 }
+function handleCategoryChange(event: CustomEvent) {
+	console.log(event.target)
+	const selectedOption = event.target as HTMLSelectElement;
+    selectedCategory = selectedOption.value;
+    console.log(selectedCategory);
+}
 
-$: {selectedTransactionType}
+$: {selectedTransactionType,
+	selectedCategory
+}
+
 </script>
 <SuperDebug data={$form} />
 
@@ -121,23 +131,23 @@ $: {selectedTransactionType}
 					<RadioGroup.Input name="spacing" />
 				  </RadioGroup.Root>
 				
-				  <Select.Root>
+				  <Select.Root bind:selected={selectedOption}>
 					<Select.Trigger class="w-[180px]">
 						<Select.Value placeholder="Category" />
 					</Select.Trigger>
 					<Select.Content>
 						{#if selectedTransactionType === 'income'}
 							{#each categoriesValues as category}
-								<Select.Item value={category}>{category}</Select.Item>
+								<Select.Item value={category} on:click={() => selectedCategory = category}>{category}</Select.Item>
 							{/each}
 						{:else if selectedTransactionType === 'expenses'}
 							{#each categoriesValues as category}
-								<Select.Item value={category}>{category}</Select.Item>
+								<Select.Item value={category} on:click={() => selectedCategory = category}>{category}</Select.Item>
 							{/each}
 						{/if}
 					</Select.Content>
-					<input hidden bind:value={$form.transactionType.categories} name="categories"/>
 				</Select.Root>
+				<input type="text" name="categories" bind:value={selectedCategory} />
 				<SubmitButton disabled={$delayed}>Add Transaction</SubmitButton>
 			</form>
 		</Dialog.Content>
