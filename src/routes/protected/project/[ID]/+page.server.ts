@@ -6,7 +6,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import { TransactionZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
-import { insertNewExpense, insertNewInflow } from '@/lib/utils/projectUtils';
+import { insertNewExpense, insertNewInflow, validateCategory } from '@/lib/utils/projectUtils';
 import { generateIdFromEntropySize } from 'lucia';
 import { inflowsTable, expensesTable } from '@/db/schema/index';
 
@@ -41,7 +41,7 @@ export const load = (async ({ locals, params }) => {
 		})
 		.reverse();
 
-	console.log(transactionHistory);
+	// console.log(transactionHistory);
 	return {
 		transactionHistory,
 		ID,
@@ -69,6 +69,17 @@ export const actions: Actions = {
 			const transactionType = transactionFormData.data.transactionType.transactionType;
 			const category = transactionFormData.data.transactionType.categories;
 			const remarks = transactionFormData.data.remarks || null;
+
+			// Validate the category
+			const isCategoryValid = await validateCategory(category, transactionType);
+
+			if (!isCategoryValid) {
+				return message(transactionFormData, {
+					alertType: 'error',
+					alertText: 'Invalid category.'
+				});
+			
+			}
 			const id = generateIdFromEntropySize(10);
 			const currentTotalFunds = await db
 				.select({ totalFunds: projects.totalFunds })

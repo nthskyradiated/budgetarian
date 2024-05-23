@@ -1,5 +1,5 @@
 import db from '@/db';
-import { expensesTable, inflowsTable, projectsTable } from '@/db/schema';
+import { expensesTable, inflowsTable, projectsTable, inflowsCategoriesTable, expensesCategoriesTable } from '@/db/schema';
 import type { ExpenseInsertSchema } from '@/db/schema/projectsSchema/expenses';
 import type { InflowInsertSchema } from '@/db/schema/projectsSchema/inflows';
 import type { ProjectInsertSchema } from '@/db/schema/projectsSchema/projects';
@@ -21,6 +21,19 @@ export const insertNewExpense = async (transaction: ExpenseInsertSchema) => {
 	return await db.insert(expensesTable).values(transaction).returning();
 };
 
+
+export const validateCategory = async (category: string, type: 'income' | 'expenses') => {
+	const table = type === 'income' ? inflowsCategoriesTable : expensesCategoriesTable;
+	const categoryExists = await db
+		.select()
+		.from(table)
+		.where(eq(table.name, category))
+		.limit(1);
+	if (categoryExists) {
+		console.log('this function ran', JSON.stringify(categoryExists));
+	}
+	return categoryExists !== undefined;
+}
 // export const income = await db.query.inflowsTable.findMany({
 // 	where: and(
 // 		eq(inflowsTable.projectId, ID),

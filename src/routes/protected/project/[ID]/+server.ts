@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ locals, params }) => {
 			)
 		});
 		const project = await db
-			.select({ field: projectsTable.totalFunds })
+			.select({ field1: projectsTable.totalFunds, field2: projectsTable.updatedAt })
 			.from(projects)
 			.where(eq(projects.id, ID as string));
 		// Fetch total funds for the project

@@ -11,6 +11,7 @@
 	const { project, transactionHistory = [] } = data;
 	$: allTransactions = [...transactionHistory];
 	$: totalFunds = project?.totalFunds;
+	$: updatedAt = project?.updatedAt;
 
 	async function fetchTransactions() {
 		try {
@@ -18,7 +19,8 @@
 			if (response.ok) {
 				const updatedData = await response.json();
 				allTransactions = updatedData.allTransactions;
-				totalFunds = updatedData.project[0].field;
+				totalFunds = updatedData.project[0].field1;
+				updatedAt = updatedData.project[0].field2;
 			} else {
 				console.error('Failed to fetch updated transactions');
 			}
@@ -59,7 +61,7 @@
 				</div>
 				<div class="flex justify-between px-4">
 					<span class="font-bold">Updated At: </span>
-					<p class="inline pl-12">{project?.updatedAt}</p>
+					<p class="inline pl-12">{updatedAt}</p>
 				</div>
 				<div class="flex justify-between px-4">
 					<span class="font-bold">Date Created: </span>
