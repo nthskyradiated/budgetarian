@@ -15,7 +15,7 @@ export const getAllProjects = async (id: string) => {
 };
 
 export const deleteProject = async (id: string) => {
-	return await db.delete(projects).where(eq(projects.id, id));
+	return await db.delete(projects).where(eq(projects.id, id))
 }
 
 export const insertNewInflow = async (transaction: InflowInsertSchema) => {
@@ -24,6 +24,12 @@ export const insertNewInflow = async (transaction: InflowInsertSchema) => {
 export const insertNewExpense = async (transaction: ExpenseInsertSchema) => {
 	return await db.insert(expensesTable).values(transaction).returning();
 };
+export const deleteInflow = async (id: string) => {
+	return await db.delete(inflowsTable).where(eq(inflowsTable.id, id));
+}
+export const deleteExpense = async (id: string) => {
+	return await db.delete(expensesTable).where(eq(expensesTable.id, id));
+}
 
 
 

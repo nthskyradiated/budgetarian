@@ -22,7 +22,7 @@
 		"db:check": "drizzle-kit check:sqlite"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.44.0",
+		"@playwright/test": "^1.44.1",
 		"@prgm/sveltekit-progress-bar": "^2.0.0",
 		"@sveltejs/adapter-auto": "^3.2.1",
 		"@sveltejs/kit": "^2.5.10",

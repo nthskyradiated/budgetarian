@@ -74,7 +74,6 @@
 		} else {
 			toast.error('Failed to delete project');
 		}
-		return newProjects.length === 0 ? newProjects.length : newProjects;
 	}
 </script>
 
