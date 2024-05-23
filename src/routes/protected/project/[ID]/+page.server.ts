@@ -71,12 +71,12 @@ export const actions: Actions = {
 			const remarks = transactionFormData.data.remarks || null;
 
 			// Validate the category
-			const isCategoryValid = await validateCategory(category, transactionType);
+			const categoryId = await validateCategory(category, transactionType);
 
-			if (!isCategoryValid) {
+			if (!categoryId) {
 				return message(transactionFormData, {
 					alertType: 'error',
-					alertText: 'Invalid category.'
+					alertText: 'Invalid category'
 				});
 			
 			}
@@ -103,7 +103,7 @@ export const actions: Actions = {
 					name,
 					amount,
 					isRecurring,
-					category,
+					category: categoryId,
 					remarks
 				});
 			} else if (transactionType === 'expenses') {
@@ -124,7 +124,7 @@ export const actions: Actions = {
 					name,
 					amount,
 					isRecurring,
-					category,
+					category: categoryId,
 					remarks
 				});
 			}

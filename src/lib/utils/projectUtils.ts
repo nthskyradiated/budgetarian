@@ -24,16 +24,33 @@ export const insertNewExpense = async (transaction: ExpenseInsertSchema) => {
 
 export const validateCategory = async (category: string, type: 'income' | 'expenses') => {
 	const table = type === 'income' ? inflowsCategoriesTable : expensesCategoriesTable;
-	const categoryExists = await db
+
+	console.log(type, category);
+	console.log('table....', table);
+	const result = await db
 		.select()
 		.from(table)
 		.where(eq(table.name, category))
-		.limit(1);
-	if (categoryExists) {
-		console.log('this function ran', JSON.stringify(categoryExists));
-	}
-	return categoryExists !== undefined;
+		console.log('result', result);
+		if (result.length > 0) {
+			console.log('this function ran', result);
+			return result[0]?.id
+		}
+		return null;
+	
 }
+
+// export const getCategoryIdByName = async (categoryName: string): Promise<number | null> => {
+//     const category = await db.select()
+//         .from(inflowsCategoriesTable)
+//         .where(inflowsCategoriesTable.name.eq(categoryName))
+//         .limit(1)
+
+//     return category.length ? category[0].id : null;
+// }
+
+
+
 // export const income = await db.query.inflowsTable.findMany({
 // 	where: and(
 // 		eq(inflowsTable.projectId, ID),
