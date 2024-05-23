@@ -25,16 +25,6 @@ export const GET: RequestHandler = async ({ locals, params }) => {
 			.select({ field1: projectsTable.totalFunds, field2: projectsTable.updatedAt })
 			.from(projects)
 			.where(eq(projects.id, ID as string));
-		// Fetch total funds for the project
-		// const project = await db.query.projectsTable.findFirst({
-		//     where: eq(projectsTable.id, ID as string),
-		//     with: {
-		//         totalFunds: true
-		//     }
-		// })
-		// if (!project) {
-		//     return json({ error: 'Project not found' }, { status: 404 });
-		// }
 
 		const incomeWithSource = income.map((entry) => ({ ...entry, type: 'income' }));
 		const expensesWithSource = expenses.map((entry) => ({ ...entry, type: 'expense' }));
@@ -51,3 +41,24 @@ export const GET: RequestHandler = async ({ locals, params }) => {
 		return json({ error: 'An error occurred while fetching projects.' }, { status: 500 });
 	}
 };
+
+export const DELETE: RequestHandler = async ({ locals, params }) => {
+	if (!locals.user) {
+		redirect(302, '/auth/login');
+	}
+	const {ID} = params
+	if (ID) {
+		try {
+			const deleteProject = await db
+				.delete(projects)
+				.where(eq(projects.id, ID))
+			return json({ deleteProject }, { status: 200 })
+	
+		} catch (error) {
+			console.error('Error deleting project:', error);
+			return json({ error: 'An error occurred while deleting the project.' }, { status: 500 });
+	}
+
+	}
+		return json({ message: 'No project ID provided' }, { status: 400 });
+}

@@ -32,7 +32,7 @@ export const load = async ({ locals }) => {
 	if (allProjects.length === 0) {
 		return {
 			projects: [],
-			message: 'No projects found. Please create a new project.',
+			message: 'No project found. Please create a new project.',
 			createProjectFormData: await superValidate(zod(CreateProjectZodSchema))
 		};
 	}
@@ -96,6 +96,60 @@ export const actions: Actions = {
 		return message(createProjectFormData, {
 			alertType: 'success',
 			alertText: 'New Project Added.'
+		});
+	},
+	deleteProject: async ({ locals, request }) => {
+		const userId = locals.user?.id;
+		const currentSessionId = locals.session?.id;
+		if (!userId || !currentSessionId) return;
+
+		const createProjectFormData = await superValidate<createProjectZodSchema, AlertMessageType>(
+			request,
+			zod(CreateProjectZodSchema)
+		);
+
+		if (createProjectFormData.valid === false) {
+			return message(createProjectFormData, {
+				alertType: 'error',
+				alertText: 'There was a problem with your submission.'
+			});
+		}
+		console.log('value:', createProjectFormData.data);
+
+		const allUserSessions = await lucia.getUserSessions(userId);
+
+		try {
+			for (const session of allUserSessions) {
+				if (session.id === currentSessionId) continue;
+
+				await lucia.invalidateSession(session.id);
+			}
+			const projectId = generateIdFromEntropySize(10);
+			await insertNewProject({
+				id: projectId,
+				name: createProjectFormData.data.name,
+				details: createProjectFormData.data.details,
+				startingFunds: createProjectFormData.data.startingFunds,
+				totalFunds: createProjectFormData.data.startingFunds,
+				userId
+			});
+		} catch (error) {
+			console.error('Error in createProject action:', error);
+			return message(
+				createProjectFormData,
+				{
+					alertType: 'error',
+					alertText: 'There was a problem with your submission.'
+				},
+				{
+					status: 500
+				}
+			);
+		}
+
+		return message(createProjectFormData, {
+			alertType: 'success',
+			alertText: 'Project Deleted Successfully.'
 		});
 	}
 };

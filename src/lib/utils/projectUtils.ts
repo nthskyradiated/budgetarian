@@ -14,12 +14,18 @@ export const getAllProjects = async (id: string) => {
 	return await db.select().from(projects).where(eq(projects.userId, id));
 };
 
+export const deleteProject = async (id: string) => {
+	return await db.delete(projects).where(eq(projects.id, id));
+}
+
 export const insertNewInflow = async (transaction: InflowInsertSchema) => {
 	return await db.insert(inflowsTable).values(transaction).returning();
 };
 export const insertNewExpense = async (transaction: ExpenseInsertSchema) => {
 	return await db.insert(expensesTable).values(transaction).returning();
 };
+
+
 
 
 export const validateCategory = async (category: string, type: 'income' | 'expenses') => {

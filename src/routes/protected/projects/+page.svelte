@@ -6,13 +6,14 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import InputField from '@/lib/components/form/InputField.svelte';
-	import { buttonVariants } from '@/lib/components/ui/button';
+	import { Button, buttonVariants } from '@/lib/components/ui/button';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
 	// import SuperDebug from 'sveltekit-superforms';
 	import { goto } from '$app/navigation';
 	import Card from '@/lib/components/ui/card/card.svelte';
+	import DeleteProject from '@/lib/components/DeleteProject.svelte';
 	export let data: PageData;
 
 	const { allProjects = [] } = data;
@@ -61,15 +62,30 @@
 		const ID = event;
 		goto(`/protected/project/${ID}`);
 	};
+
+	const handleDeleteProject = async (ID: string) => {
+    const response = await fetch(`/protected/project/${ID}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+		toast.success('Deleted project successfully');
+		 newProjects = newProjects.filter(project => project.id !== ID);
+		} else {
+			toast.error('Failed to delete project');
+		}
+		return newProjects.length === 0 ? newProjects.length : newProjects;
+	}
 </script>
 
 <section class="flex flex-col gap-4">
 	<h1 class="text-2xl">Recently Updated:</h1>
 	{#if newProjects.length === 0}
-		<h1 class="mb-5 text-lg">{data.message}</h1>
-	{:else}
+		<h1 class="mb-5 text-lg">{data.message ? data.message : 'No project found. Please create a new project.'}</h1>
+	{/if}
 		{#each newProjects as project}
-			<Card class="my-2 w-96 p-6" on:click={() => mySelectionHandler(project.id)}>
+			<Card class="my-2 w-96 p-6">
+				<DeleteProject projectId={project?.id} on:confirmDelete={()=> handleDeleteProject(project.id)} />
 				<div class="flex flex-col gap-4">
 					<div class="flex justify-between px-4">
 						<span class="font-bold">Project Name: </span>
@@ -87,10 +103,10 @@
 						<span class="font-bold">Date Created: </span>
 						<p class="inline pl-12">{project?.createdAt}</p>
 					</div>
+					<Button variant={'outline'} on:click={() => mySelectionHandler(project.id)}>Go to Project</Button>
 				</div>
 			</Card>
 		{/each}
-	{/if}
 </section>
 
 <!-- <SuperDebug data={$createProjectForm} /> -->
