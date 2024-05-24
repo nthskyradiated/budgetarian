@@ -1,10 +1,10 @@
 <script lang="ts">
 import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
+  import {page} from "$app/stores";
 	import { createEventDispatcher } from "svelte";
 
   export let projectId;
-
   const dispatch = createEventDispatcher();
 
 const confirmDelete = () => {
@@ -16,7 +16,11 @@ const confirmDelete = () => {
 
 <AlertDialog.Root>
     <AlertDialog.Trigger asChild let:builder>
+      {#if $page.url.pathname === '/protected/projects'}
       <Button builders={[builder]} variant="destructive" size="icon" class="rounded-full">x</Button>
+      {:else}
+      <Button builders={[builder]} variant="destructive">Delete Project</Button>
+      {/if}
     </AlertDialog.Trigger>
     <AlertDialog.Content>
       <AlertDialog.Header>

@@ -5,8 +5,12 @@
 	import TransactionForm from '$lib/components/form/TransactionForm.svelte';
 	import { route } from '@/lib/router';
 	import { onMount } from 'svelte';
+	import DeleteProject from '@/lib/components/DeleteProject.svelte';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
+	const {ID} = data
 
 	const { project, transactionHistory = [] } = data;
 	$: allTransactions = [...transactionHistory];
@@ -33,6 +37,19 @@
 	const handleTransactionAdded = async () => {
 		await fetchTransactions();
 	};
+	
+	const handleDeleteProject = async (ID: string | undefined) => {
+    const response = await fetch(`/protected/project/${ID}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+		goto('/protected/projects');
+		toast.success('Deleted project successfully');
+		} else {
+			toast.error('Failed to delete project');
+		}
+	}
 </script>
 
 <main>
@@ -43,7 +60,7 @@
 					<h1 class="mb-2 text-4xl font-bold">{project?.name}</h1>
 					<div class="flex flex-col gap-1">
 						<Button variant={'outline'}>Update Project</Button>
-						<Button variant={'destructive'}>Delete Project</Button>
+						<DeleteProject projectId={ID} on:confirmDelete={()=> handleDeleteProject(ID)} />
 					</div>
 				</div>
 				<hr class="mb-8" />
