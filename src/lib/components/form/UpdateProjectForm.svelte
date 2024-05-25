@@ -7,8 +7,8 @@ import * as Dialog from '$lib/components/ui/dialog';
     import { zod } from 'sveltekit-superforms/adapters';
     // import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms/client';
-    import { ProjectZodSchemaWithId, type projectZodSchemaWithId } from '@/lib/zodValidators/zodProjectValidation';
-    export let updateProjectFormData: SuperValidated<projectZodSchemaWithId>;
+    import { ProjectZodSchema, type projectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+    export let updateProjectFormData: SuperValidated<projectZodSchema>;
 	export let updateProjectFormAction: string;
     export let dialogName: string;
     export let dialogTitle: string;
@@ -23,7 +23,7 @@ import * as Dialog from '$lib/components/ui/dialog';
 	} = superForm(updateProjectFormData, {
 		resetForm: true,
 		taintedMessage: null,
-		validators: zod(ProjectZodSchemaWithId),
+		validators: zod(ProjectZodSchema),
 		id: "updateProjectForm"
 
 	});
@@ -81,7 +81,7 @@ import * as Dialog from '$lib/components/ui/dialog';
 				/>
 
 
-				<SubmitButton disabled={$updateProjectDelayed}>Create A New Project</SubmitButton>
+				<SubmitButton disabled={$updateProjectDelayed}>Update Project</SubmitButton>
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>
