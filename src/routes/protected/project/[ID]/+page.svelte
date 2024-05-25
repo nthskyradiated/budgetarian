@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Card from '@/lib/components/ui/card/card.svelte';
-	import Button from '@/lib/components/ui/button/button.svelte';
 	import type { PageData } from './$types';
 	import TransactionForm from '$lib/components/form/TransactionForm.svelte';
 	import { route } from '@/lib/router';
@@ -8,23 +7,62 @@
 	import DeleteProject from '@/lib/components/DeleteProject.svelte';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
+	import UpdateProjectForm from '@/lib/components/form/UpdateProjectForm.svelte';
+	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data: PageData;
-	const {ID} = data
 
-	const { project, transactionHistory = [] } = data;
+	const { project, transactionHistory = [], updateProjectFormData, ID } = data;
 	$: allTransactions = [...transactionHistory];
-	$: totalFunds = project?.totalFunds;
-	$: updatedAt = project?.updatedAt;
+	// $: totalFunds = project?.totalFunds;
+	// $: updatedAt = project?.updatedAt;
+	$: currProject = project
+
+	const { message: updateProjectFormMessage } = superForm(updateProjectFormData!, {
+		onUpdated: async () => {
+			if (!$updateProjectFormMessage) return;
+
+			const { alertType, alertText } = $updateProjectFormMessage;
+
+			if (alertType === 'error') {
+				toast.error(alertText);
+			}
+
+			if (alertType === 'success') {
+				toast.success(alertText);
+				try {
+					const response = await fetch(`/protected/project/${data.ID}`);
+					if (response.ok) {
+						const updatedData = await response.json();
+						if (currProject) {
+							currProject.name = updatedData.project[0].name
+							currProject.details = updatedData.project[0].details
+							currProject.startingFunds = updatedData.project[0].startingFunds
+							currProject.totalFunds = updatedData.project[0].totalFunds
+						}
+					} else {
+						console.error('Failed to fetch updated projects');
+					}
+				} catch (error) {
+					console.error('Error fetching updated projects:', error);
+				}
+
+				// goto('/protected/projects');
+			}
+		}
+	},
+	);
 
 	async function fetchTransactions() {
 		try {
 			const response = await fetch(`/protected/project/${data.ID}/`);
 			if (response.ok) {
 				const updatedData = await response.json();
-				allTransactions = updatedData.allTransactions;
-				totalFunds = updatedData.project[0].field1;
-				updatedAt = updatedData.project[0].field2;
+				if (currProject) {
+					allTransactions = updatedData.allTransactions;
+					currProject.totalFunds = updatedData.project[0].totalFunds;
+					currProject.updatedAt = updatedData.project[0].updatedAt;
+				}
 			} else {
 				console.error('Failed to fetch updated transactions');
 			}
@@ -57,28 +95,36 @@
 		<Card class="my-2 w-1/3 p-6" on:transactionAdded={handleTransactionAdded}>
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-row items-center justify-between">
-					<h1 class="mb-2 text-4xl font-bold">{project?.name}</h1>
+					<h1 class="mb-2 text-4xl font-bold">{currProject?.name}</h1>
 					<div class="flex flex-col gap-1">
-						<Button variant={'outline'}>Update Project</Button>
+						<UpdateProjectForm 
+						dialogName="Update Project"
+						dialogDescription="Input all the necessary information to update a project."
+						dialogTitle="Update project?"
+						updateProjectFormData={updateProjectFormData!}
+						updateProjectFormAction={route("updateProject /protected/projects")}
+						projectId={ID as string}
+						updateFundsPlaceHolder={project?.totalFunds!}
+						/>
 						<DeleteProject projectId={ID} on:confirmDelete={()=> handleDeleteProject(ID)} />
 					</div>
 				</div>
 				<hr class="mb-8" />
 				<div class="flex justify-between px-4">
 					<span class="font-bold">Project Details: </span>
-					<p class="inline pl-12">{project?.details}</p>
+					<p class="inline pl-12">{currProject?.details}</p>
 				</div>
 				<div class="flex justify-between px-4">
 					<span class="font-bold">Starting Balance: </span>
-					<p class="inline pl-12">{project?.startingFunds}</p>
+					<p class="inline pl-12">{currProject?.startingFunds}</p>
 				</div>
 				<div class="flex justify-between px-4">
 					<span class="font-bold">Current Balance: </span>
-					<p class="inline pl-12">{totalFunds}</p>
+					<p class="inline pl-12">{currProject?.totalFunds}</p>
 				</div>
 				<div class="flex justify-between px-4">
 					<span class="font-bold">Updated At: </span>
-					<p class="inline pl-12">{updatedAt}</p>
+					<p class="inline pl-12">{currProject?.updatedAt}</p>
 				</div>
 				<div class="flex justify-between px-4">
 					<span class="font-bold">Date Created: </span>

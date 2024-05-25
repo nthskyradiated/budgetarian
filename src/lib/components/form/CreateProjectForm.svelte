@@ -5,7 +5,6 @@ import * as Dialog from '$lib/components/ui/dialog';
 	import { buttonVariants } from '../ui/button';
 	import SubmitButton from './SubmitButton.svelte';
     import { zod } from 'sveltekit-superforms/adapters';
-    // import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms/client';
     import { ProjectZodSchema, type projectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
     export let createProjectFormData: SuperValidated<projectZodSchema>;
@@ -27,6 +26,8 @@ import * as Dialog from '$lib/components/ui/dialog';
 		id: "createProjectForm"
 
 	});
+
+
 </script>
 
 
@@ -73,15 +74,6 @@ import * as Dialog from '$lib/components/ui/dialog';
 					bind:value={$createProjectForm.startingFunds}
 					errorMessage={$createProjectErrors.startingFunds}
 				/>
-<!-- 
-					<InputField
-					type="hidden"
-					name={formName}
-					id={formId}
-					{projectID}
-					bind:value={id}
-					/> -->
-					<!-- {/if} -->
 
 				<SubmitButton disabled={$createProjectDelayed}>Create A New Project</SubmitButton>
 			</form>

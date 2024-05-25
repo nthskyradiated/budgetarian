@@ -7,13 +7,15 @@ import * as Dialog from '$lib/components/ui/dialog';
     import { zod } from 'sveltekit-superforms/adapters';
     // import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms/client';
-    import { ProjectZodSchema, type projectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
-    export let updateProjectFormData: SuperValidated<projectZodSchema>;
+    import { UpdateProjectZodSchema, type updateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+    export let updateProjectFormData: SuperValidated<updateProjectZodSchema>;
 	export let updateProjectFormAction: string;
     export let dialogName: string;
     export let dialogTitle: string;
     export let dialogDescription: string;
     export let projectId: string
+    export let updateFundsPlaceHolder: number
+	let additionalClasses = 'w-full transform -translate-y-10';
 	const {
 		enhance: updateProjectFormEnhance,
 		form: updateProjectForm,
@@ -23,7 +25,7 @@ import * as Dialog from '$lib/components/ui/dialog';
 	} = superForm(updateProjectFormData, {
 		resetForm: true,
 		taintedMessage: null,
-		validators: zod(ProjectZodSchema),
+		validators: zod(UpdateProjectZodSchema),
 		id: "updateProjectForm"
 
 	});
@@ -32,7 +34,7 @@ import * as Dialog from '$lib/components/ui/dialog';
 
 <div class="my-8 flex flex-wrap justify-between gap-4">
 	<Dialog.Root>
-		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>{dialogName}</Dialog.Trigger>
+		<Dialog.Trigger class={`${buttonVariants({ variant: 'outline' })} ${additionalClasses}`}>{dialogName}</Dialog.Trigger>
 		<Dialog.Content>
 			<Dialog.Header>
 				<Dialog.Title>{dialogTitle}</Dialog.Title>
@@ -70,6 +72,7 @@ import * as Dialog from '$lib/components/ui/dialog';
 					name="startingFunds"
 					label="Initial Amount"
 					step="0.01"
+					placeholder={updateFundsPlaceHolder.toString()}
 					bind:value={$updateProjectForm.startingFunds}
 					errorMessage={$updateProjectErrors.startingFunds}
 				/>
@@ -79,7 +82,6 @@ import * as Dialog from '$lib/components/ui/dialog';
 				name="id"
 				bind:value={projectId}
 				/>
-
 
 				<SubmitButton disabled={$updateProjectDelayed}>Update Project</SubmitButton>
 			</form>

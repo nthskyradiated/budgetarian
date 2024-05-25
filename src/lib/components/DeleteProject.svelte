@@ -17,7 +17,7 @@ const confirmDelete = () => {
 <AlertDialog.Root>
     <AlertDialog.Trigger asChild let:builder>
       {#if $page.url.pathname === '/protected/projects'}
-      <Button builders={[builder]} variant="destructive" size="icon" class="rounded-full">x</Button>
+      <Button builders={[builder]} variant="destructive" size="sm" class="rounded-full absolute right-4 top-4">X</Button>
       {:else}
       <Button builders={[builder]} variant="destructive">Delete Project</Button>
       {/if}

@@ -38,6 +38,11 @@ export const ProjectZodSchema = z.object({
 
 export type projectZodSchema = z.infer<typeof ProjectZodSchema>;
 
+export const UpdateProjectZodSchema = ProjectZodSchema.extend({
+	startingFunds: ProjectZodSchema.shape.startingFunds.optional()
+});
+
+export type updateProjectZodSchema = z.infer<typeof UpdateProjectZodSchema>;
 
 export const TransactionZodSchema = z.object({
 	name: z

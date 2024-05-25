@@ -11,7 +11,7 @@ declare global {
 		interface Locals {
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
-			projects: import('@/db/schema/projectsSchema/projects').Projects | null;
+			projects: import('@/db/schema/projectsSchema/projects').Projects;
 		}
 		interface PageData {
 			pageMetaTags?: MetaTagsProps;

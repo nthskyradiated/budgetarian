@@ -59,9 +59,8 @@ export type Project = {
 	id: number;
 	name: string;
 	details: string;
-	totalFunds: string | number;
+	totalFunds: number | undefined;
 	createdAt: string | null;
 	updatedAt: string | null;
 	userId: string;
 };
-export type ProjectArr = Project[] | undefined;

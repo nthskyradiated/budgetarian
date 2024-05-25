@@ -3,12 +3,14 @@ import type { Actions, PageServerLoad } from './$types';
 import projects from '@/db/schema/projectsSchema/projects';
 import db from '@/db';
 import { and, eq, sql } from 'drizzle-orm';
-import { TransactionZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+import { UpdateProjectZodSchema, TransactionZodSchema, type updateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
-import { insertNewExpense, insertNewInflow, validateCategory } from '@/lib/utils/projectUtils';
+import { getProjectById, insertNewExpense, insertNewInflow, updateProject, validateCategory } from '@/lib/utils/projectUtils';
 import { generateIdFromEntropySize } from 'lucia';
 import { inflowsTable, expensesTable } from '@/db/schema/index';
+import { lucia } from '@/lib/server/luciaUtils';
+import type { AlertMessageType } from '@/lib/types';
 
 export const load = (async ({ locals, params }) => {
 	if (!locals.user) {
@@ -46,7 +48,8 @@ export const load = (async ({ locals, params }) => {
 		transactionHistory,
 		ID,
 		project: project[0],
-		transactionFormData: await superValidate(zod(TransactionZodSchema))
+		transactionFormData: await superValidate(zod(TransactionZodSchema)),
+		updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema))
 	};
 }) satisfies PageServerLoad;
 
@@ -139,6 +142,101 @@ export const actions: Actions = {
 		return message(transactionFormData, {
 			alertType: 'success',
 			alertText: 'Transaction added successfully'
+		});
+	},
+
+	updateProject: async ({ locals, request }) => {
+		const userId = locals.user?.id;
+		const currentSessionId = locals.session?.id;
+		if (!userId || !currentSessionId) return;
+
+		const updateProjectFormData = await superValidate<updateProjectZodSchema, AlertMessageType>(
+			request,
+			zod(UpdateProjectZodSchema),
+			{id: "updateProjectForm"}
+		);
+
+		if (updateProjectFormData.valid === false) {
+			return message(updateProjectFormData, {
+				alertType: 'error',
+				alertText: 'There was a problem with your submission.'
+			});
+		}
+
+		const allUserSessions = await lucia.getUserSessions(userId);
+
+		try {
+			for (const session of allUserSessions) {
+				if (session.id === currentSessionId) continue;
+
+				await lucia.invalidateSession(session.id);
+			}
+			const project = await getProjectById(updateProjectFormData.data.id as string);
+			// console.log('project', project);
+			// console.log('updateProjectFormData', updateProjectFormData.data.id);
+			if (!project) {
+				return message(
+					updateProjectFormData,
+					{
+						alertType: 'error',
+						alertText: 'There was a problem with your submission.'
+					},
+					{
+						status: 500
+					}
+				)
+			}
+			if (project.userId !== locals.user?.id) {
+				return message(
+					updateProjectFormData,
+					{
+						alertType: 'error',
+						alertText: 'You do not have permission to edit this project.'
+					},
+					{
+						status: 403
+					}
+				)
+				
+			}
+			const {name, details, startingFunds, id} = updateProjectFormData.data;
+			console.log('before update', updateProjectFormData.data);
+			startingFunds! === undefined ? project.startingFunds : startingFunds;
+			const updateData = {
+				id,
+				name,
+				details,
+				startingFunds: startingFunds ?? project.startingFunds,
+				totalFunds: startingFunds ?? project.startingFunds,
+				userId: locals.user.id
+			  };
+			if (name !== undefined) updateData.name = name;
+			if (details !== undefined) updateData.details = details;
+			if (startingFunds !== undefined) {
+			  updateData.startingFunds = startingFunds;
+      		  updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds
+      }
+	  	console.log('updateData', updateData);
+	  	await updateProject(updateData, id);
+
+
+		} catch (error) {
+			console.error('Error in createProject action:', error);
+			return message(
+				updateProjectFormData,
+				{
+					alertType: 'error',
+					alertText: 'There was a problem with your submission.'
+				},
+				{
+					status: 500
+				}
+			);
+		}
+
+		return message(updateProjectFormData, {
+			alertType: 'success',
+			alertText: 'Project Updated Successfully.'
 		});
 	}
 };
