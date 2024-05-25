@@ -1,35 +1,23 @@
 <script lang="ts">
-	import { route } from '@/lib/router';
-	import type { PageData } from './$types';
-	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
-	import { toast } from 'svelte-sonner';
 	import { superForm } from 'sveltekit-superforms/client';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import InputField from '@/lib/components/form/InputField.svelte';
-	import { Button, buttonVariants } from '@/lib/components/ui/button';
-	import { zod } from 'sveltekit-superforms/adapters';
-	import { CreateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
-	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
-	// import SuperDebug from 'sveltekit-superforms';
+
+	// import { zod } from 'sveltekit-superforms/adapters';
+	// import { ProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+	import { route } from '@/lib/router';
+	import { toast } from 'svelte-sonner';
+	import { Button } from '@/lib/components/ui/button';
 	import { goto } from '$app/navigation';
 	import Card from '@/lib/components/ui/card/card.svelte';
 	import DeleteProject from '@/lib/components/DeleteProject.svelte';
-	export let data: PageData;
+	import CreateProjectForm from '@/lib/components/form/CreateProjectForm.svelte';
+	import UpdateProjectForm from '@/lib/components/form/UpdateProjectForm.svelte';
 
-	const { allProjects = [] } = data;
-	let newProjects = [...allProjects];
+	const { data } = $props();
+	const {allProjects = [], createProjectFormData, updateProjectFormData} = data
 
-	const {
-		enhance: createProjectEnhance,
-		form: createProjectForm,
-		errors: createProjectErrors,
-		message,
-		delayed: createProjectDelayed
-	} = superForm(data.createProjectFormData, {
-		resetForm: true,
-		taintedMessage: null,
-		validators: zod(CreateProjectZodSchema),
+	let newProjects = $state([...allProjects]);
 
+	const { message } = superForm(createProjectFormData, {
 		onUpdated: async () => {
 			if (!$message) return;
 
@@ -56,7 +44,8 @@
 				goto('/protected/projects');
 			}
 		}
-	});
+	},
+	);
 
 	const mySelectionHandler = (event: string) => {
 		const ID = event;
@@ -76,7 +65,6 @@
 		}
 	}
 </script>
-
 <section class="flex flex-col gap-4">
 	<h1 class="text-2xl">Recently Updated:</h1>
 	{#if newProjects.length === 0}
@@ -102,14 +90,36 @@
 						<span class="font-bold">Date Created: </span>
 						<p class="inline pl-12">{project?.createdAt}</p>
 					</div>
+					<div class="flex justify-between px-4">
+						<span class="font-bold">Project Id: </span>
+						<p class="inline pl-12">{project?.id}</p>
+					</div>
 					<Button variant={'outline'} on:click={() => mySelectionHandler(project.id)}>Go to Project</Button>
 				</div>
+				<UpdateProjectForm 
+					dialogName="Update Project"
+					dialogDescription="Input all the necessary information to update a project."
+					dialogTitle="Update project?"
+					updateProjectFormData={updateProjectFormData}
+					updateProjectFormAction={route("updateProject /protected/projects")}
+					projectId={project?.id}
+					/>
 			</Card>
 		{/each}
 </section>
 
+<CreateProjectForm 
+	dialogName="Create Project"
+	dialogDescription="Input all the necessary information to create a new project."
+	dialogTitle="Create a new project?"
+	createProjectFormData={createProjectFormData}
+	createProjectFormAction={route("createProject /protected/projects")}
+/>
+
+
+
 <!-- <SuperDebug data={$createProjectForm} /> -->
-<div class="my-8 flex flex-wrap justify-between gap-4">
+<!-- <div class="my-8 flex flex-wrap justify-between gap-4">
 	<Dialog.Root>
 		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>Create Project</Dialog.Trigger>
 		<Dialog.Content>
@@ -157,4 +167,4 @@
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>
-</div>
+</div> -->

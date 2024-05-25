@@ -22,7 +22,8 @@ export const TransactionTypeRadioZodSchema = z.object({
 	transactionType: z.enum(['income', 'expenses'])
 });
 
-export const CreateProjectZodSchema = z.object({
+export const ProjectZodSchema = z.object({
+	id: z.string(),
 	name: z
 		.string()
 		.min(zodVal.minNameLen, zodVal.NAME_MIN_ERROR_MESSAGE)
@@ -35,7 +36,8 @@ export const CreateProjectZodSchema = z.object({
 	startingFunds: z.coerce.number().positive()
 });
 
-export type createProjectZodSchema = z.infer<typeof CreateProjectZodSchema>;
+export type projectZodSchema = z.infer<typeof ProjectZodSchema>;
+
 
 export const TransactionZodSchema = z.object({
 	name: z

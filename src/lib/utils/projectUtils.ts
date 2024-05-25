@@ -14,6 +14,13 @@ export const getAllProjects = async (id: string) => {
 	return await db.select().from(projects).where(eq(projects.userId, id));
 };
 
+export const getProjectById = async (id: string) => {
+	return await db.query.projectsTable.findFirst({ where: eq(projects.id, id) })
+}
+
+export const updateProject = async (project: ProjectInsertSchema, id: string) => {
+	return await db.update(projectsTable).set(project).where(eq(projects.id, id))
+}
 export const deleteProject = async (id: string) => {
 	return await db.delete(projects).where(eq(projects.id, id))
 }

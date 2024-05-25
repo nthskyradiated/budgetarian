@@ -39,6 +39,8 @@ const ACTIONS = {
 	'sendPasswordResetEmail /auth/login': `?/sendPasswordResetEmail`,
 	'register /auth/register': `?/register`,
 	'createProject /protected/projects': `?/createProject`,
+	'updateProject /protected/projects': `?/updateProject`,
+	'deleteProject /protected/projects': `?/deleteProject`,
 	'createTransaction /protected/project/[ID]': `?/createTransaction`,
 	'deleteTransaction /protected/project/[ID]': `?/deleteTransaction`,
 	'updateTransaction /protected/project/[ID]': `?/updateTransaction`,
@@ -158,6 +160,8 @@ export type KIT_ROUTES = {
 		'changePassword /dashboard': never;
 		'deleteAllUsers /dashboard': never;
 		'createProject protected/projects': never;
+		'updateProject protected/projects': never;
+		'deleteProject protected/projects': never;
 		'createTransaction protected/project/[ID]': never;
 		'deleteTransaction protected/project/[ID]': never;
 		'updateTransaction protected/project/[ID]': never;
