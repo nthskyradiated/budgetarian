@@ -9,7 +9,7 @@
 	import { goto } from '$app/navigation';
 	import UpdateProjectForm from '@/lib/components/form/UpdateProjectForm.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
-	import SuperDebug from 'sveltekit-superforms';
+	// import SuperDebug from 'sveltekit-superforms';
 	import DeleteTransaction from '@/lib/components/DeleteTransaction.svelte';
 
 	export let data: PageData;
@@ -20,7 +20,7 @@
 	// $: updatedAt = project?.updatedAt;
 	$: currProject = project;
 
-	const { message: updateProjectFormMessage, form: updateProjectForm } = superForm(
+	const { message: updateProjectFormMessage } = superForm(
 		updateProjectFormData!,
 		{
 			onUpdated: async () => {
@@ -50,8 +50,6 @@
 					} catch (error) {
 						console.error('Error fetching updated projects:', error);
 					}
-
-					// goto('/protected/projects');
 				}
 			}
 		}
@@ -107,14 +105,14 @@
 	};
 </script>
 
-<SuperDebug data={$updateProjectForm} />
-<main>
-	<div class="flex flex-row gap-2">
-		<Card class="my-2 w-1/3 p-6" on:transactionAdded={handleTransactionAdded}>
+<!-- <SuperDebug data={$updateProjectForm} /> -->
+<main class="w-full">
+	<div class="flex lg:flex-row gap-2 my-12 sm:mx-auto mx-0 flex-col-reverse w-full">
+		<Card class="my-2 lg:w-1/3 p-6 w-full h-max" on:transactionAdded={handleTransactionAdded}>
 			<div class="flex flex-col gap-4">
-				<div class="flex flex-row items-center justify-between">
-					<h1 class="mb-2 text-4xl font-bold">{currProject?.name}</h1>
-					<div class="flex flex-col gap-1">
+				<div class="flex sm:flex-row flex-col items-center sm:justify-between justify-evenly gap-12 ">
+					<h1 class="text-4xl font-bold text-center">{currProject?.name}</h1>
+					<div class="flex flex-col justify-evenly items-center">
 						<UpdateProjectForm
 							dialogName="Update Project"
 							dialogDescription="Input all the necessary information to update a project."
@@ -130,33 +128,33 @@
 					</div>
 				</div>
 				<hr class="mb-8" />
-				<div class="flex justify-between px-4">
-					<span class="font-bold">Project Details: </span>
-					<p class="inline pl-12">{currProject?.details}</p>
+				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
+					<span class="font-bold text-lg">Project Details: </span>
+					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.details}</p>
 				</div>
-				<div class="flex justify-between px-4">
-					<span class="font-bold">Starting Balance: </span>
-					<p class="inline pl-12">{currProject?.startingFunds}</p>
+				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
+					<span class="font-bold text-lg">Starting Balance: </span>
+					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.startingFunds}</p>
 				</div>
-				<div class="flex justify-between px-4">
-					<span class="font-bold">Current Balance: </span>
-					<p class="inline pl-12">{currProject?.totalFunds}</p>
+				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
+					<span class="font-bold text-lg">Current Balance: </span>
+					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.totalFunds}</p>
 				</div>
-				<div class="flex justify-between px-4">
-					<span class="font-bold">Updated At: </span>
-					<p class="inline pl-12">{currProject?.updatedAt}</p>
+				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
+					<span class="font-bold text-lg">Updated At: </span>
+					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.updatedAt}</p>
 				</div>
-				<div class="flex justify-between px-4">
-					<span class="font-bold">Date Created: </span>
-					<p class="inline pl-12">{project?.createdAt}</p>
+				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
+					<span class="font-bold text-lg">Date Created: </span>
+					<p class="inline sm:pl-12 mt-2 sm:mt-0">{project?.createdAt}</p>
 				</div>
 			</div>
 			<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center"></div>
 		</Card>
 
-		<Card class="my-2 w-2/3 p-6">
+		<Card class="my-2 lg:w-2/3 p-6 w-full">
 			<div class="flex flex-col gap-4">
-				<div class="flex flex-row items-center justify-between">
+				<div class="flex sm:flex-row flex-col items-center justify-between">
 					<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>
 					{#if data.transactionFormData}
 						<TransactionForm

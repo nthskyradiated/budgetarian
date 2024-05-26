@@ -34,7 +34,7 @@
 	});
 </script>
 
-<div class="my-8 flex flex-wrap justify-between gap-4">
+<div class="mt-8 flex flex-wrap justify-evenly gap-4">
 	<Dialog.Root>
 		<Dialog.Trigger class={`${buttonVariants({ variant: 'outline' })} ${additionalClasses}`}
 			>{dialogName}</Dialog.Trigger

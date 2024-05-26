@@ -32,6 +32,7 @@
 	export let dialogTriggerBtn: string;
 	export let dialogDescription: string;
 	export let dialogSubmitBtn: string;
+	export let onOpen: boolean
 
 	const dispatch = createEventDispatcher();
 
@@ -104,8 +105,8 @@
 
 <!-- <SuperDebug data={$form} /> -->
 
-<div class="my-8 flex flex-wrap justify-between gap-4">
-	<Dialog.Root open={false}>
+<div class="mt-4 flex flex-wrap justify-between gap-4">
+	<Dialog.Root bind:open={onOpen}>
 		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
 			>{dialogTriggerBtn}</Dialog.Trigger
 		>

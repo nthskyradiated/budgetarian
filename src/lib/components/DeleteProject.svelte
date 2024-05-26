@@ -19,10 +19,10 @@
 				builders={[builder]}
 				variant="destructive"
 				size="sm"
-				class="absolute right-4 top-4 rounded-full">X</Button
+				class="absolute right-4 top-4 rounded-full">x</Button
 			>
 		{:else}
-			<Button builders={[builder]} variant="destructive">Delete Project</Button>
+			<Button builders={[builder]} variant="destructive" class="-mt-8 px-5">Delete Project</Button>
 		{/if}
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>

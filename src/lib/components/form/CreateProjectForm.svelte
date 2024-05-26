@@ -15,6 +15,9 @@
 	export let dialogName: string;
 	export let dialogTitle: string;
 	export let dialogDescription: string;
+	export let onOpen: boolean
+	$: isOpen = onOpen
+	
 
 	const {
 		enhance: createProjectFormEnhance,
@@ -25,12 +28,15 @@
 		resetForm: true,
 		taintedMessage: null,
 		validators: zod(ProjectZodSchema),
-		id: 'createProjectForm'
+		id: 'createProjectForm',
+		// onUpdate: () => {
+		// 	isOpen = false
+		// }
 	});
 </script>
 
 <div class="my-8 flex flex-wrap justify-between gap-4">
-	<Dialog.Root>
+	<Dialog.Root bind:open={isOpen}>
 		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>{dialogName}</Dialog.Trigger>
 		<Dialog.Content>
 			<Dialog.Header>
