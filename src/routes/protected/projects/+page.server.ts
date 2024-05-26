@@ -6,7 +6,7 @@ import { eq, desc } from 'drizzle-orm';
 import projects from '@/db/schema/projectsSchema/projects';
 import {
 	ProjectZodSchema,
-	type projectZodSchema,
+	type projectZodSchema
 } from '@/lib/zodValidators/zodProjectValidation.js';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
@@ -34,14 +34,14 @@ export const load = async ({ locals }) => {
 			projects: [],
 			message: 'No project found. Please create a new project.',
 			createProjectFormData: await superValidate(zod(ProjectZodSchema)),
-			updateProjectFormData: await superValidate(zod(ProjectZodSchema), {id: "updateProjectForm"})
+			updateProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'updateProjectForm' })
 		};
 	}
 
 	return {
 		allProjects,
 		createProjectFormData: await superValidate(zod(ProjectZodSchema)),
-		updateProjectFormData: await superValidate(zod(ProjectZodSchema), {id: "updateProjectForm"})
+		updateProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'updateProjectForm' })
 	};
 };
 
@@ -54,7 +54,7 @@ export const actions: Actions = {
 		const createProjectFormData = await superValidate<projectZodSchema, AlertMessageType>(
 			request,
 			zod(ProjectZodSchema),
-			{id: "createProjectForm"}
+			{ id: 'createProjectForm' }
 		);
 
 		if (createProjectFormData.valid === false) {
@@ -109,7 +109,7 @@ export const actions: Actions = {
 		const updateProjectFormData = await superValidate<projectZodSchema, AlertMessageType>(
 			request,
 			zod(ProjectZodSchema),
-			{id: "updateProjectForm"}
+			{ id: 'updateProjectForm' }
 		);
 
 		if (updateProjectFormData.valid === false) {
@@ -141,7 +141,7 @@ export const actions: Actions = {
 					{
 						status: 500
 					}
-				)
+				);
 			}
 			if (project.userId !== locals.user?.id) {
 				return message(
@@ -153,21 +153,25 @@ export const actions: Actions = {
 					{
 						status: 403
 					}
-				)
-				
+				);
 			}
-			const {name, details, startingFunds, id} = updateProjectFormData.data;
-			const updateData = {id, name, details, startingFunds, totalFunds: startingFunds, userId: locals.user.id};
+			const { name, details, startingFunds, id } = updateProjectFormData.data;
+			const updateData = {
+				id,
+				name,
+				details,
+				startingFunds,
+				totalFunds: startingFunds,
+				userId: locals.user.id
+			};
 			if (name !== undefined) updateData.name = name;
 			if (details !== undefined) updateData.details = details;
 			if (startingFunds !== undefined) {
-			  updateData.startingFunds = startingFunds;
-      		  updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds
-      }
+				updateData.startingFunds = startingFunds;
+				updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds
+			}
 
-	  	await updateProject(updateData, id);
-
-
+			await updateProject(updateData, id);
 		} catch (error) {
 			console.error('Error in createProject action:', error);
 			return message(

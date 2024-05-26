@@ -1,35 +1,33 @@
 <script lang="ts">
-import * as Dialog from '$lib/components/ui/dialog';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import { maxNameLen, minNameLen } from '@/lib/zodValidators/zodParams';
 	import InputField from './InputField.svelte';
 	import { buttonVariants } from '../ui/button';
 	import SubmitButton from './SubmitButton.svelte';
-    import { zod } from 'sveltekit-superforms/adapters';
+	import { zod } from 'sveltekit-superforms/adapters';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms/client';
-    import { ProjectZodSchema, type projectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
-    export let createProjectFormData: SuperValidated<projectZodSchema>;
+	import {
+		ProjectZodSchema,
+		type projectZodSchema
+	} from '@/lib/zodValidators/zodProjectValidation';
+	export let createProjectFormData: SuperValidated<projectZodSchema>;
 	export let createProjectFormAction: string;
-    export let dialogName: string;
-    export let dialogTitle: string;
-    export let dialogDescription: string;
-    
+	export let dialogName: string;
+	export let dialogTitle: string;
+	export let dialogDescription: string;
+
 	const {
 		enhance: createProjectFormEnhance,
 		form: createProjectForm,
 		errors: createProjectErrors,
-		delayed: createProjectDelayed,
-
+		delayed: createProjectDelayed
 	} = superForm(createProjectFormData, {
 		resetForm: true,
 		taintedMessage: null,
 		validators: zod(ProjectZodSchema),
-		id: "createProjectForm"
-
+		id: 'createProjectForm'
 	});
-
-
 </script>
-
 
 <div class="my-8 flex flex-wrap justify-between gap-4">
 	<Dialog.Root>

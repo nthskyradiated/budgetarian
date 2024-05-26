@@ -11,7 +11,7 @@ export default inflowsCategoriesTable;
 
 export const inflowsCategoriesRelations = relations(inflowsCategoriesTable, ({ many }) => ({
 	inflows: many(inflows)
-  }));
+}));
 
 export type InflowsCategories = InferSelectModel<typeof inflowsCategoriesTable>;
 export type InflowsCategoriesInsertSchema = typeof inflowsCategoriesTable.$inferInsert;

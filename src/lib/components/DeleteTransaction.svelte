@@ -1,41 +1,35 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
 
-	export let projectId;
+	export let transactionId;
 	const dispatch = createEventDispatcher();
 
-	const confirmDelete = () => {
-		dispatch('confirmDelete', projectId);
+	const confirmDeleteTransaction = () => {
+		dispatch('confirmDeleteTransaction', transactionId);
 	};
 </script>
 
 <AlertDialog.Root>
 	<AlertDialog.Trigger asChild let:builder>
-		{#if $page.url.pathname === '/protected/projects'}
-			<Button
-				builders={[builder]}
-				variant="destructive"
-				size="sm"
-				class="absolute right-4 top-4 rounded-full">X</Button
-			>
-		{:else}
-			<Button builders={[builder]} variant="destructive">Delete Project</Button>
-		{/if}
+		<Button
+			size="sm"
+			builders={[builder]}
+			variant="ghost"
+			class="absolute -left-8 -top-3 rounded-full text-red-600">x</Button
+		>
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you sure?</AlertDialog.Title>
 			<AlertDialog.Description>
-				This action cannot be undone. This will permanently delete your project and remove your data
-				from our servers.
+				This action cannot be undone. This will permanently delete the transaction.
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={confirmDelete}>Continue</AlertDialog.Action>
+			<AlertDialog.Action on:click={confirmDeleteTransaction}>Continue</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

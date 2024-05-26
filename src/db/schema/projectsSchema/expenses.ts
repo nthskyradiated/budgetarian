@@ -8,8 +8,8 @@ const expensesTable = sqliteTable('expenses', {
 	id: text('id').primaryKey().notNull(),
 	name: text('name', { length: 64 }).notNull(),
 	category: int('category_id')
-    .notNull()
-    .references(() => expensesCategories.id, { onDelete: 'restrict' }),
+		.notNull()
+		.references(() => expensesCategories.id, { onDelete: 'restrict' }),
 	amount: real('amount').notNull(),
 	remarks: text('remarks', { length: 255 }),
 	projectId: text('project_id')

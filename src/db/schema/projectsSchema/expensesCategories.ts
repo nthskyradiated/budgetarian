@@ -11,7 +11,7 @@ export default expensesCategoriesTable;
 
 export const expensesCategoriesRelations = relations(expensesCategoriesTable, ({ many }) => ({
 	expenses: many(expenses)
-  }));
+}));
 
 export type ExpensesCategories = InferSelectModel<typeof expensesCategoriesTable>;
 export type ExpensesCategoresInsertSchema = typeof expensesCategoriesTable.$inferInsert;

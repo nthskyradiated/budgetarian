@@ -23,7 +23,7 @@ export const EXPENSES_CATEGORIES = z.enum([
 	'Utilities',
 	'Food',
 	'Groceries',
-	'Health Expenses', 
+	'Health Expenses',
 	'Loan Payments',
 	'Emergency Expenses',
 	'Transport Expenses',

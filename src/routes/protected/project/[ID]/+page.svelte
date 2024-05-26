@@ -10,6 +10,7 @@
 	import UpdateProjectForm from '@/lib/components/form/UpdateProjectForm.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms';
+	import DeleteTransaction from '@/lib/components/DeleteTransaction.svelte';
 
 	export let data: PageData;
 
@@ -17,41 +18,43 @@
 	$: allTransactions = [...transactionHistory];
 	// $: totalFunds = project?.totalFunds;
 	// $: updatedAt = project?.updatedAt;
-	$: currProject = project
+	$: currProject = project;
 
-	const { message: updateProjectFormMessage, form: updateProjectForm } = superForm(updateProjectFormData!, {
-		onUpdated: async () => {
-			if (!$updateProjectFormMessage) return;
+	const { message: updateProjectFormMessage, form: updateProjectForm } = superForm(
+		updateProjectFormData!,
+		{
+			onUpdated: async () => {
+				if (!$updateProjectFormMessage) return;
 
-			const { alertType, alertText } = $updateProjectFormMessage;
+				const { alertType, alertText } = $updateProjectFormMessage;
 
-			if (alertType === 'error') {
-				toast.error(alertText);
-			}
-
-			if (alertType === 'success') {
-				toast.success(alertText);
-				try {
-					const response = await fetch(`/protected/project/${data.ID}`);
-					if (response.ok) {
-						const updatedData = await response.json();
-						if (currProject) {
-							currProject.name = updatedData.project[0].name
-							currProject.details = updatedData.project[0].details
-							currProject.startingFunds = updatedData.project[0].startingFunds
-							currProject.totalFunds = updatedData.project[0].totalFunds
-						}
-					} else {
-						console.error('Failed to fetch updated projects');
-					}
-				} catch (error) {
-					console.error('Error fetching updated projects:', error);
+				if (alertType === 'error') {
+					toast.error(alertText);
 				}
 
-				// goto('/protected/projects');
+				if (alertType === 'success') {
+					toast.success(alertText);
+					try {
+						const response = await fetch(`/protected/project/${data.ID}`);
+						if (response.ok) {
+							const updatedData = await response.json();
+							if (currProject) {
+								currProject.name = updatedData.project[0].name;
+								currProject.details = updatedData.project[0].details;
+								currProject.startingFunds = updatedData.project[0].startingFunds;
+								currProject.totalFunds = updatedData.project[0].totalFunds;
+							}
+						} else {
+							console.error('Failed to fetch updated projects');
+						}
+					} catch (error) {
+						console.error('Error fetching updated projects:', error);
+					}
+
+					// goto('/protected/projects');
+				}
 			}
 		}
-	},
 	);
 
 	async function fetchTransactions() {
@@ -65,7 +68,7 @@
 					currProject.updatedAt = updatedData.project[0].updatedAt;
 				}
 			} else {
-				console.error('Failed to fetch updated transactions');
+				toast.error('Failed to fetch updated transactions');
 			}
 		} catch (error) {
 			console.error('Error fetching updated transactions:', error);
@@ -76,20 +79,34 @@
 	const handleTransactionAdded = async () => {
 		await fetchTransactions();
 	};
-	
-	const handleDeleteProject = async (ID: string | undefined) => {
-    const response = await fetch(`/protected/project/${ID}`, {
-      method: 'DELETE',
-    });
 
-    if (response.ok) {
-		goto('/protected/projects');
-		toast.success('Deleted project successfully');
+	const handleDeleteProject = async (ID: string | undefined) => {
+		const response = await fetch(`/protected/project/${ID}`, {
+			method: 'DELETE'
+		});
+
+		if (response.ok) {
+			goto('/protected/projects');
+			toast.success('Deleted project successfully');
 		} else {
 			toast.error('Failed to delete project');
 		}
-	}
+	};
+	const handleDeleteTransaction = async (transactionID: string, ID: string | undefined) => {
+		const response = await fetch(`/protected/transactions/${transactionID}`, {
+			method: 'DELETE'
+		});
+
+		if (response.ok) {
+			goto(`/protected/project/${ID}`);
+			await fetchTransactions();
+			toast.success('Deleted transaction successfully');
+		} else {
+			toast.error('Failed to delete transaction');
+		}
+	};
 </script>
+
 <SuperDebug data={$updateProjectForm} />
 <main>
 	<div class="flex flex-row gap-2">
@@ -98,19 +115,18 @@
 				<div class="flex flex-row items-center justify-between">
 					<h1 class="mb-2 text-4xl font-bold">{currProject?.name}</h1>
 					<div class="flex flex-col gap-1">
-						<UpdateProjectForm 
-						dialogName="Update Project"
-						dialogDescription="Input all the necessary information to update a project."
-						dialogTitle="Update project?"
-						updateProjectFormData={updateProjectFormData!}
-						updateProjectFormAction={route("updateProject /protected/projects")}
-						projectId={ID as string}
-						updateFundsPlaceHolder={project?.totalFunds!}
-						nameDefaultVal={project?.name!}
-						detailsDefaultVal={project?.details!}
-						
+						<UpdateProjectForm
+							dialogName="Update Project"
+							dialogDescription="Input all the necessary information to update a project."
+							dialogTitle="Update project?"
+							updateProjectFormData={updateProjectFormData!}
+							updateProjectFormAction={route('updateProject /protected/projects')}
+							projectId={ID as string}
+							updateFundsPlaceHolder={project?.totalFunds!}
+							nameDefaultVal={project?.name!}
+							detailsDefaultVal={project?.details!}
 						/>
-						<DeleteProject projectId={ID} on:confirmDelete={()=> handleDeleteProject(ID)} />
+						<DeleteProject projectId={ID} on:confirmDelete={() => handleDeleteProject(ID)} />
 					</div>
 				</div>
 				<hr class="mb-8" />
@@ -157,16 +173,21 @@
 				</div>
 				<hr class="mb-8" />
 				<div class="flex flex-col justify-between gap-2 px-4">
-					<span class="font-bold">Transaction Details: </span>
+					<h3 class="mb-6 text-2xl font-bold">Transaction Details:</h3>
 					{#each allTransactions as transaction}
-						<p class="inline pl-12 font-semibold">
-							{transaction.name} <small class="ml-8 text-right">{transaction.createdAt}</small>
-						</p>
+						<span class=" relative inline-flex gap-8 pl-4 font-semibold">
+							<DeleteTransaction
+								transactionId={transaction.id}
+								on:confirmDeleteTransaction={() => handleDeleteTransaction(transaction.id, ID)}
+							/>
+							{transaction.name} <small class="text-right">{transaction.createdAt}</small>
+						</span>
 						{#if transaction.type === 'income'}
-							<p class="inline pl-12 text-green-500"><small>+ </small> {transaction.amount}</p>
+							<p class="mb-2 inline pl-4 text-green-500"><small>+ </small> {transaction.amount}</p>
 						{:else if transaction.type === 'expense'}
-							<p class="inline pl-12 text-red-500"><small>- </small> {transaction.amount}</p>
+							<p class="mb-2 inline pl-4 text-red-500"><small>- </small> {transaction.amount}</p>
 						{/if}
+						<hr class="mb-8 border-dotted border-gray-500" />
 					{/each}
 				</div>
 			</div>

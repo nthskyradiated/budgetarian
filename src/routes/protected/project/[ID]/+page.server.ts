@@ -3,15 +3,24 @@ import type { Actions, PageServerLoad } from './$types';
 import projects from '@/db/schema/projectsSchema/projects';
 import db from '@/db';
 import { and, eq, sql } from 'drizzle-orm';
-import { UpdateProjectZodSchema, TransactionZodSchema, type updateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+import {
+	UpdateProjectZodSchema,
+	TransactionZodSchema,
+	type updateProjectZodSchema
+} from '@/lib/zodValidators/zodProjectValidation';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
-import { getProjectById, insertNewExpense, insertNewInflow, updateProject, validateCategory } from '@/lib/utils/projectUtils';
+import {
+	getProjectById,
+	insertNewExpense,
+	insertNewInflow,
+	updateProject,
+	validateCategory
+} from '@/lib/utils/projectUtils';
 import { generateIdFromEntropySize } from 'lucia';
 import { inflowsTable, expensesTable } from '@/db/schema/index';
 import { lucia } from '@/lib/server/luciaUtils';
 import type { AlertMessageType } from '@/lib/types';
-
 
 export const load = (async ({ locals, params }) => {
 	if (!locals.user) {
@@ -82,7 +91,6 @@ export const actions: Actions = {
 					alertType: 'error',
 					alertText: 'Invalid category'
 				});
-			
 			}
 			const id = generateIdFromEntropySize(10);
 			const currentTotalFunds = await db
@@ -154,12 +162,11 @@ export const actions: Actions = {
 		const updateProjectFormData = await superValidate<updateProjectZodSchema, AlertMessageType>(
 			request,
 			zod(UpdateProjectZodSchema),
-			{id: "updateProjectForm", strict: false},
-			
+			{ id: 'updateProjectForm', strict: false }
 		);
-		
+
 		console.log('value:', updateProjectFormData.data);
-		
+
 		if (updateProjectFormData.valid === false) {
 			console.log(updateProjectFormData.data);
 			return message(updateProjectFormData, {
@@ -189,7 +196,7 @@ export const actions: Actions = {
 					{
 						status: 500
 					}
-				)
+				);
 			}
 			if (project.userId !== locals.user?.id) {
 				return message(
@@ -201,30 +208,28 @@ export const actions: Actions = {
 					{
 						status: 403
 					}
-				)
-				
+				);
 			}
-			const {name, details, startingFunds, id} = updateProjectFormData.data;
+			const { name, details, startingFunds, id } = updateProjectFormData.data;
 
 			const updateData = {
 				id,
-				name: !name || name === undefined || name === "" ? project.name : name,
-				details: !details || details === undefined || details === "" ? project.details : details,
-				startingFunds: !startingFunds || startingFunds === undefined  ? project.startingFunds: startingFunds,
+				name: !name || name === undefined || name === '' ? project.name : name,
+				details: !details || details === undefined || details === '' ? project.details : details,
+				startingFunds:
+					!startingFunds || startingFunds === undefined ? project.startingFunds : startingFunds,
 				totalFunds: project.totalFunds,
 				userId: locals.user.id
-			  };
+			};
 
-			  //@TODO do we reset totalfunds to startingfunds here?
+			//@TODO do we reset totalfunds to startingfunds here?
 
 			if (startingFunds !== undefined) {
-			  updateData.startingFunds = startingFunds;
-      		  updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds
-      }
-	  	console.log('updateData', updateData);
-	  	await updateProject(updateData, id);
-
-
+				updateData.startingFunds = startingFunds;
+				updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds
+			}
+			console.log('updateData', updateData);
+			await updateProject(updateData, id);
 		} catch (error) {
 			console.error('Error in createProject action:', error);
 			return message(

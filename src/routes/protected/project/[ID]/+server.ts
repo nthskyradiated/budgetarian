@@ -46,19 +46,15 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
 	if (!locals.user) {
 		redirect(302, '/auth/login');
 	}
-	const {ID} = params
+	const { ID } = params;
 	if (ID) {
 		try {
-			const deleteProject = await db
-				.delete(projects)
-				.where(eq(projects.id, ID))
-			return json({ deleteProject }, { status: 200 })
-	
+			const deleteProject = await db.delete(projects).where(eq(projects.id, ID));
+			return json({ deleteProject }, { status: 200 });
 		} catch (error) {
 			console.error('Error deleting project:', error);
 			return json({ error: 'An error occurred while deleting the project.' }, { status: 500 });
+		}
 	}
-
-	}
-		return json({ message: 'No project ID provided' }, { status: 400 });
-}
+	return json({ message: 'No project ID provided' }, { status: 400 });
+};

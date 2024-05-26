@@ -19,16 +19,16 @@ export const GET: RequestHandler = async ({ locals }) => {
 			.from(projects)
 			.where(eq(projects.userId, userId))
 			.orderBy(desc(projects.createdAt));
-			if (!allProjects) {
-				return json({error: 'invalid response from database'}, {status: 500});
-			}
-
-			if (allProjects.length === 0) {
-			return json({ message: 'No projects found. Please create a new project.' }, { status: 200 });
-			}
-			return json({ allProjects }, { status: 200 });
-		} catch (error) {
-			console.error('Error fetching projects:', error);
-			return json({ error: 'An error occurred while fetching projects.' }, { status: 500 });
+		if (!allProjects) {
+			return json({ error: 'invalid response from database' }, { status: 500 });
 		}
+
+		if (allProjects.length === 0) {
+			return json({ message: 'No projects found. Please create a new project.' }, { status: 200 });
+		}
+		return json({ allProjects }, { status: 200 });
+	} catch (error) {
+		console.error('Error fetching projects:', error);
+		return json({ error: 'An error occurred while fetching projects.' }, { status: 500 });
+	}
 };

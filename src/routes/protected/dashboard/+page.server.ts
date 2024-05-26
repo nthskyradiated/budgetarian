@@ -152,6 +152,5 @@ export const actions: Actions = {
 			alertType: 'success',
 			alertText: 'Your password has been reset successfully.'
 		});
-	},
-	
+	}
 };
