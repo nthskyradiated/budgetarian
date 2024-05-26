@@ -2,7 +2,7 @@ import type { RequestHandler } from '@sveltejs/kit';
 import db from '@/db'; // Adjust the import to match your project's structure
 import { and, eq } from 'drizzle-orm';
 import { json, redirect } from '@sveltejs/kit';
-import { expensesTable, inflowsTable, projectsTable } from '@/db/schema';
+import { expensesTable, inflowsTable } from '@/db/schema';
 import projects from '@/db/schema/projectsSchema/projects';
 
 export const GET: RequestHandler = async ({ locals, params }) => {

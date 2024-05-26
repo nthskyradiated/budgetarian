@@ -58,34 +58,3 @@ export const validateCategory = async (category: string, type: 'income' | 'expen
 		return null;
 	
 }
-
-// export const getCategoryIdByName = async (categoryName: string): Promise<number | null> => {
-//     const category = await db.select()
-//         .from(inflowsCategoriesTable)
-//         .where(inflowsCategoriesTable.name.eq(categoryName))
-//         .limit(1)
-
-//     return category.length ? category[0].id : null;
-// }
-
-
-
-// export const income = await db.query.inflowsTable.findMany({
-// 	where: and(
-// 		eq(inflowsTable.projectId, ID),
-// 		eq(inflowsTable.userId, locals.user.id))
-// })
-// const expenses = await db.query.expensesTable.findMany({
-// 	where: and(
-// 		eq(expensesTable.projectId, ID),
-// 		eq(expensesTable.userId, locals.user.id))
-// })
-
-// const incomeWithSource = income.map(entry => ({ ...entry, type: 'income' }));
-// const expensesWithSource = expenses.map(entry => ({ ...entry, type: 'expense' }));
-// const transactions = [...incomeWithSource, ...expensesWithSource];
-// const transactionHistory = transactions.sort((a, b) => {
-// 	const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
-// 	  const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
-// 	return createdAtA - createdAtB;
-//   }).reverse();

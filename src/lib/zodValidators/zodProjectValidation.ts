@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import * as zodVal from '$lib/zodValidators/zodParams';
 
+
+
 export type TransactionType =
 	| {
 			transactionType: 'income';
@@ -39,7 +41,9 @@ export const ProjectZodSchema = z.object({
 export type projectZodSchema = z.infer<typeof ProjectZodSchema>;
 
 export const UpdateProjectZodSchema = ProjectZodSchema.extend({
-	startingFunds: ProjectZodSchema.shape.startingFunds.optional()
+	startingFunds: ProjectZodSchema.shape.startingFunds.optional(),
+	name: ProjectZodSchema.shape.name.optional(),
+	details: ProjectZodSchema.shape.details.optional(),
 });
 
 export type updateProjectZodSchema = z.infer<typeof UpdateProjectZodSchema>;

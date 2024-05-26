@@ -137,6 +137,8 @@
 						updateProjectFormAction={route("updateProject /protected/projects")}
 						projectId={project?.id}
 						updateFundsPlaceHolder={project?.totalFunds}
+						nameDefaultVal={project?.name!}
+						detailsDefaultVal={project?.details!}
 						/>
 				</div>
 			</Card>

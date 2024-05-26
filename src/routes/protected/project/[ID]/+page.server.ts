@@ -12,6 +12,7 @@ import { inflowsTable, expensesTable } from '@/db/schema/index';
 import { lucia } from '@/lib/server/luciaUtils';
 import type { AlertMessageType } from '@/lib/types';
 
+
 export const load = (async ({ locals, params }) => {
 	if (!locals.user) {
 		redirect(302, '/');
@@ -153,10 +154,14 @@ export const actions: Actions = {
 		const updateProjectFormData = await superValidate<updateProjectZodSchema, AlertMessageType>(
 			request,
 			zod(UpdateProjectZodSchema),
-			{id: "updateProjectForm"}
+			{id: "updateProjectForm", strict: false},
+			
 		);
-
+		
+		console.log('value:', updateProjectFormData.data);
+		
 		if (updateProjectFormData.valid === false) {
+			console.log(updateProjectFormData.data);
 			return message(updateProjectFormData, {
 				alertType: 'error',
 				alertText: 'There was a problem with your submission.'
@@ -200,18 +205,18 @@ export const actions: Actions = {
 				
 			}
 			const {name, details, startingFunds, id} = updateProjectFormData.data;
-			console.log('before update', updateProjectFormData.data);
-			startingFunds! === undefined ? project.startingFunds : startingFunds;
+
 			const updateData = {
 				id,
-				name,
-				details,
-				startingFunds: startingFunds ?? project.startingFunds,
-				totalFunds: startingFunds ?? project.startingFunds,
+				name: !name || name === undefined || name === "" ? project.name : name,
+				details: !details || details === undefined || details === "" ? project.details : details,
+				startingFunds: !startingFunds || startingFunds === undefined  ? project.startingFunds: startingFunds,
+				totalFunds: project.totalFunds,
 				userId: locals.user.id
 			  };
-			if (name !== undefined) updateData.name = name;
-			if (details !== undefined) updateData.details = details;
+
+			  //@TODO do we reset totalfunds to startingfunds here?
+
 			if (startingFunds !== undefined) {
 			  updateData.startingFunds = startingFunds;
       		  updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds

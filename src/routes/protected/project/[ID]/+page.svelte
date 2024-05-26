@@ -9,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import UpdateProjectForm from '@/lib/components/form/UpdateProjectForm.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
+	import SuperDebug from 'sveltekit-superforms';
 
 	export let data: PageData;
 
@@ -18,7 +19,7 @@
 	// $: updatedAt = project?.updatedAt;
 	$: currProject = project
 
-	const { message: updateProjectFormMessage } = superForm(updateProjectFormData!, {
+	const { message: updateProjectFormMessage, form: updateProjectForm } = superForm(updateProjectFormData!, {
 		onUpdated: async () => {
 			if (!$updateProjectFormMessage) return;
 
@@ -89,7 +90,7 @@
 		}
 	}
 </script>
-
+<SuperDebug data={$updateProjectForm} />
 <main>
 	<div class="flex flex-row gap-2">
 		<Card class="my-2 w-1/3 p-6" on:transactionAdded={handleTransactionAdded}>
@@ -105,6 +106,9 @@
 						updateProjectFormAction={route("updateProject /protected/projects")}
 						projectId={ID as string}
 						updateFundsPlaceHolder={project?.totalFunds!}
+						nameDefaultVal={project?.name!}
+						detailsDefaultVal={project?.details!}
+						
 						/>
 						<DeleteProject projectId={ID} on:confirmDelete={()=> handleDeleteProject(ID)} />
 					</div>

@@ -15,6 +15,8 @@ import * as Dialog from '$lib/components/ui/dialog';
     export let dialogDescription: string;
     export let projectId: string
     export let updateFundsPlaceHolder: number
+    export let nameDefaultVal: string
+    export let detailsDefaultVal: string
 	let additionalClasses = 'w-full transform -translate-y-10';
 	const {
 		enhance: updateProjectFormEnhance,
@@ -53,28 +55,33 @@ import * as Dialog from '$lib/components/ui/dialog';
 					type="text"
 					name="name"
 					label="Project Name"
-					bind:value={$updateProjectForm.name}
+					value={$updateProjectForm.name}
 					errorMessage={$updateProjectErrors.name}
 					maxlength={maxNameLen}
 					minlength={minNameLen}
-				/>
-				<InputField
+					placeholder={nameDefaultVal}
+
+					/>
+					<InputField
 					type="text"
 					name="details"
 					label="Project Details"
-					bind:value={$updateProjectForm.details}
+					value={$updateProjectForm.details}
 					errorMessage={$updateProjectErrors.details}
 					maxlength={maxNameLen}
 					minlength={minNameLen}
-				/>
-				<InputField
+					placeholder={detailsDefaultVal}
+
+					/>
+					<InputField
 					type="number"
 					name="startingFunds"
 					label="Initial Amount"
 					step="0.01"
 					placeholder={updateFundsPlaceHolder.toString()}
-					bind:value={$updateProjectForm.startingFunds}
+					value={$updateProjectForm.startingFunds}
 					errorMessage={$updateProjectErrors.startingFunds}
+
 				/>
 
 				<InputField
