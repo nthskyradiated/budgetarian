@@ -14,16 +14,23 @@
 	import InputField from './InputField.svelte';
 	import SubmitButton from './SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
+	import * as Dialog from '@/lib/components/ui/dialog';
+	import { buttonVariants } from '@/lib/components/ui/button';
+	import { route } from '@/lib/router';
 
 	export let formData: SuperValidated<passwordResetZodSchema>;
-	export let formAction: string;
 	export let isPasswordResetTokenRequired: boolean = false;
+	$: open = false;
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
 		resetForm: true,
 		taintedMessage: null,
 		validators: zod(PasswordResetZodSchema),
-
+		onUpdate: (form) => {
+			if (form.result?.type === 'success') {
+				open = false;
+			}
+		},
 		onUpdated: () => {
 			if (!$message) return;
 
@@ -40,32 +47,41 @@
 	});
 </script>
 
-<form use:enhance method="post" class="space-y-4" action={formAction}>
-	<InputField
-		type="password"
-		name="newPassword"
-		label="New Password"
-		bind:value={$form.newPassword}
-		errorMessage={$errors.newPassword}
-		maxlength={maxPwrdLen}
-	/>
+<Dialog.Root bind:open>
+	<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>Change Password</Dialog.Trigger>
+	<Dialog.Content>
+		<Dialog.Header>
+			<Dialog.Title>Password Change</Dialog.Title>
+			<Dialog.Description>Please enter your new password.</Dialog.Description>
+		</Dialog.Header>
+		<form use:enhance method="post" class="space-y-4" action={route('changePassword /dashboard')}>
+			<InputField
+				type="password"
+				name="newPassword"
+				label="New Password"
+				bind:value={$form.newPassword}
+				errorMessage={$errors.newPassword}
+				maxlength={maxPwrdLen}
+			/>
 
-	<InputField
-		type="password"
-		name="confirmPassword"
-		label="Confirm Password"
-		bind:value={$form.confirmPassword}
-		errorMessage={$errors.confirmPassword}
-		maxlength={maxPwrdLen}
-	/>
+			<InputField
+				type="password"
+				name="confirmPassword"
+				label="Confirm Password"
+				bind:value={$form.confirmPassword}
+				errorMessage={$errors.confirmPassword}
+				maxlength={maxPwrdLen}
+			/>
 
-	{#if isPasswordResetTokenRequired}
-		<InputField
-			type="hidden"
-			name="passwordResetToken"
-			value={$page.url.searchParams.get('token')}
-		/>
-	{/if}
+			{#if isPasswordResetTokenRequired}
+				<InputField
+					type="hidden"
+					name="passwordResetToken"
+					value={$page.url.searchParams.get('token')}
+				/>
+			{/if}
 
-	<SubmitButton disabled={$delayed} />
-</form>
+			<SubmitButton disabled={$delayed} />
+		</form>
+	</Dialog.Content>
+</Dialog.Root>

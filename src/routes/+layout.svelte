@@ -25,7 +25,7 @@
 <MetaTags {...metaTags} />
 <Toaster richColors closeButton position={'bottom-right'} />
 <ModeWatcher />
-<div class="lg:mx-24 mx-4 flex min-h-[100%] md:w-auto flex-col">
+<div class="mx-4 flex min-h-[100%] flex-col md:w-auto lg:mx-24">
 	{#if data.user}
 		<h1 class="py-10 text-right">Logged in as :: {data.user?.name ?? data.user.username}</h1>
 	{/if}

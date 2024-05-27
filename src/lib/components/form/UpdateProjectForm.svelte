@@ -20,6 +20,7 @@
 	export let updateFundsPlaceHolder: number;
 	export let nameDefaultVal: string;
 	export let detailsDefaultVal: string;
+	$: open = false;
 	let additionalClasses = 'w-full transform -translate-y-10';
 	const {
 		enhance: updateProjectFormEnhance,
@@ -30,12 +31,17 @@
 		resetForm: true,
 		taintedMessage: null,
 		validators: zod(UpdateProjectZodSchema),
-		id: 'updateProjectForm'
+		id: 'updateProjectForm',
+		onUpdate: (updateProjectForm) => {
+			if (updateProjectForm.result?.type === 'success') {
+				open = false;
+			}
+		}
 	});
 </script>
 
 <div class="mt-8 flex flex-wrap justify-evenly gap-4">
-	<Dialog.Root>
+	<Dialog.Root bind:open>
 		<Dialog.Trigger class={`${buttonVariants({ variant: 'outline' })} ${additionalClasses}`}
 			>{dialogName}</Dialog.Trigger
 		>

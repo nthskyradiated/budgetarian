@@ -22,17 +22,20 @@ export const TransactionTypeRadioZodSchema = z.object({
 	transactionType: z.enum(['income', 'expenses'])
 });
 
+// Custom validation function to check for whitespace strings
+const noWhitespace = (message: string) =>
+	z
+		.string()
+		.min(zodVal.minNameLen, zodVal.PROJECT_NAME_MIN_ERROR_MESSAGE)
+		.max(zodVal.maxNameLen, zodVal.PROJECT_NAME_MAX_ERROR_MESSAGE)
+		.refine((value) => value.trim().length > 0, {
+			message
+		});
+
 export const ProjectZodSchema = z.object({
 	id: z.string(),
-	name: z
-		.string()
-		.min(zodVal.minNameLen, zodVal.NAME_MIN_ERROR_MESSAGE)
-		.max(zodVal.maxNameLen, zodVal.NAME_MAX_ERROR_MESSAGE),
-
-	details: z
-		.string()
-		.min(zodVal.minNameLen, zodVal.NAME_MIN_ERROR_MESSAGE)
-		.max(zodVal.maxNameLen, zodVal.NAME_MAX_ERROR_MESSAGE),
+	name: noWhitespace(zodVal.WHITESPACE_ERROR_MESSAGE),
+	details: noWhitespace(zodVal.WHITESPACE_ERROR_MESSAGE),
 	startingFunds: z.coerce.number().positive()
 });
 

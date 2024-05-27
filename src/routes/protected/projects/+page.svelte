@@ -16,7 +16,6 @@
 	const { allProjects = [], createProjectFormData, updateProjectFormData } = data;
 
 	let newProjects = $state([...allProjects]);
-	let onOpen = $state(false)
 
 	const { message } = superForm(createProjectFormData, {
 		onUpdated: async () => {
@@ -29,8 +28,6 @@
 			}
 
 			if (alertType === 'success') {
-				onOpen = false
-				console.log('onupdated', onOpen)
 				toast.success(alertText);
 				try {
 					const response = await fetch('/protected/projects');
@@ -43,7 +40,7 @@
 				} catch (error) {
 					console.error('Error fetching updated projects:', error);
 				}
-				
+
 				goto('/protected/projects');
 			}
 		}
@@ -103,9 +100,7 @@
 			{data.message ? data.message : 'No project found. Please create a new project.'}
 		</h1>
 	{/if}
-	<!-- bind:onOpen = {onOpen} -->
 	<CreateProjectForm
-		bind:onOpen={onOpen}
 		dialogName="Create Project"
 		dialogDescription="Input all the necessary information to create a new project."
 		dialogTitle="Create a new project?"
@@ -118,7 +113,7 @@
 				projectId={project?.id}
 				on:confirmDelete={() => handleDeleteProject(project.id)}
 			/>
-				<span class="font-bold text-xl items-end">{project?.name}</span>
+			<span class="items-end text-xl font-bold">{project?.name}</span>
 			<div class="mt-8 flex flex-col gap-4">
 				<hr class="w-full border-gray-400" />
 				<div class="flex justify-between">

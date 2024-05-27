@@ -20,40 +20,37 @@
 	// $: updatedAt = project?.updatedAt;
 	$: currProject = project;
 
-	const { message: updateProjectFormMessage } = superForm(
-		updateProjectFormData!,
-		{
-			onUpdated: async () => {
-				if (!$updateProjectFormMessage) return;
+	const { message: updateProjectFormMessage } = superForm(updateProjectFormData!, {
+		onUpdated: async () => {
+			if (!$updateProjectFormMessage) return;
 
-				const { alertType, alertText } = $updateProjectFormMessage;
+			const { alertType, alertText } = $updateProjectFormMessage;
 
-				if (alertType === 'error') {
-					toast.error(alertText);
-				}
+			if (alertType === 'error') {
+				toast.error(alertText);
+			}
 
-				if (alertType === 'success') {
-					toast.success(alertText);
-					try {
-						const response = await fetch(`/protected/project/${data.ID}`);
-						if (response.ok) {
-							const updatedData = await response.json();
-							if (currProject) {
-								currProject.name = updatedData.project[0].name;
-								currProject.details = updatedData.project[0].details;
-								currProject.startingFunds = updatedData.project[0].startingFunds;
-								currProject.totalFunds = updatedData.project[0].totalFunds;
-							}
-						} else {
-							console.error('Failed to fetch updated projects');
+			if (alertType === 'success') {
+				toast.success(alertText);
+				try {
+					const response = await fetch(`/protected/project/${data.ID}`);
+					if (response.ok) {
+						const updatedData = await response.json();
+						if (currProject) {
+							currProject.name = updatedData.project[0].name;
+							currProject.details = updatedData.project[0].details;
+							currProject.startingFunds = updatedData.project[0].startingFunds;
+							currProject.totalFunds = updatedData.project[0].totalFunds;
 						}
-					} catch (error) {
-						console.error('Error fetching updated projects:', error);
+					} else {
+						console.error('Failed to fetch updated projects');
 					}
+				} catch (error) {
+					console.error('Error fetching updated projects:', error);
 				}
 			}
 		}
-	);
+	});
 
 	async function fetchTransactions() {
 		try {
@@ -107,12 +104,14 @@
 
 <!-- <SuperDebug data={$updateProjectForm} /> -->
 <main class="w-full">
-	<div class="flex lg:flex-row gap-2 my-12 sm:mx-auto mx-0 flex-col-reverse w-full">
-		<Card class="my-2 lg:w-1/3 p-6 w-full h-max" on:transactionAdded={handleTransactionAdded}>
+	<div class="mx-0 my-12 flex w-full flex-col-reverse gap-2 sm:mx-auto lg:flex-row">
+		<Card class="my-2 h-max w-full p-6 lg:w-1/3" on:transactionAdded={handleTransactionAdded}>
 			<div class="flex flex-col gap-4">
-				<div class="flex sm:flex-row flex-col items-center sm:justify-between justify-evenly gap-12 ">
-					<h1 class="text-4xl font-bold text-center">{currProject?.name}</h1>
-					<div class="flex flex-col justify-evenly items-center">
+				<div
+					class="flex flex-col items-center justify-evenly gap-12 sm:flex-row sm:justify-between"
+				>
+					<h1 class="text-center text-4xl font-bold">{currProject?.name}</h1>
+					<div class="flex flex-col items-center justify-evenly">
 						<UpdateProjectForm
 							dialogName="Update Project"
 							dialogDescription="Input all the necessary information to update a project."
@@ -128,33 +127,33 @@
 					</div>
 				</div>
 				<hr class="mb-8" />
-				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
-					<span class="font-bold text-lg">Project Details: </span>
-					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.details}</p>
+				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<span class="text-lg font-bold">Project Details: </span>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.details}</p>
 				</div>
-				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
-					<span class="font-bold text-lg">Starting Balance: </span>
-					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.startingFunds}</p>
+				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<span class="text-lg font-bold">Starting Balance: </span>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.startingFunds}</p>
 				</div>
-				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
-					<span class="font-bold text-lg">Current Balance: </span>
-					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.totalFunds}</p>
+				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<span class="text-lg font-bold">Current Balance: </span>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.totalFunds}</p>
 				</div>
-				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
-					<span class="font-bold text-lg">Updated At: </span>
-					<p class="inline sm:pl-12 mt-2 sm:mt-0">{currProject?.updatedAt}</p>
+				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<span class="text-lg font-bold">Updated At: </span>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.updatedAt}</p>
 				</div>
-				<div class="flex sm:flex-row flex-col sm:justify-between justify-evenly px-4 sm:pt-2 pt-4">
-					<span class="font-bold text-lg">Date Created: </span>
-					<p class="inline sm:pl-12 mt-2 sm:mt-0">{project?.createdAt}</p>
+				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<span class="text-lg font-bold">Date Created: </span>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12">{project?.createdAt}</p>
 				</div>
 			</div>
 			<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center"></div>
 		</Card>
 
-		<Card class="my-2 lg:w-2/3 p-6 w-full">
+		<Card class="my-2 w-full p-6 lg:w-2/3">
 			<div class="flex flex-col gap-4">
-				<div class="flex sm:flex-row flex-col items-center justify-between">
+				<div class="flex flex-col items-center justify-between sm:flex-row">
 					<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>
 					{#if data.transactionFormData}
 						<TransactionForm

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import * as Avatar from '$lib/components/ui/avatar';
-	import { buttonVariants } from '@/lib/components/ui/button';
+
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
-	import * as Dialog from '@/lib/components/ui/dialog';
+
 	import { route } from '@/lib/router';
 	import PasswordResetForm from '@/lib/components/form/PasswordResetForm.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
@@ -44,22 +44,7 @@
 			<Button href={route('/protected/projects')}>Projects Page</Button>
 
 			{#if isOnlyOauthUser === false}
-				<Dialog.Root>
-					<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
-						Change Password
-					</Dialog.Trigger>
-					<Dialog.Content>
-						<Dialog.Header>
-							<Dialog.Title>Password Change</Dialog.Title>
-							<Dialog.Description>Please enter your new password.</Dialog.Description>
-						</Dialog.Header>
-
-						<PasswordResetForm
-							formData={data.passwordResetFormData}
-							formAction={route('changePassword /dashboard')}
-						/>
-					</Dialog.Content>
-				</Dialog.Root>
+				<PasswordResetForm formData={data.passwordResetFormData} />
 			{/if}
 		</div>
 	</div>

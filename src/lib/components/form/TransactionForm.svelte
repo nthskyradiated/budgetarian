@@ -32,7 +32,7 @@
 	export let dialogTriggerBtn: string;
 	export let dialogDescription: string;
 	export let dialogSubmitBtn: string;
-	export let onOpen: boolean
+	$: open = false;
 
 	const dispatch = createEventDispatcher();
 
@@ -41,7 +41,11 @@
 		taintedMessage: null,
 		validators: zod(TransactionZodSchema),
 		dataType: 'json',
-
+		onUpdate: (form) => {
+			if (form.result?.type === 'success') {
+				open = false;
+			}
+		},
 		onUpdated: async () => {
 			if (!$message) return;
 
@@ -106,7 +110,7 @@
 <!-- <SuperDebug data={$form} /> -->
 
 <div class="mt-4 flex flex-wrap justify-between gap-4">
-	<Dialog.Root bind:open={onOpen}>
+	<Dialog.Root bind:open>
 		<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
 			>{dialogTriggerBtn}</Dialog.Trigger
 		>
