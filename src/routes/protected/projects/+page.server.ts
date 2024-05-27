@@ -35,15 +35,21 @@ export const load = async ({ locals }) => {
 		return {
 			projects: [],
 			message: 'No project found. Please create a new project.',
-			createProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'createProjectForm' }),
-			updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), { id: 'updateProjectForm' })
+			createProjectFormData: await superValidate(zod(ProjectZodSchema), {
+				id: 'createProjectForm'
+			}),
+			updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), {
+				id: 'updateProjectForm'
+			})
 		};
 	}
 
 	return {
 		allProjects,
 		createProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'createProjectForm' }),
-		updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), { id: 'updateProjectForm' })
+		updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), {
+			id: 'updateProjectForm'
+		})
 	};
 };
 
@@ -167,7 +173,7 @@ export const actions: Actions = {
 				totalFunds: project.totalFunds,
 				userId: locals.user.id
 			};
-			
+
 			if (startingFunds !== undefined) {
 				updateData.startingFunds = startingFunds;
 				updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds

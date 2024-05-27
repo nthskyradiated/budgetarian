@@ -104,14 +104,12 @@
 
 <!-- <SuperDebug data={$updateProjectForm} /> -->
 <main class="w-full">
-	<div class="mx-0 my-12 flex w-full flex-col-reverse gap-2 sm:mx-auto lg:flex-row">
+	<div class="mx-0 my-12 flex w-full flex-col-reverse gap-2 sm:mx-auto md:flex-row">
 		<Card class="my-2 h-max w-full p-6 lg:w-1/3" on:transactionAdded={handleTransactionAdded}>
 			<div class="flex flex-col gap-4">
-				<div
-					class="flex flex-col items-center justify-evenly gap-12 sm:flex-row sm:justify-between"
-				>
-					<h1 class="text-center text-4xl font-bold">{currProject?.name}</h1>
-					<div class="flex flex-col items-center justify-evenly">
+				<div class="items-left flex flex-col justify-evenly gap-12 sm:flex-row sm:justify-between">
+					<h1 class="text-4xl font-bold">{currProject?.name}</h1>
+					<div class="flex flex-col items-start justify-evenly sm:items-center">
 						<UpdateProjectForm
 							dialogName="Update Project"
 							dialogDescription="Input all the necessary information to update a project."
@@ -153,7 +151,7 @@
 
 		<Card class="my-2 w-full p-6 lg:w-2/3">
 			<div class="flex flex-col gap-4">
-				<div class="flex flex-col items-center justify-between sm:flex-row">
+				<div class="items-left flex flex-col justify-between sm:flex-row">
 					<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>
 					{#if data.transactionFormData}
 						<TransactionForm
@@ -170,7 +168,11 @@
 				</div>
 				<hr class="mb-8" />
 				<div class="flex flex-col justify-between gap-2 px-4">
-					<h3 class="mb-6 text-2xl font-bold">Transaction Details:</h3>
+					{#if allTransactions.length === 0}
+						<p class="-mt-8">No transaction for this project yet.</p>
+					{:else}
+						<h3 class="mb-6 text-2xl font-bold">Transaction Details:</h3>
+					{/if}
 					{#each allTransactions as transaction}
 						<span class=" relative inline-flex gap-8 pl-4 font-semibold">
 							<DeleteTransaction

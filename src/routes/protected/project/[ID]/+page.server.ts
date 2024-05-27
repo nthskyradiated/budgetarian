@@ -59,7 +59,9 @@ export const load = (async ({ locals, params }) => {
 		ID,
 		project: project[0],
 		transactionFormData: await superValidate(zod(TransactionZodSchema)),
-		updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), { id: 'updateProjectForm' })
+		updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), {
+			id: 'updateProjectForm'
+		})
 	};
 }) satisfies PageServerLoad;
 

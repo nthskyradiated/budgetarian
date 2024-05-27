@@ -13,6 +13,7 @@ const PAGES = {
 	'/auth/email-verification': `/auth/email-verification`,
 	'/auth/login': `/auth/login`,
 	'/auth/register': `/auth/register`,
+	'/auth/logout': `/auth/logout`,
 	'/auth/password-reset': `/auth/password-reset`,
 	'/protected/dashboard': `/protected/dashboard`,
 	'/protected/projects': `/protected/projects`,
@@ -139,6 +140,7 @@ export type KIT_ROUTES = {
 		'/auth/email-verification': never;
 		'/auth/login': never;
 		'/auth/register': never;
+		'/auth/logout': never;
 		'/auth/password-reset': never;
 		'/protected/dashboard': never;
 		'/protected/projects': never;

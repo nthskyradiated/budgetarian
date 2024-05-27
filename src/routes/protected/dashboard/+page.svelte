@@ -1,12 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import * as Avatar from '$lib/components/ui/avatar';
-
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
-
 	import { route } from '@/lib/router';
 	import PasswordChangeForm from '@/lib/components/form/PasswordChangeForm.svelte';
-	import Button from '@/lib/components/ui/button/button.svelte';
 	import Card from '@/lib/components/ui/card/card.svelte';
 	import { goto } from '$app/navigation';
 	export let data: PageData;
@@ -41,8 +38,6 @@
 				<SubmitButton>Logout</SubmitButton>
 			</form>
 
-			<Button href={route('/protected/projects')}>Projects Page</Button>
-
 			{#if isOnlyOauthUser === false}
 				<PasswordChangeForm formData={data.passwordResetFormData} />
 			{/if}
@@ -56,7 +51,10 @@
 		<h1 class="mb-5 text-lg">{data.message}</h1>
 	{:else}
 		{#each recentProjects as project}
-			<Card class="my-2 w-1/2 p-6" on:click={() => mySelectionHandler(project.id)}>
+			<Card
+				class="mx-auto my-2 w-full p-6 sm:mx-3 lg:w-1/3"
+				on:click={() => mySelectionHandler(project.id)}
+			>
 				<div class="flex flex-col gap-4">
 					<div class="flex justify-between px-4">
 						<span class="font-bold">Project Name: </span>

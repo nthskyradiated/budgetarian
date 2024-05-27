@@ -46,8 +46,7 @@
 			}
 		}
 	});
-	const { message: updateProjectFormMessage } = superForm(updateProjectFormData, 
-		{
+	const { message: updateProjectFormMessage } = superForm(updateProjectFormData, {
 		id: 'updateProjectForm',
 		onUpdated: async () => {
 			if (!$updateProjectFormMessage) return;
@@ -96,7 +95,7 @@
 	};
 </script>
 
-<section class="flex flex-col gap-4">
+<section class="mx-0 flex w-full flex-col gap-4 sm:mx-auto">
 	<h1 class="text-2xl">Recently Updated:</h1>
 	{#if newProjects.length === 0}
 		<h1 class="mb-5 text-lg">
@@ -111,7 +110,7 @@
 		createProjectFormAction={route('createProject /protected/projects')}
 	/>
 	{#each newProjects as project}
-		<Card class="relative h-96 w-96 p-6">
+		<Card class="relative h-96 w-full p-6 sm:w-96">
 			<DeleteProject
 				projectId={project?.id}
 				on:confirmDelete={() => handleDeleteProject(project.id)}
@@ -139,7 +138,7 @@
 					dialogName="Update Project"
 					dialogDescription="Input all the necessary information to update a project."
 					dialogTitle="Update project?"
-					updateProjectFormData={updateProjectFormData}
+					{updateProjectFormData}
 					updateProjectFormAction={route('updateProject /protected/projects')}
 					projectId={project?.id}
 					updateFundsPlaceHolder={project?.totalFunds!}

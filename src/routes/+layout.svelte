@@ -10,6 +10,8 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import extend from 'just-extend';
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
+	import NavBar from '@/lib/components/NavBar.svelte';
+	import Footer from '@/lib/components/Footer.svelte';
 	export let data: PageData;
 
 	const flash = getFlash(page);
@@ -25,9 +27,13 @@
 <MetaTags {...metaTags} />
 <Toaster richColors closeButton position={'bottom-right'} />
 <ModeWatcher />
-<div class="mx-4 flex min-h-[100%] flex-col md:w-auto lg:mx-24">
+<div class="mx-4 min-h-[100%] w-full md:w-auto lg:mx-24">
+	<!-- {#if $page.url.pathname !== '/' && data.user}
+	{/if} -->
 	{#if data.user}
-		<h1 class="py-10 text-right">Logged in as :: {data.user?.name ?? data.user.username}</h1>
+		<NavBar />
+		<h1 class="py-10 text-right">Logged in as: {data.user?.name ?? data.user.username}</h1>
 	{/if}
 	<slot />
 </div>
+<Footer />

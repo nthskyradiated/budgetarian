@@ -34,9 +34,15 @@
 
 <!-- <SuperDebug data={$form} /> -->
 <Toaster />
-<div class='m-32 space-y-4 w-1/3 mx-auto'>
+<!-- done! do not touch! -->
+<div class="mx-4 my-32 w-96 space-y-4 sm:mx-auto lg:w-1/3">
 	<h1 class="mb-6 text-2xl font-bold leading-none">Register</h1>
-	<form method="post" use:enhance class="flex flex-col justify-evenly gap-4" action={route('register /auth/register')}>
+	<form
+		method="post"
+		use:enhance
+		class="flex flex-col justify-evenly gap-4"
+		action={route('register /auth/register')}
+	>
 		<InputField
 			type="text"
 			name="name"
@@ -46,7 +52,7 @@
 			maxlength={maxNameLen}
 			label="Name"
 		/>
-	
+
 		<InputField
 			type="email"
 			name="email"
@@ -65,7 +71,7 @@
 			maxlength={maxNameLen}
 			label="Username"
 		/>
-	
+
 		<InputField
 			type="password"
 			name="password"
@@ -75,7 +81,7 @@
 			maxlength={maxPwrdLen}
 			label="Password"
 		/>
-	
+
 		<SubmitButton class="w-1/6">Register</SubmitButton>
 	</form>
 </div>

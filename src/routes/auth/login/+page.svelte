@@ -15,7 +15,7 @@
 	import { zod } from 'sveltekit-superforms/adapters';
 
 	export let data: PageData;
-	$: open = false
+	$: open = false;
 
 	// For login form
 	const {
@@ -73,7 +73,8 @@
 	});
 </script>
 
-<div class="m-32 space-y-4 w-1/3 mx-auto">
+<!-- done. do not touch! -->
+<div class="mx-4 my-32 w-96 space-y-4 sm:mx-auto lg:w-1/3">
 	<h1 class="mb-6 text-2xl font-bold leading-none">Login</h1>
 
 	<form method="post" use:loginEnhance action={route('logIn /auth/login')} class="space-y-4">
@@ -85,7 +86,7 @@
 			errorMessage={$loginErrors.email}
 			maxlength={maxEmailLen}
 		/>
-	
+
 		<InputField
 			type="password"
 			name="password"
@@ -94,10 +95,12 @@
 			errorMessage={$loginErrors.password}
 			maxlength={maxPwrdLen}
 		/>
-	
+
 		<div class="flex flex-wrap justify-between gap-4">
-			<SubmitButton disabled={$loginDelayed} class="flex-grow">Login in with your email</SubmitButton>
-	
+			<SubmitButton disabled={$loginDelayed} class="flex-grow"
+				>Login in with your email</SubmitButton
+			>
+
 			<Dialog.Root bind:open>
 				<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
 					Forgot Password?
@@ -109,7 +112,7 @@
 							Enter your email address and we'll send you a link to reset your password.
 						</Dialog.Description>
 					</Dialog.Header>
-	
+
 					<form
 						method="post"
 						use:resetEnhance
@@ -124,7 +127,7 @@
 							errorMessage={$resetErrors.email}
 							maxlength={maxEmailLen}
 						/>
-	
+
 						<SubmitButton disabled={$resetDelayed}>Send Reset Link</SubmitButton>
 					</form>
 				</Dialog.Content>
