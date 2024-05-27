@@ -103,9 +103,10 @@
 </script>
 
 <!-- <SuperDebug data={$updateProjectForm} /> -->
+
 <main class="w-full">
-	<div class="mx-0 my-12 flex w-full flex-col-reverse gap-2 sm:mx-auto md:flex-row">
-		<Card class="my-2 h-max w-full p-6 lg:w-1/3" on:transactionAdded={handleTransactionAdded}>
+	<div class="mx-4 my-12 flex md:w-full w-96 flex-col-reverse gap-2 sm:mx-auto md:flex-row">
+		<Card class="my-2 h-max w-full p-6 lg:w-1/3 md:flex-1" on:transactionAdded={handleTransactionAdded}>
 			<div class="flex flex-col gap-4">
 				<div class="items-left flex flex-col justify-evenly gap-12 sm:flex-row sm:justify-between">
 					<h1 class="text-4xl font-bold">{currProject?.name}</h1>
@@ -127,29 +128,29 @@
 				<hr class="mb-8" />
 				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
 					<span class="text-lg font-bold">Project Details: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.details}</p>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.details}</p>
 				</div>
 				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
 					<span class="text-lg font-bold">Starting Balance: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.startingFunds}</p>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.startingFunds}</p>
 				</div>
 				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
 					<span class="text-lg font-bold">Current Balance: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.totalFunds}</p>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.totalFunds}</p>
 				</div>
 				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
 					<span class="text-lg font-bold">Updated At: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12">{currProject?.updatedAt}</p>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.updatedAt}</p>
 				</div>
 				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
 					<span class="text-lg font-bold">Date Created: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12">{project?.createdAt}</p>
+					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{project?.createdAt}</p>
 				</div>
 			</div>
 			<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center"></div>
 		</Card>
 
-		<Card class="my-2 w-full p-6 lg:w-2/3">
+		<Card class="my-2 w-full p-6 lg:w-2/3 md:flex-1 md:flex-shrink-0 md:flex-grow md:basis-1/2">
 			<div class="flex flex-col gap-4">
 				<div class="items-left flex flex-col justify-between sm:flex-row">
 					<h1 class="mb-2 text-3xl font-bold">Transaction History</h1>

@@ -94,8 +94,8 @@
 		}
 	};
 </script>
-
-<section class="mx-0 flex w-full flex-col gap-4 sm:mx-auto">
+<!-- done. do not touch! -->
+<section class="mx-4 flex lg:w-full w-96 flex-col gap-4 sm:mx-auto">
 	<h1 class="text-2xl">Recently Updated:</h1>
 	{#if newProjects.length === 0}
 		<h1 class="mb-5 text-lg">

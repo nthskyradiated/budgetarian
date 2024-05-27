@@ -27,12 +27,11 @@
 <MetaTags {...metaTags} />
 <Toaster richColors closeButton position={'bottom-right'} />
 <ModeWatcher />
-<div class="mx-4 min-h-[100%] w-full md:w-auto lg:mx-24">
-	<!-- {#if $page.url.pathname !== '/' && data.user}
-	{/if} -->
+
+<div class="mx-4 min-h-[100%] w-full flex flex-col justify-between md:w-auto lg:mx-24">
+
 	{#if data.user}
-		<NavBar />
-		<h1 class="py-10 text-right">Logged in as: {data.user?.name ?? data.user.username}</h1>
+		<NavBar user={data.user}/>
 	{/if}
 	<slot />
 </div>

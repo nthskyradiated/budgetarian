@@ -20,7 +20,7 @@
 	};
 </script>
 
-<section class="mb-8 flex flex-wrap items-center gap-4">
+<section class="mb-8 gap-4 lg:w-full w-96 mx-4 sm:mx-auto">
 	<div class="flex flex-col gap-8">
 		<h1 class="mb-5 text-2xl">
 			<span class="font-bold"
@@ -45,7 +45,7 @@
 	</div>
 </section>
 
-<section class="flex w-full flex-col gap-4">
+<section class="flex flex-col gap-4 lg:w-full w-96 mx-4 sm:mx-auto">
 	<h1 class="text-2xl">Recently Updated:</h1>
 	{#if recentProjects.length === 0}
 		<h1 class="mb-5 text-lg">{data.message}</h1>
