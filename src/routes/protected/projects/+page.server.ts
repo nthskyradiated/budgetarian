@@ -6,7 +6,9 @@ import { eq, desc } from 'drizzle-orm';
 import projects from '@/db/schema/projectsSchema/projects';
 import {
 	ProjectZodSchema,
-	type projectZodSchema
+	UpdateProjectZodSchema,
+	type projectZodSchema,
+	type updateProjectZodSchema
 } from '@/lib/zodValidators/zodProjectValidation.js';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
@@ -33,15 +35,15 @@ export const load = async ({ locals }) => {
 		return {
 			projects: [],
 			message: 'No project found. Please create a new project.',
-			createProjectFormData: await superValidate(zod(ProjectZodSchema)),
-			updateProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'updateProjectForm' })
+			createProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'createProjectForm' }),
+			updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), { id: 'updateProjectForm' })
 		};
 	}
 
 	return {
 		allProjects,
-		createProjectFormData: await superValidate(zod(ProjectZodSchema)),
-		updateProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'updateProjectForm' })
+		createProjectFormData: await superValidate(zod(ProjectZodSchema), { id: 'createProjectForm' }),
+		updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), { id: 'updateProjectForm' })
 	};
 };
 
@@ -106,10 +108,10 @@ export const actions: Actions = {
 		const currentSessionId = locals.session?.id;
 		if (!userId || !currentSessionId) return;
 
-		const updateProjectFormData = await superValidate<projectZodSchema, AlertMessageType>(
+		const updateProjectFormData = await superValidate<updateProjectZodSchema, AlertMessageType>(
 			request,
-			zod(ProjectZodSchema),
-			{ id: 'updateProjectForm' }
+			zod(UpdateProjectZodSchema),
+			{ id: 'updateProjectForm', strict: false }
 		);
 
 		if (updateProjectFormData.valid === false) {
@@ -158,14 +160,14 @@ export const actions: Actions = {
 			const { name, details, startingFunds, id } = updateProjectFormData.data;
 			const updateData = {
 				id,
-				name,
-				details,
-				startingFunds,
-				totalFunds: startingFunds,
+				name: !name || name === undefined || name === '' ? project.name : name,
+				details: !details || details === undefined || details === '' ? project.details : details,
+				startingFunds:
+					!startingFunds || startingFunds === undefined ? project.startingFunds : startingFunds,
+				totalFunds: project.totalFunds,
 				userId: locals.user.id
 			};
-			if (name !== undefined) updateData.name = name;
-			if (details !== undefined) updateData.details = details;
+			
 			if (startingFunds !== undefined) {
 				updateData.startingFunds = startingFunds;
 				updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds

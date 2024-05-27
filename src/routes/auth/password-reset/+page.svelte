@@ -3,7 +3,7 @@
 
 	import { route } from '$lib/router';
 
-	import PasswordResetForm from '$lib/components/form/PasswordResetForm.svelte';
+	import PasswordResetForm from '@/lib/components/form/PasswordChangeForm.svelte';
 	import { Button } from '$lib/components/ui/button/index';
 
 	export let data: PageData;

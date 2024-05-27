@@ -5,7 +5,7 @@
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 
 	import { route } from '@/lib/router';
-	import PasswordResetForm from '@/lib/components/form/PasswordResetForm.svelte';
+	import PasswordChangeForm from '@/lib/components/form/PasswordChangeForm.svelte';
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import Card from '@/lib/components/ui/card/card.svelte';
 	import { goto } from '$app/navigation';
@@ -44,7 +44,7 @@
 			<Button href={route('/protected/projects')}>Projects Page</Button>
 
 			{#if isOnlyOauthUser === false}
-				<PasswordResetForm formData={data.passwordResetFormData} />
+				<PasswordChangeForm formData={data.passwordResetFormData} />
 			{/if}
 		</div>
 	</div>

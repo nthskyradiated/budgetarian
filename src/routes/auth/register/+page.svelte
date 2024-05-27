@@ -34,45 +34,48 @@
 
 <!-- <SuperDebug data={$form} /> -->
 <Toaster />
-<form method="post" use:enhance class="m-32 space-y-4" action={route('register /auth/register')}>
-	<InputField
-		type="text"
-		name="name"
-		placeholder="enter your name"
-		bind:value={$form.name}
-		errorMessage={$errors.name}
-		maxlength={maxNameLen}
-		label="Name"
-	/>
-
-	<InputField
-		type="email"
-		name="email"
-		placeholder="enter email address"
-		bind:value={$form.email}
-		errorMessage={$errors.email}
-		maxlength={maxEmailLen}
-		label="Email"
-	/>
-	<InputField
-		type="username"
-		name="username"
-		placeholder="input your username"
-		bind:value={$form.username}
-		errorMessage={$errors.username}
-		maxlength={maxNameLen}
-		label="Username"
-	/>
-
-	<InputField
-		type="password"
-		name="password"
-		placeholder="input your password"
-		bind:value={$form.password}
-		errorMessage={$errors.password}
-		maxlength={maxPwrdLen}
-		label="Password"
-	/>
-
-	<SubmitButton class="w-1/6">Register</SubmitButton>
-</form>
+<div class='m-32 space-y-4 w-1/3 mx-auto'>
+	<h1 class="mb-6 text-2xl font-bold leading-none">Register</h1>
+	<form method="post" use:enhance class="flex flex-col justify-evenly gap-4" action={route('register /auth/register')}>
+		<InputField
+			type="text"
+			name="name"
+			placeholder="enter your name"
+			bind:value={$form.name}
+			errorMessage={$errors.name}
+			maxlength={maxNameLen}
+			label="Name"
+		/>
+	
+		<InputField
+			type="email"
+			name="email"
+			placeholder="enter email address"
+			bind:value={$form.email}
+			errorMessage={$errors.email}
+			maxlength={maxEmailLen}
+			label="Email"
+		/>
+		<InputField
+			type="username"
+			name="username"
+			placeholder="input your username"
+			bind:value={$form.username}
+			errorMessage={$errors.username}
+			maxlength={maxNameLen}
+			label="Username"
+		/>
+	
+		<InputField
+			type="password"
+			name="password"
+			placeholder="input your password"
+			bind:value={$form.password}
+			errorMessage={$errors.password}
+			maxlength={maxPwrdLen}
+			label="Password"
+		/>
+	
+		<SubmitButton class="w-1/6">Register</SubmitButton>
+	</form>
+</div>

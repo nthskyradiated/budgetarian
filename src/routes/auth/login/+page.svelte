@@ -15,6 +15,7 @@
 	import { zod } from 'sveltekit-superforms/adapters';
 
 	export let data: PageData;
+	$: open = false
 
 	// For login form
 	const {
@@ -50,6 +51,11 @@
 		resetForm: true,
 		taintedMessage: null,
 		validators: zod(PasswordResetEmailZodSchema),
+		onUpdate: (resetForm) => {
+			if (resetForm.result?.type === 'success') {
+				open = false;
+			}
+		},
 
 		onUpdated: () => {
 			if (!$resetMessage) return;
@@ -67,60 +73,62 @@
 	});
 </script>
 
-<h1 class="mb-6 text-2xl font-bold leading-none">Login</h1>
+<div class="m-32 space-y-4 w-1/3 mx-auto">
+	<h1 class="mb-6 text-2xl font-bold leading-none">Login</h1>
 
-<form method="post" use:loginEnhance action={route('logIn /auth/login')} class="space-y-4">
-	<InputField
-		type="email"
-		name="email"
-		label="Email"
-		bind:value={$loginForm.email}
-		errorMessage={$loginErrors.email}
-		maxlength={maxEmailLen}
-	/>
-
-	<InputField
-		type="password"
-		name="password"
-		label="Password"
-		bind:value={$loginForm.password}
-		errorMessage={$loginErrors.password}
-		maxlength={maxPwrdLen}
-	/>
-
-	<div class="flex flex-wrap justify-between gap-4">
-		<SubmitButton disabled={$loginDelayed} class="flex-grow">Login in with your email</SubmitButton>
-
-		<Dialog.Root>
-			<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
-				Forgot Password?
-			</Dialog.Trigger>
-			<Dialog.Content>
-				<Dialog.Header>
-					<Dialog.Title>Password Reset</Dialog.Title>
-					<Dialog.Description>
-						Enter your email address and we'll send you a link to reset your password.
-					</Dialog.Description>
-				</Dialog.Header>
-
-				<form
-					method="post"
-					use:resetEnhance
-					action={route('sendPasswordResetEmail /auth/login')}
-					class="space-y-4"
-				>
-					<InputField
-						type="email"
-						name="email"
-						label="Email"
-						bind:value={$resetForm.email}
-						errorMessage={$resetErrors.email}
-						maxlength={maxEmailLen}
-					/>
-
-					<SubmitButton disabled={$resetDelayed}>Send Reset Link</SubmitButton>
-				</form>
-			</Dialog.Content>
-		</Dialog.Root>
-	</div>
-</form>
+	<form method="post" use:loginEnhance action={route('logIn /auth/login')} class="space-y-4">
+		<InputField
+			type="email"
+			name="email"
+			label="Email"
+			bind:value={$loginForm.email}
+			errorMessage={$loginErrors.email}
+			maxlength={maxEmailLen}
+		/>
+	
+		<InputField
+			type="password"
+			name="password"
+			label="Password"
+			bind:value={$loginForm.password}
+			errorMessage={$loginErrors.password}
+			maxlength={maxPwrdLen}
+		/>
+	
+		<div class="flex flex-wrap justify-between gap-4">
+			<SubmitButton disabled={$loginDelayed} class="flex-grow">Login in with your email</SubmitButton>
+	
+			<Dialog.Root bind:open>
+				<Dialog.Trigger class={buttonVariants({ variant: 'default' })}>
+					Forgot Password?
+				</Dialog.Trigger>
+				<Dialog.Content>
+					<Dialog.Header>
+						<Dialog.Title>Password Reset</Dialog.Title>
+						<Dialog.Description>
+							Enter your email address and we'll send you a link to reset your password.
+						</Dialog.Description>
+					</Dialog.Header>
+	
+					<form
+						method="post"
+						use:resetEnhance
+						action={route('sendPasswordResetEmail /auth/login')}
+						class="space-y-4"
+					>
+						<InputField
+							type="email"
+							name="email"
+							label="Email"
+							bind:value={$resetForm.email}
+							errorMessage={$resetErrors.email}
+							maxlength={maxEmailLen}
+						/>
+	
+						<SubmitButton disabled={$resetDelayed}>Send Reset Link</SubmitButton>
+					</form>
+				</Dialog.Content>
+			</Dialog.Root>
+		</div>
+	</form>
+</div>

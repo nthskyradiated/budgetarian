@@ -18,6 +18,7 @@
 	let newProjects = $state([...allProjects]);
 
 	const { message } = superForm(createProjectFormData, {
+		id: 'createProjectForm',
 		onUpdated: async () => {
 			if (!$message) return;
 
@@ -45,7 +46,9 @@
 			}
 		}
 	});
-	const { message: updateProjectFormMessage } = superForm(updateProjectFormData, {
+	const { message: updateProjectFormMessage } = superForm(updateProjectFormData, 
+		{
+		id: 'updateProjectForm',
 		onUpdated: async () => {
 			if (!$updateProjectFormMessage) return;
 
@@ -136,10 +139,10 @@
 					dialogName="Update Project"
 					dialogDescription="Input all the necessary information to update a project."
 					dialogTitle="Update project?"
-					{updateProjectFormData}
+					updateProjectFormData={updateProjectFormData}
 					updateProjectFormAction={route('updateProject /protected/projects')}
 					projectId={project?.id}
-					updateFundsPlaceHolder={project?.totalFunds}
+					updateFundsPlaceHolder={project?.totalFunds!}
 					nameDefaultVal={project?.name!}
 					detailsDefaultVal={project?.details!}
 				/>

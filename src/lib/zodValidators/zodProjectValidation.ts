@@ -23,11 +23,11 @@ export const TransactionTypeRadioZodSchema = z.object({
 });
 
 // Custom validation function to check for whitespace strings
-const noWhitespace = (message: string) =>
+export const noWhitespace = (message: string) =>
 	z
 		.string()
-		.min(zodVal.minNameLen, zodVal.PROJECT_NAME_MIN_ERROR_MESSAGE)
-		.max(zodVal.maxNameLen, zodVal.PROJECT_NAME_MAX_ERROR_MESSAGE)
+		.min(zodVal.minNameLen, zodVal.NAME_MIN_ERROR_MESSAGE)
+		.max(zodVal.maxNameLen, zodVal.NAME_MAX_ERROR_MESSAGE)
 		.refine((value) => value.trim().length > 0, {
 			message
 		});

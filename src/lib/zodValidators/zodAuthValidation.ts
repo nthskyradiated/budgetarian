@@ -1,5 +1,6 @@
 import * as zodVal from '$lib/zodValidators/zodParams';
 import { z } from 'zod';
+import { noWhitespace } from './zodProjectValidation';
 
 export const EmailZodSchema = z
 	.string()
@@ -18,15 +19,9 @@ const AdvancedPasswordSchema = z
 	});
 
 export const RegisterUserZodSchema = z.object({
-	name: z
-		.string()
-		.min(zodVal.minNameLen, zodVal.NAME_MIN_ERROR_MESSAGE)
-		.max(zodVal.maxNameLen, zodVal.NAME_MAX_ERROR_MESSAGE),
+	name: noWhitespace(zodVal.WHITESPACE_ERROR_MESSAGE),
 
-	username: z
-		.string()
-		.min(zodVal.minNameLen, zodVal.NAME_MIN_ERROR_MESSAGE)
-		.max(zodVal.maxNameLen, zodVal.NAME_MAX_ERROR_MESSAGE),
+	username: noWhitespace(zodVal.WHITESPACE_ERROR_MESSAGE),
 
 	email: EmailZodSchema,
 
