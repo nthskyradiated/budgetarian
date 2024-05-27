@@ -43,10 +43,10 @@
 							currProject.totalFunds = updatedData.project[0].totalFunds;
 						}
 					} else {
-						console.error('Failed to fetch updated projects');
+						console.error('Failed to fetch updated project');
 					}
 				} catch (error) {
-					console.error('Error fetching updated projects:', error);
+					console.error('Error fetching updated project:', error);
 				}
 			}
 		}

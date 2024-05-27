@@ -66,10 +66,10 @@
 						const updatedData = await response.json();
 						newProjects = updatedData.allProjects;
 					} else {
-						console.error('Failed to fetch updated projects');
+						console.error('Failed to fetch updated project');
 					}
 				} catch (error) {
-					console.error('Error fetching updated projects:', error);
+					console.error('Error fetching updated project:', error);
 				}
 
 				goto('/protected/projects');
