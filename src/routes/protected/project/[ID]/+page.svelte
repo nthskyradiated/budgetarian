@@ -11,6 +11,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import DeleteTransaction from '@/lib/components/DeleteTransaction.svelte';
 	import ScrollArea from '@/lib/components/ui/scroll-area/scroll-area.svelte';
+	import * as Tooltip from "$lib/components/ui/tooltip";
 	// import SuperDebug from 'sveltekit-superforms';
 
 	export let data: PageData;
@@ -175,14 +176,29 @@
 				<h3 class="mb-6 text-2xl font-bold">Transaction Details:</h3>
 				{/if}
 				<ScrollArea class="h-80 w-full">
-				<div class="flex flex-col justify-between gap-2 px-8">
+				<div class="flex flex-col justify-between gap-2 px-8 pt-1">
 						{#each allTransactions as transaction}
 							<span class=" relative inline-flex gap-8 pl-4 font-semibold">
 								<DeleteTransaction
 									transactionId={transaction.id}
 									on:confirmDeleteTransaction={() => handleDeleteTransaction(transaction.id, ID)}
 								/>
-								{transaction.name} <small class="text-right">{transaction.createdAt}</small>
+
+								<Tooltip.Root>
+									<Tooltip.Trigger>{transaction.name}</Tooltip.Trigger>
+									<Tooltip.Content>
+										<p>- {transaction.type}</p>
+										<p>- {transaction.amount}</p>
+										{#if transaction.isRecurring}
+										<p>- recurring transaction</p>
+										{/if}
+										{#if transaction.remarks}
+										<p>- {transaction.remarks}</p>
+										{/if}
+									</Tooltip.Content>
+								  </Tooltip.Root>
+
+								 <small class="text-right">{transaction.createdAt}</small>
 							</span>
 							{#if transaction.type === 'income'}
 								<p class="mb-2 inline pl-4 text-green-500"><small>+ </small> {transaction.amount}</p>

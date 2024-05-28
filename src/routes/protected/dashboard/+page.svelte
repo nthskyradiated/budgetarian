@@ -58,19 +58,19 @@
 				<div class="flex flex-col gap-4">
 					<div class="flex justify-between px-4">
 						<span class="font-bold">Project Name: </span>
-						<p class="inline pl-12">{project?.name}</p>
+						<p class="inline text-right">{project?.name}</p>
 					</div>
 					<div class="flex justify-between px-4">
 						<span class="font-bold">Project Details: </span>
-						<p class="inline pl-12">{project?.details}</p>
+						<p class="inline text-right">{project?.details}</p>
 					</div>
 					<div class="flex justify-between px-4">
 						<span class="font-bold">Current Balance: </span>
-						<p class="inline pl-12">{project?.totalFunds}</p>
+						<p class="inline text-right">{project?.totalFunds}</p>
 					</div>
 					<div class="flex justify-between px-4">
 						<span class="font-bold">Last Updated: </span>
-						<p class="inline pl-12">{project?.updatedAt}</p>
+						<p class="inline text-right">{project?.updatedAt}</p>
 					</div>
 				</div>
 			</Card>

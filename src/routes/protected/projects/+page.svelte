@@ -120,15 +120,15 @@
 				<hr class="w-full border-gray-400" />
 				<div class="flex justify-between">
 					<span class="font-bold">Project Details: </span>
-					<p class="inline pl-12">{project?.details}</p>
+					<p class="inline text-right">{project?.details}</p>
 				</div>
 				<div class="flex justify-between">
 					<span class="font-bold">Current Balance: </span>
-					<p class="inline pl-12">{project?.totalFunds}</p>
+					<p class="inline text-right">{project?.totalFunds}</p>
 				</div>
 				<div class="flex justify-between">
 					<span class="font-bold">Date Created: </span>
-					<p class="inline pl-12">{project?.createdAt}</p>
+					<p class="inline text-right">{project?.createdAt}</p>
 				</div>
 
 				<Button variant={'outline'} class="mt-8" on:click={() => mySelectionHandler(project.id)}
