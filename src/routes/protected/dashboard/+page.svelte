@@ -20,7 +20,7 @@
 	};
 </script>
 
-<section class="mb-8 gap-4 lg:w-full w-96 mx-4 sm:mx-auto">
+<section class="my-12 gap-4 lg:w-full w-96 mx-4 sm:mx-auto">
 	<div class="flex flex-col gap-8">
 		<h1 class="mb-5 text-2xl">
 			<span class="font-bold"

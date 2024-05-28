@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import Icon from '@iconify/svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let transactionId;
@@ -14,11 +15,14 @@
 <AlertDialog.Root>
 	<AlertDialog.Trigger asChild let:builder>
 		<Button
-			size="sm"
+			size="icon"
 			builders={[builder]}
 			variant="ghost"
-			class="absolute -left-8 -top-3 rounded-full text-red-600">x</Button
-		>
+			class="absolute -left-8 -top-1 rounded-full">
+			
+			<Icon icon="line-md:close-circle" class="text-xl text-red-600" />
+			
+			</Button>
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>

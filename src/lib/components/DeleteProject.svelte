@@ -2,6 +2,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { page } from '$app/stores';
+	import Icon from '@iconify/svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let projectId;
@@ -17,10 +18,13 @@
 		{#if $page.url.pathname === '/protected/projects'}
 			<Button
 				builders={[builder]}
-				variant="destructive"
-				size="sm"
-				class="absolute right-4 top-4 rounded-full">x</Button
-			>
+				variant="ghost"
+				size="icon"
+				class="absolute right-4 top-4 rounded-full">
+				
+				<Icon icon="line-md:close-circle" class="text-2xl text-red-600" />
+
+			</Button>
 		{:else}
 			<Button builders={[builder]} variant="destructive" class="-mt-8 px-5">Delete Project</Button>
 		{/if}
