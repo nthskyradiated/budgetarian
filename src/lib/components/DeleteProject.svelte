@@ -20,10 +20,9 @@
 				builders={[builder]}
 				variant="ghost"
 				size="icon"
-				class="absolute right-4 top-4 rounded-full">
-				
+				class="absolute right-4 top-4 rounded-full"
+			>
 				<Icon icon="line-md:close-circle" class="text-2xl text-red-600" />
-
 			</Button>
 		{:else}
 			<Button builders={[builder]} variant="destructive" class="-mt-8 px-5">Delete Project</Button>

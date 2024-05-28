@@ -18,11 +18,10 @@
 			size="icon"
 			builders={[builder]}
 			variant="ghost"
-			class="absolute -left-8 -top-1 rounded-full">
-			
+			class="absolute -left-8 -top-1 rounded-full"
+		>
 			<Icon icon="line-md:close-circle" class="text-xl text-red-600" />
-			
-			</Button>
+		</Button>
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>

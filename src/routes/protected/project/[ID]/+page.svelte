@@ -10,17 +10,39 @@
 	import UpdateProjectForm from '@/lib/components/form/UpdateProjectForm.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import DeleteTransaction from '@/lib/components/DeleteTransaction.svelte';
+	import TransactionPaginator from '@/lib/components/TransactionPaginator.svelte';
 	import ScrollArea from '@/lib/components/ui/scroll-area/scroll-area.svelte';
-	import * as Tooltip from "$lib/components/ui/tooltip";
+	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { page } from '$app/stores';
 	// import SuperDebug from 'sveltekit-superforms';
 
 	export let data: PageData;
+
+	const handlePageChange = async (newPage: number) => {
+		console.log('handlePageChange called with newPage:', newPage); // Debug log
+
+		const url = new URL($page.url.href);
+		url.searchParams.set('page', newPage.toString());
+
+		const response = await fetch(url.toString());
+		if (response.ok) {
+			const result = await response.json();
+			allTransactions = result.allTransactions;
+		} else {
+			console.error('Failed to fetch transactions for new page');
+		}
+
+		goto(url.toString(), { replaceState: true });
+	};
+	$: $page.url.searchParams.get('page'); // Re-trigger when page param changes
 
 	const { project, transactionHistory = [], updateProjectFormData, ID } = data;
 	$: allTransactions = [...transactionHistory];
 	// $: totalFunds = project?.totalFunds;
 	// $: updatedAt = project?.updatedAt;
 	$: currProject = project;
+	let totalCount: number;
+	let perPage: number;
 
 	const { message: updateProjectFormMessage } = superForm(updateProjectFormData!, {
 		onUpdated: async () => {
@@ -63,6 +85,8 @@
 					allTransactions = updatedData.allTransactions;
 					currProject.totalFunds = updatedData.project[0].totalFunds;
 					currProject.updatedAt = updatedData.project[0].updatedAt;
+					totalCount = updatedData.pagination.totalCount;
+					perPage = updatedData.pagination.pageSize;
 				}
 			} else {
 				toast.error('Failed to fetch updated transactions');
@@ -107,8 +131,11 @@
 <!-- <SuperDebug data={$updateProjectForm} /> -->
 
 <main class="w-full">
-	<div class="mx-4 my-4 flex md:w-full w-96 flex-col-reverse gap-2 sm:mx-auto md:flex-row">
-		<Card class="my-2 h-max w-full p-6 lg:w-1/3 md:flex-1" on:transactionAdded={handleTransactionAdded}>
+	<div class="mx-4 my-4 flex w-96 flex-col-reverse gap-2 sm:mx-auto md:w-full md:flex-row">
+		<Card
+			class="my-2 h-max w-full p-6 md:flex-1 lg:w-1/3"
+			on:transactionAdded={handleTransactionAdded}
+		>
 			<div class="flex flex-col gap-4">
 				<div class="items-left flex flex-col gap-6 sm:flex-row sm:justify-between">
 					<h1 class="text-4xl font-bold">{currProject?.name}</h1>
@@ -152,9 +179,9 @@
 			<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center"></div>
 		</Card>
 
-		<Card class="my-2 w-full px-6 lg:w-2/3 md:flex-1 md:flex-shrink-0 md:flex-grow md:basis-1/2">
-			<div class="flex flex-col gap-4 ">
-				<div class="items-end flex flex-col justify-between sm:flex-row">
+		<Card class="my-2 w-full px-6 md:flex-1 md:flex-shrink-0 md:flex-grow md:basis-1/2 lg:w-2/3">
+			<div class="flex flex-col gap-4">
+				<div class="flex flex-col items-end justify-between sm:flex-row">
 					<h1 class="my-2 text-3xl font-bold">Transaction History</h1>
 					{#if data.transactionFormData}
 						<TransactionForm
@@ -171,12 +198,14 @@
 				</div>
 				<hr class="sm:mb-8" />
 				{#if allTransactions.length === 0}
-				<p class="-mt-8">No transaction for this project yet.</p>
+					<p class="-mt-8">No transaction for this project yet.</p>
 				{:else}
-				<h3 class="mb-6 text-2xl font-bold">Transaction Details:</h3>
+					<h3 class="mb-6 text-2xl font-bold">Transaction Details:</h3>
+
+					<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
 				{/if}
 				<ScrollArea class="h-80 w-full">
-				<div class="flex flex-col justify-between gap-2 px-8 pt-1">
+					<div class="flex flex-col justify-between gap-2 px-8 pt-1">
 						{#each allTransactions as transaction}
 							<span class=" relative inline-flex gap-8 pl-4 font-semibold">
 								<DeleteTransaction
@@ -190,18 +219,21 @@
 										<p>- {transaction.type}</p>
 										<p>- {transaction.amount}</p>
 										{#if transaction.isRecurring}
-										<p>- recurring transaction</p>
+											<p>- recurring transaction</p>
 										{/if}
 										{#if transaction.remarks}
-										<p>- {transaction.remarks}</p>
+											<p>- {transaction.remarks}</p>
 										{/if}
 									</Tooltip.Content>
-								  </Tooltip.Root>
+								</Tooltip.Root>
 
-								 <small class="text-right">{transaction.createdAt}</small>
+								<small class="text-right">{transaction.createdAt}</small>
 							</span>
 							{#if transaction.type === 'income'}
-								<p class="mb-2 inline pl-4 text-green-500"><small>+ </small> {transaction.amount}</p>
+								<p class="mb-2 inline pl-4 text-green-500">
+									<small>+ </small>
+									{transaction.amount}
+								</p>
 							{:else if transaction.type === 'expense'}
 								<p class="mb-2 inline pl-4 text-red-500"><small>- </small> {transaction.amount}</p>
 							{/if}
