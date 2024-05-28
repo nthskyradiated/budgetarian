@@ -200,14 +200,13 @@
 				{#if allTransactions.length === 0}
 					<p class="-mt-8">No transaction for this project yet.</p>
 				{:else}
-					<h3 class="mb-6 text-2xl font-bold">Transaction Details:</h3>
-
+					<h3 class="mb-6 text-2xl font-bold lg:mb-1">Transaction Details:</h3>
 					<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
 				{/if}
 				<ScrollArea class="h-80 w-full">
 					<div class="flex flex-col justify-between gap-2 px-8 pt-1">
 						{#each allTransactions as transaction}
-							<span class=" relative inline-flex gap-8 pl-4 font-semibold">
+							<span class=" relative inline-flex gap-8 text-nowrap pl-4 font-semibold">
 								<DeleteTransaction
 									transactionId={transaction.id}
 									on:confirmDeleteTransaction={() => handleDeleteTransaction(transaction.id, ID)}

@@ -1,25 +1,24 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
 
 export function createBaseMetaTags(url: URL): MetaTagsProps {
-	const title = 'LSD Kit';
-	const description = 'Lucia-auth Drizzle-ORM Sveltekit template';
+	const title = 'Budgetarian';
+	const description = 'Expense Tracker Visualizer made with SvelteKit';
 	const canonicalUrl = new URL(url.pathname, url.origin).href;
 
 	return {
 		title: title,
-		titleTemplate: '%s | LSD is the way',
+		titleTemplate: '%s | Your Budget Visualized',
 		description: description,
 		canonical: canonicalUrl,
 
 		keywords: [
-			'Lucia',
+			'Expense Tracker',
 			'sveltekit',
 			'svelte',
-			'tailwindcss',
-			'svelte-sonner',
-			'svelte-meta-tags',
-			'drizzle-orm',
-			'sqlite3'
+			'Data Table',
+			'Data Visualization',
+			'Budget App',
+			'D3'
 		],
 
 		openGraph: {
@@ -28,7 +27,7 @@ export function createBaseMetaTags(url: URL): MetaTagsProps {
 			locale: 'en_IE',
 			title: title,
 			description: description,
-			siteName: 'LSDKit',
+			siteName: 'Budgetarian',
 			images: [
 				{
 					url: 'https://www.example.ie/og-image.jpg',

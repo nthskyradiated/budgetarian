@@ -23,7 +23,7 @@
 	setupViewTransition();
 </script>
 
-<ProgressBar color="#7F57F1" zIndex={100} intervalTime={100} />
+<ProgressBar color="#22c55e" zIndex={100} intervalTime={100} />
 <MetaTags {...metaTags} />
 <Toaster richColors closeButton position={'bottom-right'} />
 <ModeWatcher />
