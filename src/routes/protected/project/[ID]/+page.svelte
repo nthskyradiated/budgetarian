@@ -92,7 +92,6 @@
 					totalCount = updatedData.pagination.totalCount;
 					perPage = updatedData.pagination.pageSize;
 					updateChartData(allTransactions, chartData);
-
 				}
 			} else {
 				toast.error('Failed to fetch updated transactions');
@@ -256,7 +255,8 @@
 			</div>
 			<div class="m-auto mt-12 flex w-auto justify-center gap-4 text-center"></div>
 		</Card>
+		<Card class="my-2 h-max w-full p-6 md:flex-1 lg:w-1/3">
+			<Chart data={$chartData} />
+		</Card>
 	</div>
-
-	<Chart data={$chartData} />
 </main>

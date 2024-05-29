@@ -65,7 +65,6 @@ export type Project = {
 	userId: string;
 };
 
-
 export type TransactionType = 'income' | 'expense';
 
 export type Transaction = {
