@@ -74,7 +74,7 @@
 </script>
 
 <!-- done. do not touch! -->
-<div class="mx-4 my-32 w-96 space-y-4 sm:mx-auto lg:w-1/3">
+<div class="mx-4 w-96 space-y-4 sm:mx-auto lg:w-1/3 min-h-96">
 	<h1 class="mb-6 text-2xl font-bold leading-none">Login</h1>
 
 	<form method="post" use:loginEnhance action={route('logIn /auth/login')} class="space-y-4">

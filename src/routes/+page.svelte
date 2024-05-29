@@ -6,12 +6,8 @@
 	let isLoading = false;
 </script>
 
-<header class="my-12 mb-10 w-full text-start">
-	<h1>Welcome to Handshakes.me VIP</h1>
-	<p>Visit <a href="https://handshakes.me">Handshakes.me</a> to learn more.</p>
-</header>
 
-<main class="align-center m-auto flex w-auto flex-row justify-evenly">
+<main class="align-center mx-4 sm:mx-auto w-96 min-h-96">
 	<div class="mx-auto flex w-64 flex-col gap-4">
 		<Button
 			type="button"

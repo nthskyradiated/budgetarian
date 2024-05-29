@@ -12,6 +12,7 @@
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 	import NavBar from '@/lib/components/NavBar.svelte';
 	import Footer from '@/lib/components/Footer.svelte';
+	import Header from '@/lib/components/Header.svelte';
 	export let data: PageData;
 
 	const flash = getFlash(page);
@@ -31,6 +32,8 @@
 <div class="mx-4 flex min-h-[100%] w-full flex-col justify-between md:w-auto lg:mx-24">
 	{#if data.user}
 		<NavBar user={data.user} />
+	{:else}
+	<Header />
 	{/if}
 	<slot />
 </div>

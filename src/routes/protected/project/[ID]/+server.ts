@@ -14,11 +14,8 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
 		redirect(302, '/auth/login');
 	}
 	const page = parseInt(url.searchParams.get('page') || '1', 10);
-	const pageSize = parseInt(url.searchParams.get('pageSize') || '3', 10);
+	const pageSize = parseInt(url.searchParams.get('pageSize') ?? '10', 10);
 	const offset = (page - 1) * pageSize;
-	console.log(url);
-	console.log(page);
-	console.log(pageSize);
 
 	try {
 		// Fetch all transactions from inflowsTable
@@ -82,8 +79,10 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
 
 		const totalCount = totalIncomeCount + totalExpensesCount;
 		const totalPages = Math.ceil(totalCount / pageSize);
-		console.log(totalPages);
-		console.log(totalCount);
+		console.log('current page number: ', page)
+		console.log('current page size: ', pageSize)
+		console.log('current total number of pages: ', totalPages);
+		console.log('current total number of transactions: ', totalCount);
 
 		return json(
 			{

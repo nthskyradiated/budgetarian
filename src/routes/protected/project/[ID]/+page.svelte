@@ -23,11 +23,14 @@
 
 		const url = new URL($page.url.href);
 		url.searchParams.set('page', newPage.toString());
+		url.searchParams.set('pageSize', '10');
 
 		const response = await fetch(url.toString());
 		if (response.ok) {
 			const result = await response.json();
 			allTransactions = result.allTransactions;
+			totalCount = result.pagination.totalCount;
+			perPage = result.pagination.pageSize;
 		} else {
 			console.error('Failed to fetch transactions for new page');
 		}

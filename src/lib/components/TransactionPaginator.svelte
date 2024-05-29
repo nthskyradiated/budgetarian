@@ -53,7 +53,7 @@
 		<Pagination.Item>
 			<Pagination.NextButton
 				on:click={() => changePage(currentPage ? currentPage + 1 : 1)}
-				disabled={currentPage === pages.length + 1}
+				disabled={currentPage === pages.length}
 			/>
 		</Pagination.Item>
 	</Pagination.Content>
