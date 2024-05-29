@@ -15,7 +15,7 @@
 	import ScrollArea from '@/lib/components/ui/scroll-area/scroll-area.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
-	import { chartData, updateChartData } from '@/lib/utils/chartUtils';
+	import { chartData, updateChartDataByTotalTransactions } from '@/lib/utils/chartUtils';
 	// import SuperDebug from 'sveltekit-superforms';
 
 	export let data: PageData;
@@ -91,7 +91,7 @@
 					currProject.updatedAt = updatedData.project[0].updatedAt;
 					totalCount = updatedData.pagination.totalCount;
 					perPage = updatedData.pagination.pageSize;
-					updateChartData(allTransactions, chartData);
+					updateChartDataByTotalTransactions(allTransactions, chartData);
 				}
 			} else {
 				toast.error('Failed to fetch updated transactions');
