@@ -203,8 +203,15 @@
 				{#if allTransactions.length === 0}
 					<p class="-mt-8">No transaction for this project yet.</p>
 				{:else}
+				<div class="lg:flex lg:flex-row lg:justify-between">
 					<h3 class="mb-6 text-2xl font-bold lg:mb-1">Transaction Details:</h3>
+					<div class="hidden lg:block">
 					<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
+					</div>
+				</div>
+				<div class="block lg:hidden">
+				<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
+				</div>
 				{/if}
 				<ScrollArea class="h-80 w-full">
 					<div class="flex flex-col justify-between gap-2 px-8 pt-1">
