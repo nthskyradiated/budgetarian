@@ -137,52 +137,58 @@
 
 <main class="w-full">
 	<div class="mx-4 my-4 flex w-96 flex-col-reverse gap-2 sm:mx-auto md:w-full md:flex-row">
-		<Card
-			class="my-2 h-max w-full p-6 md:flex-1 lg:w-1/3"
-			on:transactionAdded={handleTransactionAdded}
-		>
-			<div class="flex flex-col gap-4">
-				<div class="items-left flex flex-col gap-6 sm:flex-row sm:justify-between">
-					<h1 class="text-4xl font-bold">{currProject?.name}</h1>
-					<div class="flex flex-col items-start justify-evenly sm:items-center">
-						<UpdateProjectForm
-							dialogName="Update Project"
-							dialogDescription="Input all the necessary information to update a project."
-							dialogTitle="Update project?"
-							updateProjectFormData={updateProjectFormData!}
-							updateProjectFormAction={route('updateProject /protected/projects')}
-							projectId={ID as string}
-							updateFundsPlaceHolder={project?.totalFunds!}
-							nameDefaultVal={project?.name!}
-							detailsDefaultVal={project?.details!}
-						/>
-						<DeleteProject projectId={ID} on:confirmDelete={() => handleDeleteProject(ID)} />
+		<div class="flex flex-col gap-1 md:flex-1 lg:w-1/3 w-full">
+			<Card class="mt-2 h-full w-full p-4">
+				<Chart data={$chartData} />
+			</Card>
+			<Card
+				class="my-2 h-max w-full p-6 md:flex-1"
+				on:transactionAdded={handleTransactionAdded}
+			>
+				<div class="flex flex-col gap-4">
+					<div class="items-left flex flex-col gap-6 sm:flex-row sm:justify-between">
+						<h1 class="text-4xl font-bold">{currProject?.name}</h1>
+						<div class="flex flex-col items-start justify-evenly sm:items-center">
+							<UpdateProjectForm
+								dialogName="Update Project"
+								dialogDescription="Input all the necessary information to update a project."
+								dialogTitle="Update project?"
+								updateProjectFormData={updateProjectFormData!}
+								updateProjectFormAction={route('updateProject /protected/projects')}
+								projectId={ID as string}
+								updateFundsPlaceHolder={project?.totalFunds!}
+								nameDefaultVal={project?.name!}
+								detailsDefaultVal={project?.details!}
+							/>
+							<DeleteProject projectId={ID} on:confirmDelete={() => handleDeleteProject(ID)} />
+						</div>
+					</div>
+					<hr class="mb-8" />
+					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+						<span class="text-lg font-bold">Project Details: </span>
+						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.details}</p>
+					</div>
+					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+						<span class="text-lg font-bold">Starting Balance: </span>
+						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.startingFunds}</p>
+					</div>
+					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+						<span class="text-lg font-bold">Current Balance: </span>
+						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.totalFunds}</p>
+					</div>
+					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+						<span class="text-lg font-bold">Updated At: </span>
+						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.updatedAt}</p>
+					</div>
+					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+						<span class="text-lg font-bold">Date Created: </span>
+						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{project?.createdAt}</p>
 					</div>
 				</div>
-				<hr class="mb-8" />
-				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
-					<span class="text-lg font-bold">Project Details: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.details}</p>
-				</div>
-				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
-					<span class="text-lg font-bold">Starting Balance: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.startingFunds}</p>
-				</div>
-				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
-					<span class="text-lg font-bold">Current Balance: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.totalFunds}</p>
-				</div>
-				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
-					<span class="text-lg font-bold">Updated At: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.updatedAt}</p>
-				</div>
-				<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
-					<span class="text-lg font-bold">Date Created: </span>
-					<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{project?.createdAt}</p>
-				</div>
-			</div>
-			<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center"></div>
-		</Card>
+				<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center"></div>
+			</Card>
+
+		</div>
 
 		<Card class="my-2 w-full px-6 md:flex-1 md:flex-shrink-0 md:flex-grow md:basis-1/2 lg:w-2/3">
 			<div class="flex flex-col gap-4">
@@ -215,7 +221,7 @@
 						<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
 					</div>
 				{/if}
-				<ScrollArea class="h-80 w-full">
+				<ScrollArea class="h-96 w-full">
 					<div class="flex flex-col justify-between gap-2 px-8 pt-1">
 						{#each allTransactions as transaction}
 							<span class=" relative inline-flex gap-8 text-nowrap pl-4 font-semibold">
@@ -255,8 +261,6 @@
 			</div>
 			<div class="m-auto mt-12 flex w-auto justify-center gap-4 text-center"></div>
 		</Card>
-		<Card class="my-2 h-max w-full p-6 md:flex-1 lg:w-1/3">
-			<Chart data={$chartData} />
-		</Card>
+
 	</div>
 </main>

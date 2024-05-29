@@ -4,11 +4,14 @@ import type { ChartData } from 'chart.js';
 import type { Transaction, TransactionType } from '../types';
 
 const colors: Record<TransactionType, string> = {
-	income: '#36A2EB',
-	expense: '#FF6384'
+	income: '#3b82f6',
+	expense: '#dc2626'
 };
 
-export const updateChartDataByTotalTransactions = (transactions: Transaction[], chartData: Writable<ChartData>) => {
+export const updateChartDataByTotalTransactions = (
+	transactions: Transaction[],
+	chartData: Writable<ChartData>
+) => {
 	const groupedTransactions: Record<TransactionType, number> = {
 		income: 0,
 		expense: 0
@@ -49,12 +52,11 @@ export const chartData = writable<ChartData>({
 	]
 });
 
-
 export const generateColors = (numColors: number) => {
-    const colors = [];
-    for (let i = 0; i < numColors; i++) {
-        const hue = (i * 360 / numColors) % 360;
-        colors.push(`hsl(${hue}, 70%, 60%)`);
-    }
-    return colors;
+	const colors = [];
+	for (let i = 0; i < numColors; i++) {
+		const hue = ((i * 360) / numColors) % 360;
+		colors.push(`hsl(${hue}, 70%, 60%)`);
+	}
+	return colors;
 };
