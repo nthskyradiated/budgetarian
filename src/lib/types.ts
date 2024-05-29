@@ -64,3 +64,20 @@ export type Project = {
 	updatedAt: string | null;
 	userId: string;
 };
+
+
+export type TransactionType = 'income' | 'expense';
+
+export type Transaction = {
+	type: string;
+	name: string;
+	id: string;
+	createdAt: string | null;
+	userId: string;
+	category: number;
+	amount: number;
+	remarks: string | null;
+	updatedAt: string | null;
+	projectId: string;
+	isRecurring: boolean;
+};

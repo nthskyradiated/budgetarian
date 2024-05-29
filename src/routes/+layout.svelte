@@ -33,7 +33,7 @@
 	{#if data.user}
 		<NavBar user={data.user} />
 	{:else}
-	<Header />
+		<Header />
 	{/if}
 	<slot />
 </div>

@@ -11,12 +11,21 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import DeleteTransaction from '@/lib/components/DeleteTransaction.svelte';
 	import TransactionPaginator from '@/lib/components/TransactionPaginator.svelte';
+	import Chart from '@/lib/components/Chart.svelte';
 	import ScrollArea from '@/lib/components/ui/scroll-area/scroll-area.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
+	import { chartData, updateChartData } from '@/lib/utils/chartUtils';
 	// import SuperDebug from 'sveltekit-superforms';
 
 	export let data: PageData;
+
+	const { project, transactionHistory = [], updateProjectFormData, ID } = data;
+	$: allTransactions = [...transactionHistory];
+	$: currProject = project;
+
+	let totalCount: number;
+	let perPage: number;
 
 	const handlePageChange = async (newPage: number) => {
 		console.log('handlePageChange called with newPage:', newPage); // Debug log
@@ -38,14 +47,6 @@
 		goto(url.toString(), { replaceState: true });
 	};
 	$: $page.url.searchParams.get('page'); // Re-trigger when page param changes
-
-	const { project, transactionHistory = [], updateProjectFormData, ID } = data;
-	$: allTransactions = [...transactionHistory];
-	// $: totalFunds = project?.totalFunds;
-	// $: updatedAt = project?.updatedAt;
-	$: currProject = project;
-	let totalCount: number;
-	let perPage: number;
 
 	const { message: updateProjectFormMessage } = superForm(updateProjectFormData!, {
 		onUpdated: async () => {
@@ -90,6 +91,8 @@
 					currProject.updatedAt = updatedData.project[0].updatedAt;
 					totalCount = updatedData.pagination.totalCount;
 					perPage = updatedData.pagination.pageSize;
+					updateChartData(allTransactions, chartData);
+
 				}
 			} else {
 				toast.error('Failed to fetch updated transactions');
@@ -203,15 +206,15 @@
 				{#if allTransactions.length === 0}
 					<p class="-mt-8">No transaction for this project yet.</p>
 				{:else}
-				<div class="lg:flex lg:flex-row lg:justify-between">
-					<h3 class="mb-6 text-2xl font-bold lg:mb-1">Transaction Details:</h3>
-					<div class="hidden lg:block">
-					<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
+					<div class="lg:flex lg:flex-row lg:justify-between">
+						<h3 class="mb-6 text-2xl font-bold lg:mb-1">Transaction Details:</h3>
+						<div class="hidden lg:block">
+							<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
+						</div>
 					</div>
-				</div>
-				<div class="block lg:hidden">
-				<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
-				</div>
+					<div class="block lg:hidden">
+						<TransactionPaginator count={totalCount} {perPage} onPageChange={handlePageChange} />
+					</div>
 				{/if}
 				<ScrollArea class="h-80 w-full">
 					<div class="flex flex-col justify-between gap-2 px-8 pt-1">
@@ -254,4 +257,6 @@
 			<div class="m-auto mt-12 flex w-auto justify-center gap-4 text-center"></div>
 		</Card>
 	</div>
+
+	<Chart data={$chartData} />
 </main>
