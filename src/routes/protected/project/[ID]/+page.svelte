@@ -152,7 +152,7 @@
 	<div class="mx-4 my-4 flex w-96 flex-col-reverse gap-2 sm:mx-auto md:w-full md:flex-row">
 		<div class="flex w-full flex-col gap-1 md:flex-1 lg:w-1/3">
 			<Card class="mt-2 h-full w-full p-4">
-				<Chart data={$chartData} />
+				<Chart transactions={allTransactions} viewType="category" />
 			</Card>
 			<Card class="my-2 h-max w-full p-6 md:flex-1" on:transactionAdded={handleTransactionAdded}>
 				<div class="flex flex-col gap-4">
