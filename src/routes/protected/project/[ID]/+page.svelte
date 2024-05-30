@@ -20,16 +20,27 @@
 
 	export let data: PageData;
 
-	const { project, transactionHistory = [], updateProjectFormData, ID } = data;
-	$: allTransactions = [...transactionHistory];
-	$: currProject = project;
+	const {
+		project,
+		transactionHistory = [],
+		updateProjectFormData,
+		initialPaginatedTransactions = [],
+		pagination,
+		ID
+	} = data;
 
+	let currProject = project;
 	let totalCount: number;
 	let perPage: number;
 
-	const handlePageChange = async (newPage: number) => {
-		console.log('handlePageChange called with newPage:', newPage); // Debug log
+	// Initialize variables with initial data
+	$: allTransactions = [...transactionHistory];
+	$: currProject = project;
+	$: paginatedTransactions = [...initialPaginatedTransactions];
+	$: totalCount = pagination?.totalCount ?? paginatedTransactions?.length;
+	$: perPage = pagination?.pageSize ?? 10;
 
+	const handlePageChange = async (newPage: number) => {
 		const url = new URL($page.url.href);
 		url.searchParams.set('page', newPage.toString());
 		url.searchParams.set('pageSize', '10');
@@ -37,7 +48,7 @@
 		const response = await fetch(url.toString());
 		if (response.ok) {
 			const result = await response.json();
-			allTransactions = result.allTransactions;
+			paginatedTransactions = result.paginatedTransactions;
 			totalCount = result.pagination.totalCount;
 			perPage = result.pagination.pageSize;
 		} else {
@@ -87,11 +98,12 @@
 				const updatedData = await response.json();
 				if (currProject) {
 					allTransactions = updatedData.allTransactions;
-					currProject.totalFunds = updatedData.project[0].totalFunds;
-					currProject.updatedAt = updatedData.project[0].updatedAt;
+					updateChartDataByTotalTransactions(allTransactions, chartData);
 					totalCount = updatedData.pagination.totalCount;
 					perPage = updatedData.pagination.pageSize;
-					updateChartDataByTotalTransactions(allTransactions, chartData);
+					paginatedTransactions = updatedData.paginatedTransactions;
+					currProject.totalFunds = updatedData.project[0].totalFunds;
+					currProject.updatedAt = updatedData.project[0].updatedAt;
 				}
 			} else {
 				toast.error('Failed to fetch updated transactions');
@@ -104,6 +116,7 @@
 
 	const handleTransactionAdded = async () => {
 		await fetchTransactions();
+		await handlePageChange(1);
 	};
 
 	const handleDeleteProject = async (ID: string | undefined) => {
@@ -137,14 +150,11 @@
 
 <main class="w-full">
 	<div class="mx-4 my-4 flex w-96 flex-col-reverse gap-2 sm:mx-auto md:w-full md:flex-row">
-		<div class="flex flex-col gap-1 md:flex-1 lg:w-1/3 w-full">
+		<div class="flex w-full flex-col gap-1 md:flex-1 lg:w-1/3">
 			<Card class="mt-2 h-full w-full p-4">
 				<Chart data={$chartData} />
 			</Card>
-			<Card
-				class="my-2 h-max w-full p-6 md:flex-1"
-				on:transactionAdded={handleTransactionAdded}
-			>
+			<Card class="my-2 h-max w-full p-6 md:flex-1" on:transactionAdded={handleTransactionAdded}>
 				<div class="flex flex-col gap-4">
 					<div class="items-left flex flex-col gap-6 sm:flex-row sm:justify-between">
 						<h1 class="text-4xl font-bold">{currProject?.name}</h1>
@@ -164,30 +174,39 @@
 						</div>
 					</div>
 					<hr class="mb-8" />
-					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<div
+						class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2"
+					>
 						<span class="text-lg font-bold">Project Details: </span>
 						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.details}</p>
 					</div>
-					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<div
+						class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2"
+					>
 						<span class="text-lg font-bold">Starting Balance: </span>
 						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.startingFunds}</p>
 					</div>
-					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<div
+						class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2"
+					>
 						<span class="text-lg font-bold">Current Balance: </span>
 						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.totalFunds}</p>
 					</div>
-					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<div
+						class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2"
+					>
 						<span class="text-lg font-bold">Updated At: </span>
 						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{currProject?.updatedAt}</p>
 					</div>
-					<div class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2">
+					<div
+						class="flex flex-col justify-evenly px-4 pt-4 sm:flex-row sm:justify-between sm:pt-2"
+					>
 						<span class="text-lg font-bold">Date Created: </span>
 						<p class="mt-2 inline sm:mt-0 sm:pl-12 sm:text-right">{project?.createdAt}</p>
 					</div>
 				</div>
 				<div class="m-auto mt-8 flex w-auto justify-center gap-2 text-center"></div>
 			</Card>
-
 		</div>
 
 		<Card class="my-2 w-full px-6 md:flex-1 md:flex-shrink-0 md:flex-grow md:basis-1/2 lg:w-2/3">
@@ -223,7 +242,7 @@
 				{/if}
 				<ScrollArea class="h-96 w-full">
 					<div class="flex flex-col justify-between gap-2 px-8 pt-1">
-						{#each allTransactions as transaction}
+						{#each paginatedTransactions as transaction}
 							<span class=" relative inline-flex gap-8 text-nowrap pl-4 font-semibold">
 								<DeleteTransaction
 									transactionId={transaction.id}
@@ -261,6 +280,5 @@
 			</div>
 			<div class="m-auto mt-12 flex w-auto justify-center gap-4 text-center"></div>
 		</Card>
-
 	</div>
 </main>

@@ -58,33 +58,36 @@ export const validateCategory = async (category: string, type: 'income' | 'expen
 	return null;
 };
 
-export const getTransactionType = async (transactionId: string) => {
-	const inflow = await db
-		.select({ id: inflowsTable.id })
-		.from(inflowsTable)
-		.where(eq(inflowsTable.id, transactionId))
-		.limit(1);
+// export const getTransactionType = async (transactionId: string) => {
+// 	const inflow = await db
+// 		.select({ id: inflowsTable.id })
+// 		.from(inflowsTable)
+// 		.where(eq(inflowsTable.id, transactionId))
+// 		.limit(1);
 
-	if (inflow.length > 0) {
-		return 'income';
-	}
+// 	if (inflow.length > 0) {
+// 		return 'income';
+// 	}
 
-	const expense = await db
-		.select({ id: expensesTable.id })
-		.from(expensesTable)
-		.where(eq(expensesTable.id, transactionId))
-		.limit(1);
+// 	const expense = await db
+// 		.select({ id: expensesTable.id })
+// 		.from(expensesTable)
+// 		.where(eq(expensesTable.id, transactionId))
+// 		.limit(1);
 
-	if (expense.length > 0) {
-		return 'expense';
-	}
+// 	if (expense.length > 0) {
+// 		return 'expense';
+// 	}
 
-	return null; // Transaction not found
-};
+// 	return null; // Transaction not found
+// };
 
-
-export const getPaginatedTransactions = async (page: number, pageSize: number, projectId: string, userId: string) => {
-
+export const getPaginatedTransactions = async (
+	page: number,
+	pageSize: number,
+	projectId: string,
+	userId: string
+) => {
 	const offset = (page - 1) * pageSize;
 
 	try {
@@ -92,25 +95,17 @@ export const getPaginatedTransactions = async (page: number, pageSize: number, p
 		const income = await db
 			.select()
 			.from(inflowsTable)
-			.where(
-				and(eq(inflowsTable.projectId, projectId), eq(inflowsTable.userId, userId))
-			)
+			.where(and(eq(inflowsTable.projectId, projectId), eq(inflowsTable.userId, userId)))
 			.execute();
 
 		// Fetch all transactions from expensesTable
 		const expenses = await db
 			.select()
 			.from(expensesTable)
-			.where(
-				and(eq(expensesTable.projectId, projectId), eq(expensesTable.userId, userId))
-			)
+			.where(and(eq(expensesTable.projectId, projectId), eq(expensesTable.userId, userId)))
 			.execute();
 
-		const project = await db
-			.select()
-			.from(projects)
-			.where(eq(projects.id, projectId))
-			.execute();
+		const project = await db.select().from(projects).where(eq(projects.id, projectId)).execute();
 
 		// Combine and sort results by createdAt date
 		const incomeWithSource = income.map((entry) => ({ ...entry, type: 'income' }));
@@ -130,9 +125,7 @@ export const getPaginatedTransactions = async (page: number, pageSize: number, p
 				count: count(inflowsTable.id)
 			})
 			.from(inflowsTable)
-			.where(
-				and(eq(inflowsTable.projectId, projectId), eq(inflowsTable.userId, userId))
-			)
+			.where(and(eq(inflowsTable.projectId, projectId), eq(inflowsTable.userId, userId)))
 			.execute()
 			.then((rows) => rows[0]?.count || 0);
 
@@ -141,9 +134,7 @@ export const getPaginatedTransactions = async (page: number, pageSize: number, p
 				count: count(expensesTable.id)
 			})
 			.from(expensesTable)
-			.where(
-				and(eq(expensesTable.projectId, projectId), eq(expensesTable.userId, userId))
-			)
+			.where(and(eq(expensesTable.projectId, projectId), eq(expensesTable.userId, userId)))
 			.execute()
 			.then((rows) => rows[0]?.count || 0);
 
@@ -151,13 +142,46 @@ export const getPaginatedTransactions = async (page: number, pageSize: number, p
 		const totalPages = Math.ceil(totalCount / pageSize);
 
 		return {
+			allTransactions,
 			paginatedTransactions,
 			project,
 			pagination: { page, pageSize, totalCount, totalPages }
-		}
-		
+		};
 	} catch (error) {
 		console.error('Error fetching transactions:', error);
 		throw new Error('An error occurred while fetching transactions.');
 	}
 };
+
+// export const sortTransactions = async (ID: string, userId: string) => {
+// 	const project = await db.select().from(projects).where(eq(projects.id, ID));
+// 	if (!project) {
+// 		return new Error('Project not found');
+// 	}
+// 	try {
+// 		const income = await db.query.inflowsTable.findMany({
+// 			where: and(eq(inflowsTable.projectId, ID), eq(inflowsTable.userId, userId))
+// 		});
+// 		const expenses = await db.query.expensesTable.findMany({
+// 			where: and(eq(expensesTable.projectId, ID), eq(expensesTable.userId, userId))
+// 		});
+
+// 		const incomeWithSource = income.map((entry) => ({ ...entry, type: 'income' }));
+// 		const expensesWithSource = expenses.map((entry) => ({ ...entry, type: 'expense' }));
+// 		const transactions = [...incomeWithSource, ...expensesWithSource];
+// 		const transactionHistory = transactions
+// 			.sort((a, b) => {
+// 				const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
+// 				const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
+// 				return createdAtA - createdAtB;
+// 			})
+// 			.reverse();
+// 			return {
+// 				transactionHistory,
+// 				ID,
+// 				project: project[0],
+// 			}
+// 	} catch (error) {
+// 		return new Error('An error occurred while fetching transactions.');
+// 	}
+// }

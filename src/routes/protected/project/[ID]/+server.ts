@@ -79,14 +79,15 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
 
 		const totalCount = totalIncomeCount + totalExpensesCount;
 		const totalPages = Math.ceil(totalCount / pageSize);
-		console.log('current page number: ', page);
-		console.log('current page size: ', pageSize);
-		console.log('current total number of pages: ', totalPages);
-		console.log('current total number of transactions: ', totalCount);
+		// console.log('current page number: ', page);
+		// console.log('current page size: ', pageSize);
+		// console.log('current total number of pages: ', totalPages);
+		// console.log('current total number of transactions: ', totalCount);
 
 		return json(
 			{
-				allTransactions: paginatedTransactions,
+				allTransactions,
+				paginatedTransactions,
 				project,
 				pagination: { page, pageSize, totalCount, totalPages }
 			},

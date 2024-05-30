@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import projects from '@/db/schema/projectsSchema/projects';
 import db from '@/db';
-import { and, eq, sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import {
 	UpdateProjectZodSchema,
 	TransactionZodSchema,
@@ -11,6 +11,7 @@ import {
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
 import {
+	getPaginatedTransactions,
 	getProjectById,
 	insertNewExpense,
 	insertNewInflow,
@@ -18,11 +19,11 @@ import {
 	validateCategory
 } from '@/lib/utils/projectUtils';
 import { generateIdFromEntropySize } from 'lucia';
-import { inflowsTable, expensesTable } from '@/db/schema/index';
+// import { inflowsTable, expensesTable } from '@/db/schema/index';
 import { lucia } from '@/lib/server/luciaUtils';
 import type { AlertMessageType } from '@/lib/types';
 
-export const load = (async ({ locals, params }) => {
+export const load = (async ({ locals, params, url }) => {
 	if (!locals.user) {
 		redirect(302, '/');
 	}
@@ -34,35 +35,32 @@ export const load = (async ({ locals, params }) => {
 	if (!project) {
 		return new Error('Project not found');
 	}
+	const page = parseInt(url.searchParams.get('page') || '1', 10);
+	const pageSize = parseInt(url.searchParams.get('pageSize') ?? '10', 10);
+	const projectId = ID;
+	const userId = locals.user.id;
+	try {
+		const result = await getPaginatedTransactions(page, pageSize, projectId, userId);
+		if (!result) {
+			return new Error('Project not found');
+		}
+		const initialPaginatedTransactions = result.paginatedTransactions;
+		const transactionHistory = result.allTransactions;
 
-	const income = await db.query.inflowsTable.findMany({
-		where: and(eq(inflowsTable.projectId, ID), eq(inflowsTable.userId, locals.user.id))
-	});
-	const expenses = await db.query.expensesTable.findMany({
-		where: and(eq(expensesTable.projectId, ID), eq(expensesTable.userId, locals.user.id))
-	});
-
-	const incomeWithSource = income.map((entry) => ({ ...entry, type: 'income' }));
-	const expensesWithSource = expenses.map((entry) => ({ ...entry, type: 'expense' }));
-	const transactions = [...incomeWithSource, ...expensesWithSource];
-	const transactionHistory = transactions
-		.sort((a, b) => {
-			const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
-			const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
-			return createdAtA - createdAtB;
-		})
-		.reverse();
-
-	// console.log(transactionHistory);
-	return {
-		transactionHistory,
-		ID,
-		project: project[0],
-		transactionFormData: await superValidate(zod(TransactionZodSchema)),
-		updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), {
-			id: 'updateProjectForm'
-		})
-	};
+		return {
+			initialPaginatedTransactions,
+			pagination: result.pagination,
+			transactionHistory,
+			ID,
+			project: project[0],
+			transactionFormData: await superValidate(zod(TransactionZodSchema)),
+			updateProjectFormData: await superValidate(zod(UpdateProjectZodSchema), {
+				id: 'updateProjectForm'
+			})
+		};
+	} catch (error) {
+		throw new Error('Error fetching transactions');
+	}
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
