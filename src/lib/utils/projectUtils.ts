@@ -10,7 +10,7 @@ import type { ExpenseInsertSchema } from '@/db/schema/projectsSchema/expenses';
 import type { InflowInsertSchema } from '@/db/schema/projectsSchema/inflows';
 import type { ProjectInsertSchema } from '@/db/schema/projectsSchema/projects';
 import projects from '@/db/schema/projectsSchema/projects';
-import { eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 
 export const insertNewProject = async (project: ProjectInsertSchema) => {
 	return await db.insert(projectsTable).values(project).returning();
@@ -80,4 +80,84 @@ export const getTransactionType = async (transactionId: string) => {
 	}
 
 	return null; // Transaction not found
+};
+
+
+export const getPaginatedTransactions = async (page: number, pageSize: number, projectId: string, userId: string) => {
+
+	const offset = (page - 1) * pageSize;
+
+	try {
+		// Fetch all transactions from inflowsTable
+		const income = await db
+			.select()
+			.from(inflowsTable)
+			.where(
+				and(eq(inflowsTable.projectId, projectId), eq(inflowsTable.userId, userId))
+			)
+			.execute();
+
+		// Fetch all transactions from expensesTable
+		const expenses = await db
+			.select()
+			.from(expensesTable)
+			.where(
+				and(eq(expensesTable.projectId, projectId), eq(expensesTable.userId, userId))
+			)
+			.execute();
+
+		const project = await db
+			.select()
+			.from(projects)
+			.where(eq(projects.id, projectId))
+			.execute();
+
+		// Combine and sort results by createdAt date
+		const incomeWithSource = income.map((entry) => ({ ...entry, type: 'income' }));
+		const expensesWithSource = expenses.map((entry) => ({ ...entry, type: 'expense' }));
+		const allTransactions = [...incomeWithSource, ...expensesWithSource].sort((a, b) => {
+			const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
+			const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
+			return createdAtB - createdAtA;
+		});
+
+		// Implement pagination on the sorted results
+		const paginatedTransactions = allTransactions.slice(offset, offset + pageSize);
+
+		// Fetch the total count for pagination
+		const totalIncomeCount = await db
+			.select({
+				count: count(inflowsTable.id)
+			})
+			.from(inflowsTable)
+			.where(
+				and(eq(inflowsTable.projectId, projectId), eq(inflowsTable.userId, userId))
+			)
+			.execute()
+			.then((rows) => rows[0]?.count || 0);
+
+		const totalExpensesCount = await db
+			.select({
+				count: count(expensesTable.id)
+			})
+			.from(expensesTable)
+			.where(
+				and(eq(expensesTable.projectId, projectId), eq(expensesTable.userId, userId))
+			)
+			.execute()
+			.then((rows) => rows[0]?.count || 0);
+
+		const totalCount = totalIncomeCount + totalExpensesCount;
+		const totalPages = Math.ceil(totalCount / pageSize);
+
+		return {
+			paginatedTransactions,
+			project,
+			pagination: { page, pageSize, totalCount, totalPages }
+		}
+		
+	} catch (error) {
+		console.error('Error fetching transactions:', error);
+		throw new Error('An error occurred while fetching transactions.');
+	}
 };
