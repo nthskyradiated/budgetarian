@@ -2,6 +2,7 @@
 	import Button from '@/lib/components/ui/button/button.svelte';
 	import { goto } from '$app/navigation';
 	import { Icons } from '@/lib/components/icons';
+	import Icon from '@iconify/svelte';
 
 	let isLoading = false;
 </script>
@@ -36,7 +37,7 @@
 			{#if isLoading}
 				<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
 			{:else}
-				<Icons.gitHub class="mr-2 h-4 w-4" />
+				<Icon icon="line-md:github-loop" class="mr-2 h-6 w-6" />
 			{/if}
 			Continue with GitHub
 		</Button>
@@ -51,7 +52,7 @@
 			{#if isLoading}
 				<Icons.spinner class="mr-2 h-4 w-4 animate-spin" />
 			{:else}
-				<Icons.google class="mr-2 h-4 w-4" />
+				<Icon icon="cbi:google-logo-circle" class="mr-2 h-6 w-6" />
 			{/if}
 			Continue with Google
 		</Button>
