@@ -2,7 +2,7 @@
 	import ThemeToggler from './ThemeToggler.svelte';
 </script>
 
-<header class="my-12 ml-4 sm:ml-8 mb-32 flex w-full flex-row gap-4 text-start">
+<header class="my-12 mb-32 ml-4 flex w-full flex-row gap-4 text-start sm:ml-8">
 	<ThemeToggler />
 	<div>
 		<h1 class="mb-2 text-3xl font-bold leading-none">Budgetarian</h1>

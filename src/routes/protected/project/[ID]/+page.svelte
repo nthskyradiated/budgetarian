@@ -151,7 +151,9 @@
 <!-- <SuperDebug data={$updateProjectForm} /> -->
 
 <main class="w-full px-4 md:px-8 lg:px-16">
-	<div class="my-4 flex flex-col-reverse gap-2 w-full max-w-xs mx-auto md:max-w-md md:flex-row lg:max-w-full">
+	<div
+		class="mx-auto my-4 flex w-full max-w-xs flex-col-reverse gap-2 md:max-w-md md:flex-row lg:max-w-full"
+	>
 		<div class="flex w-full flex-col gap-1 md:flex-1 lg:w-2/5">
 			<Card class="mt-2 h-full w-full p-4">
 				<Chart transactions={allTransactions} {viewType} {chartType} />

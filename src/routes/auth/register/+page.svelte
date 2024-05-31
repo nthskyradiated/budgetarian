@@ -35,7 +35,7 @@
 <!-- <SuperDebug data={$form} /> -->
 <Toaster />
 <!-- done! do not touch! -->
-<div class="items-center min-h-96 lg:w-1/3 w-80 mx-auto">
+<div class="mx-auto min-h-96 w-80 items-center lg:w-1/3">
 	<h1 class="mb-6 text-2xl font-bold leading-none">Register</h1>
 	<form
 		method="post"

@@ -7,7 +7,7 @@
 	let isLoading = false;
 </script>
 
-<main class="items-center min-h-96 w-auto mx-auto">
+<main class="mx-auto min-h-96 w-auto items-center">
 	<div class="flex w-64 flex-col gap-4">
 		<Button
 			type="button"

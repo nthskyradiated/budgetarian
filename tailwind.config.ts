@@ -11,7 +11,7 @@ const config: Config = {
 			padding: '2rem',
 			screens: {
 				'2xl': '1400px',
-				'xs': '576px'
+				xs: '576px'
 			}
 		},
 		extend: {
@@ -59,7 +59,7 @@ const config: Config = {
 				sans: [...fontFamily.sans]
 			},
 			screens: {
-				'xs': '576px'
+				xs: '576px'
 			}
 		}
 	}

@@ -38,7 +38,7 @@
 <Toaster />
 
 <!-- done. do not touch! -->
-<div class="items-center min-h-96 w-80 space-y-4 mx-auto lg:w-1/3">
+<div class="mx-auto min-h-96 w-80 items-center space-y-4 lg:w-1/3">
 	<h1 class="mb-6 text-2xl font-bold leading-none">Email Verification Code</h1>
 
 	<h2 class="mb-5">

@@ -4,8 +4,8 @@
 	export let user;
 </script>
 
-<h1 class="py-10 text-left ml-4">Logged in as: {user.name ?? user.username}</h1>
-<nav class="w-80 pr-4 text-xl sm:pr-0 lg:w-96 ml-auto lg:mr-8">
+<h1 class="ml-4 py-10 text-left">Logged in as: {user.name ?? user.username}</h1>
+<nav class="ml-auto w-80 pr-4 text-xl sm:pr-0 lg:mr-8 lg:w-96">
 	<ul class="flex justify-end gap-4">
 		<li><a href={route('/protected/projects')}><span>Projects</span></a></li>
 		<li><a href={route('/protected/dashboard')}><span>Profile</span></a></li>
