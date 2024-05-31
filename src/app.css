@@ -56,3 +56,14 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@media (width <= 640px) {
+	html, body {
+		  overflow-x: hidden;
+	}
+	body {
+		width: 100%;
+		  position: relative
+	}
+  }
+  
