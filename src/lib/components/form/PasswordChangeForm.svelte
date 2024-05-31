@@ -16,10 +16,11 @@
 	import { zod } from 'sveltekit-superforms/adapters';
 	import * as Dialog from '@/lib/components/ui/dialog';
 	import { buttonVariants } from '@/lib/components/ui/button';
-	import { route } from '@/lib/router';
 
 	export let formData: SuperValidated<passwordResetZodSchema>;
 	export let isPasswordResetTokenRequired: boolean = false;
+	export let formAction
+
 	$: open = false;
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
@@ -54,7 +55,7 @@
 			<Dialog.Title>Password Change</Dialog.Title>
 			<Dialog.Description>Please enter your new password.</Dialog.Description>
 		</Dialog.Header>
-		<form use:enhance method="post" class="space-y-4" action={route('changePassword /dashboard')}>
+		<form use:enhance method="post" class="space-y-4" action={formAction}>
 			<InputField
 				type="password"
 				name="newPassword"

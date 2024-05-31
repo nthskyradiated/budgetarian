@@ -39,7 +39,7 @@
 			</form>
 
 			{#if isOnlyOauthUser === false}
-				<PasswordChangeForm formData={data.passwordResetFormData} />
+				<PasswordChangeForm formData={data.passwordResetFormData} formAction={route('changePassword /dashboard')}/>
 			{/if}
 		</div>
 	</div>
