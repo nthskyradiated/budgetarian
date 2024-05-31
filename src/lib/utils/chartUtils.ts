@@ -135,6 +135,24 @@ export const updateChartDataByExpensesCategory = (
 	});
 };
 
+export const updateChartDataForAllTransactions = (
+	transactions: Transaction[],
+	chartData: Writable<ChartData>,
+	chartType: ChartType
+) => {
+	const colors = generateColors(transactions.length);
+
+	const labels = transactions.map((transaction) => transaction.name);
+	const data = transactions.map((transaction) => transaction.amount);
+	const backgroundColor = colors;
+	// const hoverBackgroundColor = colors;
+
+	chartData.set({
+		labels,
+		datasets: [getDataset('Transactions', data, backgroundColor, chartType)]
+	});
+};
+
 export const chartData = writable<ChartData>({
 	labels: [],
 	datasets: [
@@ -167,5 +185,6 @@ export const transactionTypes = [
 	{ value: 'total', label: 'Total Transactions' },
 	{ value: 'expenses', label: 'Expenses by Category' },
 	{ value: 'inflows', label: 'Income by Category' },
-	{ value: 'category', label: 'Transactions by Category' }
+	{ value: 'category', label: 'Transactions by Category' },
+	{ value: 'all', label: 'All Transactions' }
 ];

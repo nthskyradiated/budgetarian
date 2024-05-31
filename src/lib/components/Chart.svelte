@@ -18,6 +18,7 @@
 		updateChartDataByCategory,
 		updateChartDataByInflowsCategory,
 		updateChartDataByExpensesCategory,
+		updateChartDataForAllTransactions,
 		chartTypes,
 		transactionTypes
 	} from '$lib/utils/chartUtils';
@@ -32,7 +33,7 @@
 	let chart: ChartJS | null = null;
 
 	export let transactions: Transaction[] = [];
-	export let viewType: 'total' | 'category' | 'inflows' | 'expenses' = 'total';
+	export let viewType: 'total' | 'category' | 'inflows' | 'expenses' | 'all' = 'total';
 	export let chartType: ChartType = 'doughnut';
 
 	function updateChartType(type: ChartType) {
@@ -89,6 +90,8 @@
 			updateChartDataByInflowsCategory(transactions, chartData, chartType);
 		} else if (viewType === 'expenses') {
 			updateChartDataByExpensesCategory(transactions, chartData, chartType);
+		} else if (viewType === 'all') {
+			updateChartDataForAllTransactions(transactions, chartData, chartType);
 		}
 		updateChartType(chartType);
 		chart.data = get(chartData);
