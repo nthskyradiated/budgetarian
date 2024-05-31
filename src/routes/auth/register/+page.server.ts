@@ -43,14 +43,12 @@ export const actions: Actions = {
 			const existingUser = await checkIfUserExists(email, username);
 
 			if (existingUser?.username === username) {
-				console.log('username exists!', existingUser.username);
 				return message(registerUserFormData, {
 					alertType: 'error',
 					alertText: 'This username is already in use. Please use a different username.'
 				});
 			}
 			if (existingUser?.authMethods.includes('email')) {
-				console.log('email exists!', existingUser.email);
 				return message(registerUserFormData, {
 					alertType: 'error',
 					alertText: 'This email is already in use. Please use a different email address.'

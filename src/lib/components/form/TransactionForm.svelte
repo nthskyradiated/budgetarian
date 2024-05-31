@@ -24,7 +24,6 @@
 	import { Textarea } from '../ui/textarea';
 	import { createEventDispatcher } from 'svelte';
 	// import SuperDebug from 'sveltekit-superforms';
-	// import * as Select from "$lib/components/ui/select"
 
 	export let formData: SuperValidated<transactionZodSchema>;
 	export let formAction: string;
@@ -76,13 +75,11 @@
 	}
 
 	function handleTransactionTypeChange(event: 'income' | 'expenses') {
-		console.log(event);
 		selectedTransactionType = event;
 		categoriesValues =
 			selectedTransactionType === 'income'
 				? INFLOWS_CATEGORIES.options
 				: EXPENSES_CATEGORIES.options;
-		console.log('values: ', categoriesValues);
 	}
 
 	$: {

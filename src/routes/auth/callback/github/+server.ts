@@ -94,7 +94,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			await createAndSetSession(lucia, existingUser.id, event.cookies);
 		} else {
 			const userId = generateIdFromEntropySize(10);
-			console.log(githubUser);
 			await db.transaction(async (trx) => {
 				await trx.insert(usersTable).values({
 					id: userId,

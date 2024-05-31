@@ -165,10 +165,7 @@ export const actions: Actions = {
 			{ id: 'updateProjectForm', strict: false }
 		);
 
-		console.log('value:', updateProjectFormData.data);
-
 		if (updateProjectFormData.valid === false) {
-			console.log(updateProjectFormData.data);
 			return message(updateProjectFormData, {
 				alertType: 'error',
 				alertText: 'There was a problem with your submission.'
@@ -184,8 +181,7 @@ export const actions: Actions = {
 				await lucia.invalidateSession(session.id);
 			}
 			const project = await getProjectById(updateProjectFormData.data.id as string);
-			// console.log('project', project);
-			// console.log('updateProjectFormData', updateProjectFormData.data.id);
+
 			if (!project) {
 				return message(
 					updateProjectFormData,
@@ -228,7 +224,6 @@ export const actions: Actions = {
 				updateData.startingFunds = startingFunds;
 				updateData.totalFunds = startingFunds; // Assuming totalFunds is reset to startingFunds
 			}
-			console.log('updateData', updateData);
 			await updateProject(updateData, id);
 		} catch (error) {
 			console.error('Error in createProject action:', error);

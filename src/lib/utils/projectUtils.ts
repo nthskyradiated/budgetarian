@@ -47,12 +47,8 @@ export const deleteExpense = async (id: string) => {
 export const validateCategory = async (category: string, type: 'income' | 'expenses') => {
 	const table = type === 'income' ? inflowsCategoriesTable : expensesCategoriesTable;
 
-	console.log(type, category);
-	console.log('table....', table);
 	const result = await db.select().from(table).where(eq(table.name, category));
-	console.log('result', result);
 	if (result.length > 0) {
-		console.log('this function ran', result);
 		return result[0]?.id;
 	}
 	return null;

@@ -58,7 +58,6 @@ export const actions: Actions = {
 		const userId = locals.user?.id;
 		const currentSessionId = locals.session?.id;
 		if (!userId || !currentSessionId) return;
-		console.log('createProject', userId, currentSessionId);
 		const createProjectFormData = await superValidate<projectZodSchema, AlertMessageType>(
 			request,
 			zod(ProjectZodSchema),
@@ -71,7 +70,6 @@ export const actions: Actions = {
 				alertText: 'There was a problem with your submission.'
 			});
 		}
-		console.log('value:', createProjectFormData.data);
 
 		const allUserSessions = await lucia.getUserSessions(userId);
 
@@ -126,7 +124,6 @@ export const actions: Actions = {
 				alertText: 'There was a problem with your submission.'
 			});
 		}
-		console.log('value:', updateProjectFormData.data.id);
 
 		const allUserSessions = await lucia.getUserSessions(userId);
 
@@ -137,8 +134,7 @@ export const actions: Actions = {
 				await lucia.invalidateSession(session.id);
 			}
 			const project = await getProjectById(updateProjectFormData.data.id as string);
-			console.log('project', project);
-			console.log('updateProjectFormData', updateProjectFormData.data.id);
+
 			if (!project) {
 				return message(
 					updateProjectFormData,
