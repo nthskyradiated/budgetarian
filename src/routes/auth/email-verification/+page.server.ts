@@ -17,7 +17,7 @@ import { usersTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { lucia } from '@/lib/server/luciaUtils';
 import { createAndSetSession } from '@/lib/server/authUtils';
-import { DASHBOARD_ROUTE } from '@/lib/utils/navLinks';
+import { PROJECTS_ROUTE } from '@/lib/utils/navLinks';
 
 // Function to parse user data from cookie
 const getUserDataFromCookie = (cookies: Cookies) => {
@@ -106,7 +106,7 @@ export const actions: Actions = {
 			path: route('/auth/email-verification')
 		});
 
-		redirect(303, DASHBOARD_ROUTE);
+		redirect(303, PROJECTS_ROUTE);
 	},
 
 	sendNewCode: async (event) => {

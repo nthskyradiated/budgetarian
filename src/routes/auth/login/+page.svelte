@@ -74,7 +74,7 @@
 </script>
 
 <!-- done. do not touch! -->
-<div class="mx-4 min-h-96 w-96 space-y-4 sm:mx-auto lg:w-1/3">
+<div class=" min-h-96 w-80 space-y-4 mx-auto lg:w-1/3">
 	<h1 class="mb-6 text-2xl font-bold leading-none">Login</h1>
 
 	<form method="post" use:loginEnhance action={route('logIn /auth/login')} class="space-y-4">
@@ -96,7 +96,7 @@
 			maxlength={maxPwrdLen}
 		/>
 
-		<div class="flex flex-wrap justify-between gap-4">
+		<div class="flex flex-col sm:flex-row sm:flex-wrap sm:flex-initial justify-between gap-4">
 			<SubmitButton disabled={$loginDelayed} class="flex-grow"
 				>Login in with your email</SubmitButton
 			>

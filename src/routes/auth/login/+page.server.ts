@@ -22,7 +22,7 @@ import type {
 } from '@/lib/zodValidators/zodAuthValidation';
 import { lucia } from '@/lib/server/luciaUtils';
 import { zod } from 'sveltekit-superforms/adapters';
-import { DASHBOARD_ROUTE } from '@/lib/utils/navLinks';
+import { PROJECTS_ROUTE } from '@/lib/utils/navLinks';
 
 const NO_REGISTERED_ACCOUNT_ERROR_MESSAGE =
 	"No account registered with this email. Please ensure you've entered the correct email.";
@@ -99,7 +99,7 @@ export const actions: Actions = {
 
 		await createAndSetSession(lucia, existingUser.id, cookies);
 
-		redirect(303, DASHBOARD_ROUTE);
+		redirect(303, PROJECTS_ROUTE);
 	},
 
 	sendPasswordResetEmail: async (event) => {

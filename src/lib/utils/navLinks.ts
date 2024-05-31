@@ -34,6 +34,11 @@ export const mainNavLinks = {
 		href: route('/protected/dashboard'),
 		ariaLabel: 'Go to dashboard page'
 	}),
+	projects: createNavLink({
+		title: 'Projects',
+		href: route('/protected/projects'),
+		ariaLabel: 'Go to Projects page'
+	}),
 
 	login: createNavLink({
 		title: 'Login',
@@ -51,5 +56,6 @@ export const mainNavLinks = {
 export const LOGIN_ROUTE = mainNavLinks.login.href;
 export const REGISTER_ROUTE = mainNavLinks.register.href;
 export const DASHBOARD_ROUTE = mainNavLinks.dashboard.href;
+export const PROJECTS_ROUTE = mainNavLinks.projects.href;
 
 export const AUTH_ROUTES = [LOGIN_ROUTE, REGISTER_ROUTE];

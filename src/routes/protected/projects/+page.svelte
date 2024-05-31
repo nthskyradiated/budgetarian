@@ -96,7 +96,7 @@
 </script>
 
 <!-- done. do not touch! -->
-<section class="mx-4 mt-12 flex w-96 flex-col gap-1 sm:mx-auto lg:w-full">
+<section class="mt-12 flex flex-col gap-1 mx-auto md:ml-12 w-80 md:w-full">
 	<h1 class="text-2xl">Recently Updated:</h1>
 	{#if newProjects.length === 0}
 		<h1 class="mb-5 text-lg">

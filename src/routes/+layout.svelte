@@ -29,7 +29,7 @@
 <Toaster richColors closeButton position={'bottom-right'} />
 <ModeWatcher />
 
-<div class="mx-4 flex min-h-[100%] w-full flex-col justify-between md:w-auto lg:mx-24">
+<div class="mx-auto flex min-h-[100%] w-full flex-col justify-between">
 	{#if data.user}
 		<NavBar user={data.user} />
 	{:else}

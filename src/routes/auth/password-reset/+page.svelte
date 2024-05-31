@@ -8,8 +8,9 @@
 	export let data: PageData;
 </script>
 
+
 <div
-	class="mx-4 flex min-h-96 w-96 flex-col justify-start space-y-4 text-center sm:mx-auto lg:w-1/3"
+	class="flex min-h-96 items-center w-80 flex-col justify-start space-y-4 text-center mx-auto lg:w-1/3"
 >
 	{#if data.passwordResetTokenStatus.isValid === false}
 		<h1 class="mb-5 text-2xl font-bold text-red-600">
