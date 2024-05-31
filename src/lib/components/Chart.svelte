@@ -11,7 +11,8 @@
         LineElement,
         CategoryScale,
 
-		type ChartType
+		type ChartType,
+
 
     } from 'chart.js/auto';
 	import {
@@ -19,10 +20,18 @@
         updateChartDataByTotalTransactions,
         updateChartDataByCategory,
         updateChartDataByInflowsCategory,
-        updateChartDataByExpensesCategory
+        updateChartDataByExpensesCategory,
+
+		chartTypes,
+
+		transactionTypes
+
+
     } from '$lib/utils/chartUtils';
     import { get } from 'svelte/store';
 	import type { Transaction } from '../types';
+	import * as DropdownMenu from './ui/dropdown-menu';
+	import { Separator } from './ui/separator';
 
     ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, BarElement, LineElement);
 
@@ -33,16 +42,39 @@
     export let viewType: 'total' | 'category' | 'inflows' | 'expenses' = 'total';
     export let chartType: ChartType = 'doughnut';
 
-    onMount(() => {
-        if (chartCanvas) {
+    function updateChartType(type: ChartType) {
+        if (chart && chart.config.data.datasets[0]?.type !== type) {
+            chart.destroy();
             chart = new ChartJS(chartCanvas, {
-                type: 'doughnut',
+                type,
                 data: get(chartData),
                 options: {
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'top',
+                            position: 'bottom',
+                            display: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Transaction Breakdown'
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    onMount(() => {
+        if (chartCanvas) {
+            chart = new ChartJS(chartCanvas, {
+                type: chartType,
+                data: get(chartData),
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
                             display: true
                         },
                         title: {
@@ -57,15 +89,15 @@
 
 	$: if (chart) {
         if (viewType === 'total') {
-            updateChartDataByTotalTransactions(transactions, chartData);
+            updateChartDataByTotalTransactions(transactions, chartData, chartType);
         } else if (viewType === 'category') {
-            updateChartDataByCategory(transactions, chartData);
+            updateChartDataByCategory(transactions, chartData, chartType);
         } else if (viewType === 'inflows') {
-            updateChartDataByInflowsCategory(transactions, chartData);
+            updateChartDataByInflowsCategory(transactions, chartData, chartType);
         } else if (viewType === 'expenses') {
-            updateChartDataByExpensesCategory(transactions, chartData);
+            updateChartDataByExpensesCategory(transactions, chartData, chartType);
         }
-        chart.config.type = chartType;
+        updateChartType(chartType);
         chart.data = get(chartData);
         chart.update();
     }
@@ -76,18 +108,35 @@
         }
     });
 </script>
+<div class="flex flex-row justify-evenly w-auto mb-2">
+    <DropdownMenu.Root >
+        <DropdownMenu.Trigger class="rounded-md border w-2/5 text-sm dark:text-white"
+        >by {viewType || 'Chart Type'}</DropdownMenu.Trigger
+        >
+        <DropdownMenu.Content style="width: 400px height: 400px;">
+            <DropdownMenu.RadioGroup bind:value={viewType}>
+                {#each transactionTypes as transactionType}
+                <DropdownMenu.RadioItem value={transactionType.value}>{transactionType.label}</DropdownMenu.RadioItem>
+                {/each}
+            </DropdownMenu.RadioGroup>
+        </DropdownMenu.Content>
+    </DropdownMenu.Root>
+    <Separator orientation="vertical" style="height: 40px;" />
+    <DropdownMenu.Root >
+        <DropdownMenu.Trigger class="rounded-md border w-2/5 text-sm dark:text-white"
+        >Chart Type: {chartType || 'Chart Type'}</DropdownMenu.Trigger
+        >
+        <DropdownMenu.Content style="width: 400px height: 400px;">
+            <DropdownMenu.RadioGroup bind:value={chartType}>
+                {#each chartTypes as chartType}
+                <DropdownMenu.RadioItem value={chartType.value}>{chartType.label}</DropdownMenu.RadioItem>
+                {/each}
+            </DropdownMenu.RadioGroup>
+        </DropdownMenu.Content>
+    </DropdownMenu.Root>
+</div>
+    
 
-<select bind:value={viewType}>
-    <option value="total">Total Transactions</option>
-    <option value="category">Transactions by Category</option>
-    <option value="inflows">Income by Category</option>
-    <option value="expenses">Expenses by Category</option>
-</select>
-<select bind:value={chartType}>
-    <option value="doughnut">Doughnut</option>
-    <option value="bar">Bar</option>
-    <option value="line">Line</option>
-    <option value="pie">Pie</option>
-</select>
+<canvas bind:this={chartCanvas} class="backdrop-brightness-125"></canvas>
 
-<canvas bind:this={chartCanvas}></canvas>
+  

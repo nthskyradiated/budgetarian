@@ -1,16 +1,35 @@
 // src/lib/utils/chartUtils.ts
 import { writable, type Writable } from 'svelte/store';
-import type { ChartData } from 'chart.js';
+import type { ChartData, ChartType } from 'chart.js';
 import type { Transaction, TransactionType } from '../types';
 
 const colors: Record<TransactionType, string> = {
-	income: '#3b82f6',
-	expense: '#dc2626'
+	income: '#22c55e',
+	expense: '#dc2626',
+};
+
+const getDataset = (label: string, data: number[], backgroundColor: string[], chartType: ChartType) => {
+    const dataset = {
+        label,
+        data,
+        backgroundColor,
+        hoverBackgroundColor: backgroundColor,
+    };
+    
+    if (chartType === 'line') {
+        return {
+            ...dataset,
+            borderColor: '#4BC0C0',
+        };
+    }
+
+    return dataset;
 };
 
 export const updateChartDataByTotalTransactions = (
 	transactions: Transaction[],
-	chartData: Writable<ChartData>
+	chartData: Writable<ChartData>,
+    chartType: ChartType
 ) => {
 	const groupedTransactions: Record<TransactionType, number> = {
 		income: 0,
@@ -25,24 +44,19 @@ export const updateChartDataByTotalTransactions = (
 	const labels = Object.keys(groupedTransactions) as TransactionType[];
 	const data = Object.values(groupedTransactions);
 	const backgroundColor = labels.map((label) => colors[label]);
-	const hoverBackgroundColor = backgroundColor;
 
 	chartData.set({
-		labels,
-		datasets: [
-			{
-				label: 'Transactions',
-				data,
-				backgroundColor,
-				hoverBackgroundColor
-			}
-		]
-	});
+        labels,
+        datasets: [
+            getDataset('Transactions', data, backgroundColor, chartType)
+        ]
+    });
 };
 
 export const updateChartDataByCategory = (
     transactions: Transaction[],
-    chartData: Writable<ChartData>
+    chartData: Writable<ChartData>,
+    chartType: ChartType
 ) => {
     const groupedTransactions: Record<string, number> = {};
 
@@ -57,24 +71,19 @@ export const updateChartDataByCategory = (
     const labels = Object.keys(groupedTransactions);
     const data = Object.values(groupedTransactions);
     const backgroundColor = generateColors(labels.length);
-    const hoverBackgroundColor = backgroundColor;
 
     chartData.set({
         labels,
         datasets: [
-            {
-                label: 'Transactions by Category',
-                data,
-                backgroundColor,
-                hoverBackgroundColor
-            }
+            getDataset('Transactions', data, backgroundColor, chartType)
         ]
     });
 };
 
 export const updateChartDataByInflowsCategory = (
     transactions: Transaction[],
-    chartData: Writable<ChartData>
+    chartData: Writable<ChartData>,
+    chartType: ChartType
 ) => {
     const groupedTransactions: Record<string, number> = {};
 
@@ -91,24 +100,19 @@ export const updateChartDataByInflowsCategory = (
     const labels = Object.keys(groupedTransactions);
     const data = Object.values(groupedTransactions);
     const backgroundColor = generateColors(labels.length);
-    const hoverBackgroundColor = backgroundColor;
 
     chartData.set({
         labels,
         datasets: [
-            {
-                label: 'Income by Category',
-                data,
-                backgroundColor,
-                hoverBackgroundColor
-            }
+            getDataset('Transactions', data, backgroundColor, chartType)
         ]
     });
 };
 
 export const updateChartDataByExpensesCategory = (
     transactions: Transaction[],
-    chartData: Writable<ChartData>
+    chartData: Writable<ChartData>,
+    chartType: ChartType
 ) => {
     const groupedTransactions: Record<string, number> = {};
 
@@ -125,17 +129,11 @@ export const updateChartDataByExpensesCategory = (
     const labels = Object.keys(groupedTransactions);
     const data = Object.values(groupedTransactions);
     const backgroundColor = generateColors(labels.length);
-    const hoverBackgroundColor = backgroundColor;
 
     chartData.set({
         labels,
         datasets: [
-            {
-                label: 'Expenses by Category',
-                data,
-                backgroundColor,
-                hoverBackgroundColor
-            }
+            getDataset('Transactions', data, backgroundColor, chartType)
         ]
     });
 };
@@ -160,3 +158,17 @@ export const generateColors = (numColors: number) => {
 	}
 	return colors;
 };
+
+export const chartTypes = [
+    { value: "line", label: "Line" },
+    { value: "pie", label: "Pie" },
+    { value: "bar", label: "Bar" },
+    { value: "doughnut", label: "Doughnut" },
+  ];
+
+export const transactionTypes = [
+    { value: "total", label: "Total Transactions" },
+    { value: "expenses", label: "Expenses by Category" },
+    { value: "inflows", label: "Income by Category" },
+    { value: "category", label: "Transactions by Category" },
+  ];
