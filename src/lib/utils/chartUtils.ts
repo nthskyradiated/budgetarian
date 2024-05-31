@@ -5,31 +5,36 @@ import type { Transaction, TransactionType } from '../types';
 
 const colors: Record<TransactionType, string> = {
 	income: '#22c55e',
-	expense: '#dc2626',
+	expense: '#dc2626'
 };
 
-const getDataset = (label: string, data: number[], backgroundColor: string[], chartType: ChartType) => {
-    const dataset = {
-        label,
-        data,
-        backgroundColor,
-        hoverBackgroundColor: backgroundColor,
-    };
-    
-    if (chartType === 'line') {
-        return {
-            ...dataset,
-            borderColor: '#4BC0C0',
-        };
-    }
+const getDataset = (
+	label: string,
+	data: number[],
+	backgroundColor: string[],
+	chartType: ChartType
+) => {
+	const dataset = {
+		label,
+		data,
+		backgroundColor,
+		hoverBackgroundColor: backgroundColor
+	};
 
-    return dataset;
+	if (chartType === 'line') {
+		return {
+			...dataset,
+			borderColor: '#4BC0C0'
+		};
+	}
+
+	return dataset;
 };
 
 export const updateChartDataByTotalTransactions = (
 	transactions: Transaction[],
 	chartData: Writable<ChartData>,
-    chartType: ChartType
+	chartType: ChartType
 ) => {
 	const groupedTransactions: Record<TransactionType, number> = {
 		income: 0,
@@ -46,96 +51,88 @@ export const updateChartDataByTotalTransactions = (
 	const backgroundColor = labels.map((label) => colors[label]);
 
 	chartData.set({
-        labels,
-        datasets: [
-            getDataset('Transactions', data, backgroundColor, chartType)
-        ]
-    });
+		labels,
+		datasets: [getDataset('Transactions', data, backgroundColor, chartType)]
+	});
 };
 
 export const updateChartDataByCategory = (
-    transactions: Transaction[],
-    chartData: Writable<ChartData>,
-    chartType: ChartType
+	transactions: Transaction[],
+	chartData: Writable<ChartData>,
+	chartType: ChartType
 ) => {
-    const groupedTransactions: Record<string, number> = {};
+	const groupedTransactions: Record<string, number> = {};
 
-    transactions.forEach((transaction: Transaction) => {
-        const category = transaction.category || 'Uncategorized';
-        if (!groupedTransactions[category]) {
-            groupedTransactions[category] = 0;
-        }
-        groupedTransactions[category] += transaction.amount;
-    });
+	transactions.forEach((transaction: Transaction) => {
+		const category = transaction.category || 'Uncategorized';
+		if (!groupedTransactions[category]) {
+			groupedTransactions[category] = 0;
+		}
+		groupedTransactions[category] += transaction.amount;
+	});
 
-    const labels = Object.keys(groupedTransactions);
-    const data = Object.values(groupedTransactions);
-    const backgroundColor = generateColors(labels.length);
+	const labels = Object.keys(groupedTransactions);
+	const data = Object.values(groupedTransactions);
+	const backgroundColor = generateColors(labels.length);
 
-    chartData.set({
-        labels,
-        datasets: [
-            getDataset('Transactions', data, backgroundColor, chartType)
-        ]
-    });
+	chartData.set({
+		labels,
+		datasets: [getDataset('Transactions', data, backgroundColor, chartType)]
+	});
 };
 
 export const updateChartDataByInflowsCategory = (
-    transactions: Transaction[],
-    chartData: Writable<ChartData>,
-    chartType: ChartType
+	transactions: Transaction[],
+	chartData: Writable<ChartData>,
+	chartType: ChartType
 ) => {
-    const groupedTransactions: Record<string, number> = {};
+	const groupedTransactions: Record<string, number> = {};
 
-    transactions.forEach((transaction: Transaction) => {
-        if (transaction.type === 'income') {
-            const category = transaction.category || 'Uncategorized';
-            if (!groupedTransactions[category]) {
-                groupedTransactions[category] = 0;
-            }
-            groupedTransactions[category] += transaction.amount;
-        }
-    });
+	transactions.forEach((transaction: Transaction) => {
+		if (transaction.type === 'income') {
+			const category = transaction.category || 'Uncategorized';
+			if (!groupedTransactions[category]) {
+				groupedTransactions[category] = 0;
+			}
+			groupedTransactions[category] += transaction.amount;
+		}
+	});
 
-    const labels = Object.keys(groupedTransactions);
-    const data = Object.values(groupedTransactions);
-    const backgroundColor = generateColors(labels.length);
+	const labels = Object.keys(groupedTransactions);
+	const data = Object.values(groupedTransactions);
+	const backgroundColor = generateColors(labels.length);
 
-    chartData.set({
-        labels,
-        datasets: [
-            getDataset('Transactions', data, backgroundColor, chartType)
-        ]
-    });
+	chartData.set({
+		labels,
+		datasets: [getDataset('Transactions', data, backgroundColor, chartType)]
+	});
 };
 
 export const updateChartDataByExpensesCategory = (
-    transactions: Transaction[],
-    chartData: Writable<ChartData>,
-    chartType: ChartType
+	transactions: Transaction[],
+	chartData: Writable<ChartData>,
+	chartType: ChartType
 ) => {
-    const groupedTransactions: Record<string, number> = {};
+	const groupedTransactions: Record<string, number> = {};
 
-    transactions.forEach((transaction: Transaction) => {
-        if (transaction.type === 'expense') {
-            const category = transaction.category || 'Uncategorized';
-            if (!groupedTransactions[category]) {
-                groupedTransactions[category] = 0;
-            }
-            groupedTransactions[category] += transaction.amount;
-        }
-    });
+	transactions.forEach((transaction: Transaction) => {
+		if (transaction.type === 'expense') {
+			const category = transaction.category || 'Uncategorized';
+			if (!groupedTransactions[category]) {
+				groupedTransactions[category] = 0;
+			}
+			groupedTransactions[category] += transaction.amount;
+		}
+	});
 
-    const labels = Object.keys(groupedTransactions);
-    const data = Object.values(groupedTransactions);
-    const backgroundColor = generateColors(labels.length);
+	const labels = Object.keys(groupedTransactions);
+	const data = Object.values(groupedTransactions);
+	const backgroundColor = generateColors(labels.length);
 
-    chartData.set({
-        labels,
-        datasets: [
-            getDataset('Transactions', data, backgroundColor, chartType)
-        ]
-    });
+	chartData.set({
+		labels,
+		datasets: [getDataset('Transactions', data, backgroundColor, chartType)]
+	});
 };
 
 export const chartData = writable<ChartData>({
@@ -160,15 +157,15 @@ export const generateColors = (numColors: number) => {
 };
 
 export const chartTypes = [
-    { value: "line", label: "Line" },
-    { value: "pie", label: "Pie" },
-    { value: "bar", label: "Bar" },
-    { value: "doughnut", label: "Doughnut" },
-  ];
+	{ value: 'line', label: 'Line' },
+	{ value: 'pie', label: 'Pie' },
+	{ value: 'bar', label: 'Bar' },
+	{ value: 'doughnut', label: 'Doughnut' }
+];
 
 export const transactionTypes = [
-    { value: "total", label: "Total Transactions" },
-    { value: "expenses", label: "Expenses by Category" },
-    { value: "inflows", label: "Income by Category" },
-    { value: "category", label: "Transactions by Category" },
-  ];
+	{ value: 'total', label: 'Total Transactions' },
+	{ value: 'expenses', label: 'Expenses by Category' },
+	{ value: 'inflows', label: 'Income by Category' },
+	{ value: 'category', label: 'Transactions by Category' }
+];

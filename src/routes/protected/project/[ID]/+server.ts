@@ -20,94 +20,98 @@ export const GET: RequestHandler = async ({ locals, params, url }) => {
 	const offset = (page - 1) * pageSize;
 
 	try {
-        // Fetch income transactions with categories
-        const income = await db
-            .select({
-                id: inflowsTable.id,
-                name: inflowsTable.name,
-                category: inflowsCategories.name,
-                amount: inflowsTable.amount,
-                remarks: inflowsTable.remarks,
-                projectId: inflowsTable.projectId,
-                userId: inflowsTable.userId,
-                isRecurring: inflowsTable.isRecurring,
-                createdAt: inflowsTable.createdAt,
-                updatedAt: inflowsTable.updatedAt
-            })
-            .from(inflowsTable)
-            .leftJoin(inflowsCategories, eq(inflowsTable.category, inflowsCategories.id))
-            .where(
-                and(eq(inflowsTable.projectId, ID as string), eq(inflowsTable.userId, locals.user?.id))
-            )
-            .execute();
+		// Fetch income transactions with categories
+		const income = await db
+			.select({
+				id: inflowsTable.id,
+				name: inflowsTable.name,
+				category: inflowsCategories.name,
+				amount: inflowsTable.amount,
+				remarks: inflowsTable.remarks,
+				projectId: inflowsTable.projectId,
+				userId: inflowsTable.userId,
+				isRecurring: inflowsTable.isRecurring,
+				createdAt: inflowsTable.createdAt,
+				updatedAt: inflowsTable.updatedAt
+			})
+			.from(inflowsTable)
+			.leftJoin(inflowsCategories, eq(inflowsTable.category, inflowsCategories.id))
+			.where(
+				and(eq(inflowsTable.projectId, ID as string), eq(inflowsTable.userId, locals.user?.id))
+			)
+			.execute();
 
-        // Fetch expense transactions with categories
-        const expenses = await db
-            .select({
-                id: expensesTable.id,
-                name: expensesTable.name,
-                category: expensesCategories.name,
-                amount: expensesTable.amount,
-                remarks: expensesTable.remarks,
-                projectId: expensesTable.projectId,
-                userId: expensesTable.userId,
-                isRecurring: expensesTable.isRecurring,
-                createdAt: expensesTable.createdAt,
-                updatedAt: expensesTable.updatedAt
-            })
-            .from(expensesTable)
-            .leftJoin(expensesCategories, eq(expensesTable.category, expensesCategories.id))
-            .where(
-                and(eq(expensesTable.projectId, ID as string), eq(expensesTable.userId, locals.user?.id))
-            )
-            .execute();
+		// Fetch expense transactions with categories
+		const expenses = await db
+			.select({
+				id: expensesTable.id,
+				name: expensesTable.name,
+				category: expensesCategories.name,
+				amount: expensesTable.amount,
+				remarks: expensesTable.remarks,
+				projectId: expensesTable.projectId,
+				userId: expensesTable.userId,
+				isRecurring: expensesTable.isRecurring,
+				createdAt: expensesTable.createdAt,
+				updatedAt: expensesTable.updatedAt
+			})
+			.from(expensesTable)
+			.leftJoin(expensesCategories, eq(expensesTable.category, expensesCategories.id))
+			.where(
+				and(eq(expensesTable.projectId, ID as string), eq(expensesTable.userId, locals.user?.id))
+			)
+			.execute();
 
-        // Fetch project details
-        const project = await db
-            .select()
-            .from(projects)
-            .where(eq(projects.id, ID as string))
-            .execute();
+		// Fetch project details
+		const project = await db
+			.select()
+			.from(projects)
+			.where(eq(projects.id, ID as string))
+			.execute();
 
-        // Combine and sort transactions
-        const incomeWithSource = income.map((entry) => ({ ...entry, type: 'income' }));
-        const expensesWithSource = expenses.map((entry) => ({ ...entry, type: 'expense' }));
-        const allTransactions = [...incomeWithSource, ...expensesWithSource].sort((a, b) => {
-            const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
-            const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
-            return createdAtB - createdAtA;
-        });
+		// Combine and sort transactions
+		const incomeWithSource = income.map((entry) => ({ ...entry, type: 'income' }));
+		const expensesWithSource = expenses.map((entry) => ({ ...entry, type: 'expense' }));
+		const allTransactions = [...incomeWithSource, ...expensesWithSource].sort((a, b) => {
+			const createdAtA = a.createdAt !== null ? new Date(a.createdAt).getTime() : 0;
+			const createdAtB = b.createdAt !== null ? new Date(b.createdAt).getTime() : 0;
+			return createdAtB - createdAtA;
+		});
 
-        // Apply pagination
-        const paginatedTransactions = allTransactions.slice(offset, offset + pageSize);
+		// Apply pagination
+		const paginatedTransactions = allTransactions.slice(offset, offset + pageSize);
 
-        // Calculate total counts for pagination
-        const totalIncomeCount = await db
-            .select({ count: count(inflowsTable.id) })
-            .from(inflowsTable)
-            .where(and(eq(inflowsTable.projectId, ID as string), eq(inflowsTable.userId, locals.user?.id)))
-            .execute()
-            .then((rows) => rows[0]?.count || 0);
+		// Calculate total counts for pagination
+		const totalIncomeCount = await db
+			.select({ count: count(inflowsTable.id) })
+			.from(inflowsTable)
+			.where(
+				and(eq(inflowsTable.projectId, ID as string), eq(inflowsTable.userId, locals.user?.id))
+			)
+			.execute()
+			.then((rows) => rows[0]?.count || 0);
 
-        const totalExpensesCount = await db
-            .select({ count: count(expensesTable.id) })
-            .from(expensesTable)
-            .where(and(eq(expensesTable.projectId, ID as string), eq(expensesTable.userId, locals.user?.id)))
-            .execute()
-            .then((rows) => rows[0]?.count || 0);
+		const totalExpensesCount = await db
+			.select({ count: count(expensesTable.id) })
+			.from(expensesTable)
+			.where(
+				and(eq(expensesTable.projectId, ID as string), eq(expensesTable.userId, locals.user?.id))
+			)
+			.execute()
+			.then((rows) => rows[0]?.count || 0);
 
-        const totalCount = totalIncomeCount + totalExpensesCount;
-        const totalPages = Math.ceil(totalCount / pageSize);
+		const totalCount = totalIncomeCount + totalExpensesCount;
+		const totalPages = Math.ceil(totalCount / pageSize);
 
-        return json(
-            {
-                allTransactions,
-                paginatedTransactions,
-                project,
-                pagination: { page, pageSize, totalCount, totalPages }
-            },
-            { status: 200 }
-        );
+		return json(
+			{
+				allTransactions,
+				paginatedTransactions,
+				project,
+				pagination: { page, pageSize, totalCount, totalPages }
+			},
+			{ status: 200 }
+		);
 	} catch (error) {
 		console.error('Error fetching transactions:', error);
 		return json({ error: 'An error occurred while fetching transactions.' }, { status: 500 });

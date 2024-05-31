@@ -1,9 +1,8 @@
-
-
 # Budgetarian
 
-Expense Tracker app made with LSD-kit (Lucia, Drizzle-ORM, 
+Expense Tracker app made with LSD-kit (Lucia, Drizzle-ORM,
 Sveltekit)
 --
-* ChartJS for charting ✅
-* Uses Shadcn-svelte for its component library ✅
+
+- ChartJS for charting ✅
+- Uses Shadcn-svelte for its component library ✅

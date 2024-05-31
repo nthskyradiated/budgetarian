@@ -5,7 +5,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 </script>
 
-<DropdownMenu.Root positioning={{ placement: 'bottom-end' }}>
+<DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button builders={[builder]} variant="outline" size="icon" class="text-2xl">
 			<Icon icon="line-md:sun-rising-loop" class="dark:hidden" />
@@ -14,7 +14,7 @@
 			<span class="sr-only">Toggle theme</span>
 		</Button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content>
+	<DropdownMenu.Content side="bottom">
 		<DropdownMenu.Item on:click={() => setMode('light')}>Light</DropdownMenu.Item>
 		<DropdownMenu.Item on:click={() => setMode('dark')}>Dark</DropdownMenu.Item>
 		<DropdownMenu.Item on:click={() => resetMode()}>System</DropdownMenu.Item>

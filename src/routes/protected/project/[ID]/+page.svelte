@@ -33,7 +33,7 @@
 	let totalCount: number;
 	let perPage: number;
 	let viewType: 'total' | 'category' | 'inflows' | 'expenses' = 'category';
-    let chartType: 'doughnut' | 'bar' | 'line' = 'doughnut';
+	let chartType: 'doughnut' | 'bar' | 'line' = 'doughnut';
 
 	// Initialize variables with initial data
 	$: allTransactions = [...transactionHistory];
@@ -100,7 +100,7 @@
 				const updatedData = await response.json();
 				if (currProject) {
 					allTransactions = updatedData.allTransactions;
-					updateChartDataByTotalTransactions(allTransactions, chartData);
+					updateChartDataByTotalTransactions(allTransactions, chartData, chartType);
 					totalCount = updatedData.pagination.totalCount;
 					perPage = updatedData.pagination.pageSize;
 					paginatedTransactions = updatedData.paginatedTransactions;
