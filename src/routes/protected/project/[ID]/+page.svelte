@@ -32,6 +32,8 @@
 	let currProject = project;
 	let totalCount: number;
 	let perPage: number;
+	let viewType: 'total' | 'category' | 'inflows' | 'expenses' = 'category';
+    let chartType: 'doughnut' | 'bar' | 'line' = 'doughnut';
 
 	// Initialize variables with initial data
 	$: allTransactions = [...transactionHistory];
@@ -150,9 +152,9 @@
 
 <main class="w-full">
 	<div class="mx-4 my-4 flex w-96 flex-col-reverse gap-2 sm:mx-auto md:w-full md:flex-row">
-		<div class="flex w-full flex-col gap-1 md:flex-1 lg:w-1/3">
+		<div class="flex w-full flex-col gap-1 md:flex-1 lg:w-2/5">
 			<Card class="mt-2 h-full w-full p-4">
-				<Chart transactions={allTransactions} viewType="category" />
+				<Chart transactions={allTransactions} {viewType} {chartType} />
 			</Card>
 			<Card class="my-2 h-max w-full p-6 md:flex-1" on:transactionAdded={handleTransactionAdded}>
 				<div class="flex flex-col gap-4">
@@ -209,7 +211,7 @@
 			</Card>
 		</div>
 
-		<Card class="my-2 w-full px-6 md:flex-1 md:flex-shrink-0 md:flex-grow md:basis-1/2 lg:w-2/3">
+		<Card class="my-2 w-full px-6 md:flex-1 md:flex-shrink-0 md:flex-grow lg:w-3/5">
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-col items-end justify-between sm:flex-row">
 					<h1 class="my-2 text-3xl font-bold">Transaction History</h1>
