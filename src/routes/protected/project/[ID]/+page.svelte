@@ -215,7 +215,7 @@
 
 		<Card class="my-2 w-full px-6 md:flex-1 md:flex-shrink-0 md:flex-grow lg:w-3/5">
 			<div class="flex flex-col gap-4">
-				<div class="flex flex-col items-end justify-between sm:flex-row">
+				<div class="flex flex-col items-end justify-between md:flex-row">
 					<h1 class="my-2 text-3xl font-bold">Transaction History</h1>
 					{#if data.transactionFormData}
 						<TransactionForm
