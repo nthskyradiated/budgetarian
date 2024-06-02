@@ -59,7 +59,7 @@ export const sendEmailVerificationCode = async (email: string, code: string) => 
 const sendEmail = async ({ email, subject, htmlContent }: EmailParams) => {
 	if(PLUNK_API_KEY === '' || PLUNK_API_KEY === undefined) {
 		const { error } = await resend.emails.send({
-			from: 'Handshakes.Me <onboarding@resend.dev>',
+			from: 'Budgetarian <onboarding@resend.dev>',
 			to: [email],
 			subject,
 			html: htmlContent
