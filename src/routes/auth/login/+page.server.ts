@@ -67,7 +67,16 @@ export const actions: Actions = {
 				existingUser.password,
 				userLoginFormData.data.password
 			);
-		} else {
+		} else if (existingUser.authMethods.length === 0 && existingUser.password) {
+			throw flashMessageRedirect(
+				route('/auth/email-verification'),
+				{
+					type: 'error',
+					message: 'You must verify your email before logging in.'
+				},
+				cookies
+			);
+		} else{
 			// If the user doesn't have a password, it means they registered with OAuth
 			return message(
 				userLoginFormData,
@@ -141,13 +150,14 @@ export const actions: Actions = {
 				return message(
 					passwordResetEmailFormData,
 					{
-						alertType: 'error',
+						alertType: 'verifyEmail',
 						alertText: 'You must verify your email before resetting your password.'
 					},
 
 					{
 						status: 403 // This status code indicates that the server understood the request, but it refuses to authorize it because the user's email is not verified.
-					}
+					},
+					
 				);
 			}
 

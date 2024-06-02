@@ -42,6 +42,13 @@ export const actions: Actions = {
 			const { email, username } = registerUserFormData.data;
 			const existingUser = await checkIfUserExists(email, username);
 
+			if (existingUser?.email === email && existingUser?.username === username) {
+				return message(registerUserFormData, {
+					alertType: 'error',
+					alertText: 'This user is already registered. Go to the login page if you forget your password.'
+				});
+			}
+
 			if (existingUser?.username === username) {
 				return message(registerUserFormData, {
 					alertType: 'error',

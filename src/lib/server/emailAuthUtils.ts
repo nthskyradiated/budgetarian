@@ -51,7 +51,7 @@ export const sendEmailVerificationCode = async (email: string, code: string) => 
 
 	return sendEmail({
 		email,
-		subject: 'Email Verification Code Request for Handshakes.Me',
+		subject: 'Email Verification Code Request for Budgetarian',
 		htmlContent
 	});
 };
