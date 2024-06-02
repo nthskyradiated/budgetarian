@@ -5,11 +5,15 @@ import { emailVerificationCodesTable } from '@/db/schema';
 import { createDate, isWithinExpirationDate, TimeSpan } from 'oslo';
 import type { EmailParams } from '../types';
 import { Resend } from 'resend';
-import { RESEND_API_KEY } from '$env/static/private';
+import { PLUNK_API_KEY, RESEND_API_KEY } from '$env/static/private';
 import { eq } from 'drizzle-orm';
 import { route } from '../router';
+import Plunk from '@plunk/node';
 
 const resend = new Resend(RESEND_API_KEY);
+
+// @ts-ignore
+const plunk = new Plunk.default(PLUNK_API_KEY)
 
 export const pendingUserVerification = 'pendingUserVerification';
 
@@ -53,22 +57,44 @@ export const sendEmailVerificationCode = async (email: string, code: string) => 
 };
 
 const sendEmail = async ({ email, subject, htmlContent }: EmailParams) => {
-	const { error } = await resend.emails.send({
-		from: 'Handshakes.Me <onboarding@resend.dev>',
-		to: [email],
-		subject,
-		html: htmlContent
-	});
+	if(PLUNK_API_KEY === '' || PLUNK_API_KEY === undefined) {
+		const { error } = await resend.emails.send({
+			from: 'Handshakes.Me <onboarding@resend.dev>',
+			to: [email],
+			subject,
+			html: htmlContent
+		});
+	
+		if (error) {
+			console.error({ error });
+			return { success: false, message: `Failed to send email: ${error.message}` };
+		}
+	
+		return {
+			success: true,
+			message: `An email has been sent to ${email} with the subject: ${subject}.`
+		};
+	}
+	const { success } = await plunk.emails.send(
+		{
+			to: email,
+			subject,
+			body: htmlContent
+		},
 
-	if (error) {
-		console.error({ error });
-		return { success: false, message: `Failed to send email: ${error.message}` };
+);
+
+	if (!success) {
+		// console.error({ error });
+		return { success: false, message: 'Failed to send email' };
 	}
 
 	return {
 		success: true,
 		message: `An email has been sent to ${email} with the subject: ${subject}.`
 	};
+
+
 };
 
 export const verifyEmailVerificationCode = async (userId: string, code: string) => {
