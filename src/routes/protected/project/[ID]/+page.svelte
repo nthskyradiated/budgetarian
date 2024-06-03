@@ -39,7 +39,7 @@
 	$: allTransactions = [...transactionHistory];
 	$: currProject = project;
 	$: paginatedTransactions = [...initialPaginatedTransactions];
-	$: totalCount = pagination?.totalCount ?? paginatedTransactions?.length;
+	$: totalCount = pagination?.totalCount ?? 0
 	$: perPage = pagination?.pageSize ?? 10;
 
 	const handlePageChange = async (newPage: number) => {
