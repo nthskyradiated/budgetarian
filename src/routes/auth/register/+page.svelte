@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { toast, Toaster } from 'svelte-sonner';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -10,7 +9,7 @@
 	import { maxEmailLen, maxNameLen, maxPwrdLen } from '@/lib/zodValidators/zodParams';
 	// import SuperDebug from 'sveltekit-superforms';
 
-	export let data: PageData;
+	let {data} = $props();
 
 	const { enhance, errors, form, message } = superForm(data.registerUserFormData, {
 		taintedMessage: null,

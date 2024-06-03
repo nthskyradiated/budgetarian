@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { toast } from 'svelte-sonner';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { route } from '$lib/router';
@@ -14,12 +13,12 @@
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
 
-	export let data: PageData;
-	$: open = false;
+	let {data} = $props();
+	let open = $state(false);
 
 	// For login form
 	const {
-		enhance: loginEnhance,
+		enhance: loginEnhance,	
 		form: loginForm,
 		errors: loginErrors,
 		message: loginMessage,

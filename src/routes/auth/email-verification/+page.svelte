@@ -7,11 +7,10 @@
 	// import Input from "@/lib/components/ui/input/input.svelte";
 	// import Button from "@/lib/components/ui/button/button.svelte";
 	import { EmailVerificationCodeZodSchema } from '@/lib/zodValidators/zodAuthValidation';
-	import type { PageData } from './$types';
 	import InputField from '@/lib/components/form/InputField.svelte';
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 
-	export let data: PageData;
+	let {data} = $props()
 
 	const {
 		form,
