@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { getFlash } from 'sveltekit-flash-message';
 	import { toast } from 'svelte-sonner';
@@ -13,14 +12,18 @@
 	import NavBar from '@/lib/components/NavBar.svelte';
 	import Footer from '@/lib/components/Footer.svelte';
 	import Header from '@/lib/components/Header.svelte';
-	export let data: PageData;
+	let { data, children } = $props()
 
 	const flash = getFlash(page);
 
-	$: if ($flash) {
-		toast.info($flash.message);
-	}
-	$: metaTags = extend(true, {}, data.baseMetaTags, $page.data.pageMetaTags);
+	$effect(() => {
+		if ($flash) {
+			toast.info($flash.message);
+		}
+
+	}) 
+	let metaTags = $state(extend(true, {}, data.baseMetaTags, $page.data.pageMetaTags))
+
 	setupViewTransition();
 </script>
 
@@ -35,6 +38,6 @@
 	{:else}
 		<Header />
 	{/if}
-	<slot />
+	{@render children()}
 </div>
 <Footer />
