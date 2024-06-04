@@ -175,7 +175,7 @@
 								nameDefaultVal={project?.name!}
 								detailsDefaultVal={project?.details!}
 							/>
-							<DeleteProject projectId={ID} on:confirmDelete={() => handleDeleteProject(ID)} />
+							<DeleteProject projectId={ID as string} onDeleteProject={handleDeleteProject} />
 						</div>
 					</div>
 					<hr class="mb-8" />
@@ -250,8 +250,9 @@
 						{#each paginatedTransactions as transaction}
 							<span class=" relative inline-flex gap-8 text-nowrap pl-4 font-semibold">
 								<DeleteTransaction
+									ID={data.ID as string}
 									transactionId={transaction.id}
-									on:confirmDeleteTransaction={() => handleDeleteTransaction(transaction.id, ID)}
+									onDeleteTransaction={handleDeleteTransaction}
 								/>
 
 								<Tooltip.Root>
