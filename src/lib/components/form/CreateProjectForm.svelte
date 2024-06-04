@@ -10,12 +10,15 @@
 		ProjectZodSchema,
 		type projectZodSchema
 	} from '@/lib/zodValidators/zodProjectValidation';
-	export let createProjectFormData: SuperValidated<projectZodSchema>;
-	export let createProjectFormAction: string;
-	export let dialogName: string;
-	export let dialogTitle: string;
-	export let dialogDescription: string;
-	$: open = false;
+	let {createProjectFormData, createProjectFormAction, dialogName, dialogTitle, dialogDescription} = $props<{
+		createProjectFormData: SuperValidated<projectZodSchema>;
+		createProjectFormAction: string;
+		dialogName: string;
+		dialogTitle: string;
+		dialogDescription: string
+	}>()
+
+	 let open = $state(false)
 
 	const {
 		enhance: createProjectFormEnhance,

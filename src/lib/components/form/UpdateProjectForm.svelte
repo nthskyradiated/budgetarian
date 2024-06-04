@@ -11,16 +11,20 @@
 		UpdateProjectZodSchema,
 		type updateProjectZodSchema
 	} from '@/lib/zodValidators/zodProjectValidation';
-	export let updateProjectFormData: SuperValidated<updateProjectZodSchema>;
-	export let updateProjectFormAction: string;
-	export let dialogName: string;
-	export let dialogTitle: string;
-	export let dialogDescription: string;
-	export let projectId: string;
-	export let updateFundsPlaceHolder: number;
-	export let nameDefaultVal: string;
-	export let detailsDefaultVal: string;
-	$: open = false;
+
+	let { updateProjectFormData, updateProjectFormAction, dialogName, dialogTitle, dialogDescription, projectId, updateFundsPlaceHolder, nameDefaultVal, detailsDefaultVal } = $props<{
+		updateProjectFormData: SuperValidated<updateProjectZodSchema>;
+		updateProjectFormAction: string;
+		dialogName: string;
+		dialogTitle: string;
+		dialogDescription: string;
+		projectId: string;
+		updateFundsPlaceHolder: number;
+		nameDefaultVal: string;
+		detailsDefaultVal: string
+	}>()
+
+	let open = $state(false);
 	let additionalClasses = 'w-full transform -translate-y-10';
 	const {
 		enhance: updateProjectFormEnhance,

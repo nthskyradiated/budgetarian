@@ -17,11 +17,15 @@
 	import * as Dialog from '@/lib/components/ui/dialog';
 	import { buttonVariants } from '@/lib/components/ui/button';
 
-	export let formData: SuperValidated<passwordResetZodSchema>;
-	export let isPasswordResetTokenRequired: boolean = false;
-	export let formAction;
+	let { formData, isPasswordResetTokenRequired = false, formAction } = $props<{
+		formData: SuperValidated<passwordResetZodSchema>;
+		isPasswordResetTokenRequired: boolean;
+		formAction: string
+	}>()
 
-	$: open = false;
+
+
+	let open = $state(false);
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
 		resetForm: true,
