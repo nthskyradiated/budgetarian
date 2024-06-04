@@ -31,7 +31,11 @@
 
 	let chartCanvas: HTMLCanvasElement;
 	let chart: ChartJS | null = null;
-	let {transactions, viewType, chartType} = $props<{transactions: Transaction[]; viewType: 'total' | 'category' | 'inflows' | 'expenses' | 'all'; chartType: ChartType}>()
+	let { transactions, viewType, chartType } = $props<{
+		transactions: Transaction[];
+		viewType: 'total' | 'category' | 'inflows' | 'expenses' | 'all';
+		chartType: ChartType;
+	}>();
 
 	function updateChartType(type: ChartType) {
 		if (chart && chart.config.data.datasets[0]?.type !== type) {
@@ -95,8 +99,7 @@
 			chart.data = get(chartData);
 			chart.update();
 		}
-
-	} )
+	});
 
 	onDestroy(() => {
 		if (chart) {

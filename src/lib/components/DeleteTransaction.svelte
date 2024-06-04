@@ -3,7 +3,11 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Icon from '@iconify/svelte';
 
-	let {transactionId, ID, onDeleteTransaction} = $props<{ID: string,transactionId: string, onDeleteTransaction: (transactionId: string, ID: string) => void}>()
+	let { transactionId, ID, onDeleteTransaction } = $props<{
+		ID: string;
+		transactionId: string;
+		onDeleteTransaction: (transactionId: string, ID: string) => void;
+	}>();
 
 	const confirmDeleteTransaction = () => {
 		onDeleteTransaction(transactionId, ID);

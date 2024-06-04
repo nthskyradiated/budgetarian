@@ -2,8 +2,7 @@
 	import { route } from '@/lib/router';
 	import ThemeToggler from './ThemeToggler.svelte';
 	import type { User } from 'lucia';
-	let {user} = $props<{user: User}>()
-
+	let { user } = $props<{ user: User }>();
 </script>
 
 <h1 class="ml-4 py-10 text-left">Logged in as: {user.name ?? user.username}</h1>

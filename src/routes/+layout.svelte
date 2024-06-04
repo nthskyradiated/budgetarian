@@ -12,7 +12,7 @@
 	import NavBar from '@/lib/components/NavBar.svelte';
 	import Footer from '@/lib/components/Footer.svelte';
 	import Header from '@/lib/components/Header.svelte';
-	let { data, children } = $props()
+	let { data, children } = $props();
 
 	const flash = getFlash(page);
 
@@ -20,9 +20,8 @@
 		if ($flash) {
 			toast.info($flash.message);
 		}
-
-	}) 
-	let metaTags = $state(extend(true, {}, data.baseMetaTags, $page.data.pageMetaTags))
+	});
+	let metaTags = $state(extend(true, {}, data.baseMetaTags, $page.data.pageMetaTags));
 
 	setupViewTransition();
 </script>

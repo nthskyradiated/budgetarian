@@ -17,13 +17,15 @@
 	import * as Dialog from '@/lib/components/ui/dialog';
 	import { buttonVariants } from '@/lib/components/ui/button';
 
-	let { formData, isPasswordResetTokenRequired = false, formAction } = $props<{
+	let {
+		formData,
+		isPasswordResetTokenRequired = false,
+		formAction
+	} = $props<{
 		formData: SuperValidated<passwordResetZodSchema>;
 		isPasswordResetTokenRequired: boolean;
-		formAction: string
-	}>()
-
-
+		formAction: string;
+	}>();
 
 	let open = $state(false);
 

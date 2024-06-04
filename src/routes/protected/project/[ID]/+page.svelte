@@ -15,9 +15,8 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
 	import { chartData, updateChartDataByTotalTransactions } from '@/lib/utils/chartUtils';
-	// import SuperDebug from 'sveltekit-superforms';
 
-	let {data} = $props();
+	let { data } = $props();
 
 	const {
 		project,
@@ -31,7 +30,7 @@
 	let currProject = $state(project);
 	let allTransactions = $state([...transactionHistory]);
 	let paginatedTransactions = $state([...initialPaginatedTransactions]);
-	let totalCount: number = $state(pagination?.totalCount ?? 0)
+	let totalCount: number = $state(pagination?.totalCount ?? 0);
 	let perPage: number = $state(pagination?.pageSize ?? 10);
 
 	let viewType: 'total' | 'category' | 'inflows' | 'expenses' = $state('category');
@@ -60,7 +59,7 @@
 	};
 	$effect(() => {
 		$page.url.searchParams.get('page'); // Re-trigger when page param changes
-	}) 
+	});
 
 	const { message: updateProjectFormMessage } = superForm(updateProjectFormData!, {
 		onUpdated: async () => {
@@ -159,7 +158,7 @@
 			<Card class="mt-2 h-full w-full p-4">
 				<Chart transactions={allTransactions} {viewType} {chartType} />
 			</Card>
-			<Card class="my-2 h-max w-full p-6 md:flex-1" on:transactionAdded={handleTransactionAdded}>
+			<Card class="my-2 h-max w-full p-6 md:flex-1">
 				<div class="flex flex-col gap-4">
 					<div class="items-left flex flex-col gap-6 sm:flex-row sm:justify-between">
 						<h1 class="text-4xl font-bold">{currProject?.name}</h1>
@@ -226,8 +225,7 @@
 							dialogDescription="Input all the necessary information to create a new transaction."
 							dialogTriggerBtn="Add New Transaction"
 							dialogSubmitBtn="add"
-							DialogID={data.ID as string}
-							on:transactionAdded={handleTransactionAdded}
+							onAddTransaction={handleTransactionAdded}
 						/>
 					{/if}
 				</div>
@@ -258,13 +256,13 @@
 								<Tooltip.Root>
 									<Tooltip.Trigger>{transaction.name}</Tooltip.Trigger>
 									<Tooltip.Content>
-										<p>- {transaction.type}</p>
-										<p>- {transaction.amount}</p>
+										<p>✔️ {transaction.type}</p>
+										<p>💱 {transaction.amount}</p>
 										{#if transaction.isRecurring}
-											<p>- recurring transaction</p>
+											<p>❗ recurring transaction</p>
 										{/if}
 										{#if transaction.remarks}
-											<p>- {transaction.remarks}</p>
+											<p>👌 {transaction.remarks}</p>
 										{/if}
 									</Tooltip.Content>
 								</Tooltip.Root>

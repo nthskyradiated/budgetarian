@@ -1,27 +1,30 @@
 <script lang="ts">
 	import * as Pagination from '$lib/components/ui/pagination';
 	import { page } from '$app/stores';
-	let {count, perPage, onPageChange} = $props<{count: number; perPage: number, onPageChange: (newPage: number) => void}>()
+	let { count, perPage, onPageChange } = $props<{
+		count: number;
+		perPage: number;
+		onPageChange: (newPage: number) => void;
+	}>();
 
 	let siblingCount = 1;
 
-	let currentPage = $state(1)
+	let currentPage = $state(1);
 
 	$effect(() => {
 		const pageParam = parseInt($page.url.searchParams.get('page') || '1');
 		if (!isNaN(pageParam)) {
 			currentPage = pageParam;
 		}
-	})
+	});
 
-	let totalPages = $derived(Math.ceil(count / perPage))
+	let totalPages = $derived(Math.ceil(count / perPage));
 
 	const changePage = (newPage: number) => {
 		if (newPage >= 1 && newPage <= totalPages) {
 			onPageChange(newPage);
 		}
 	};
-
 </script>
 
 <Pagination.Root {count} {perPage} {siblingCount} {onPageChange} let:pages let:currentPage>

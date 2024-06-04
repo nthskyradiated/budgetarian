@@ -112,10 +112,7 @@
 	/>
 	{#each newProjects as project}
 		<Card class="relative h-96 w-full p-6 sm:w-96">
-			<DeleteProject
-				projectId={project?.id}
-				onDeleteProject={handleDeleteProject}
-			/>
+			<DeleteProject projectId={project?.id} onDeleteProject={handleDeleteProject} />
 			<span class="items-end text-xl font-bold">{project?.name}</span>
 			<div class="mt-8 flex flex-col gap-4">
 				<hr class="w-full border-gray-400" />

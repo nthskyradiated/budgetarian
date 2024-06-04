@@ -9,7 +9,7 @@
 	import { maxEmailLen, maxNameLen, maxPwrdLen } from '@/lib/zodValidators/zodParams';
 	// import SuperDebug from 'sveltekit-superforms';
 
-	let {data} = $props();
+	let { data } = $props();
 
 	const { enhance, errors, form, message } = superForm(data.registerUserFormData, {
 		taintedMessage: null,

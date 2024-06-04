@@ -13,7 +13,7 @@ import Plunk from '@plunk/node';
 const resend = new Resend(RESEND_API_KEY);
 
 // @ts-ignore
-const plunk = new Plunk.default(PLUNK_API_KEY)
+const plunk = new Plunk.default(PLUNK_API_KEY);
 
 export const pendingUserVerification = 'pendingUserVerification';
 
@@ -57,32 +57,29 @@ export const sendEmailVerificationCode = async (email: string, code: string) => 
 };
 
 const sendEmail = async ({ email, subject, htmlContent }: EmailParams) => {
-	if(PLUNK_API_KEY === '' || PLUNK_API_KEY === undefined) {
+	if (PLUNK_API_KEY === '' || PLUNK_API_KEY === undefined) {
 		const { error } = await resend.emails.send({
 			from: 'Budgetarian <onboarding@resend.dev>',
 			to: [email],
 			subject,
 			html: htmlContent
 		});
-	
+
 		if (error) {
 			console.error({ error });
 			return { success: false, message: `Failed to send email: ${error.message}` };
 		}
-	
+
 		return {
 			success: true,
 			message: `An email has been sent to ${email} with the subject: ${subject}.`
 		};
 	}
-	const { success } = await plunk.emails.send(
-		{
-			to: email,
-			subject,
-			body: htmlContent
-		},
-
-);
+	const { success } = await plunk.emails.send({
+		to: email,
+		subject,
+		body: htmlContent
+	});
 
 	if (!success) {
 		// console.error({ error });
@@ -93,8 +90,6 @@ const sendEmail = async ({ email, subject, htmlContent }: EmailParams) => {
 		success: true,
 		message: `An email has been sent to ${email} with the subject: ${subject}.`
 	};
-
-
 };
 
 export const verifyEmailVerificationCode = async (userId: string, code: string) => {

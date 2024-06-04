@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button/index';
 	import PasswordChangeForm from '@/lib/components/form/PasswordChangeForm.svelte';
 
-	let {data} = $props()
+	let { data } = $props();
 </script>
 
 <div

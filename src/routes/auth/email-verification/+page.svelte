@@ -10,7 +10,7 @@
 	import InputField from '@/lib/components/form/InputField.svelte';
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 
-	let {data} = $props()
+	let { data } = $props();
 
 	const {
 		form,

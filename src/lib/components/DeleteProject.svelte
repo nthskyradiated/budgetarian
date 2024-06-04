@@ -4,8 +4,10 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
-
-	let {projectId, onDeleteProject} = $props<{projectId: string, onDeleteProject: (projectId: string) => void}>()
+	let { projectId, onDeleteProject } = $props<{
+		projectId: string;
+		onDeleteProject: (projectId: string) => void;
+	}>();
 
 	const confirmDelete = async () => {
 		onDeleteProject(projectId);

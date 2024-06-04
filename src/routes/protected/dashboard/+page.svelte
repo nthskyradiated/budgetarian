@@ -5,7 +5,7 @@
 	import PasswordChangeForm from '@/lib/components/form/PasswordChangeForm.svelte';
 	import Card from '@/lib/components/ui/card/card.svelte';
 	import { goto } from '$app/navigation';
-	let {data} = $props();
+	let { data } = $props();
 
 	const { loggedInUser, recentProjects } = data;
 

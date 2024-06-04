@@ -13,12 +13,12 @@
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
 
-	let {data} = $props();
+	let { data } = $props();
 	let open = $state(false);
 
 	// For login form
 	const {
-		enhance: loginEnhance,	
+		enhance: loginEnhance,
 		form: loginForm,
 		errors: loginErrors,
 		message: loginMessage,
