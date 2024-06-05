@@ -9,6 +9,7 @@ import { PLUNK_API_KEY, RESEND_API_KEY } from '$env/static/private';
 import { eq } from 'drizzle-orm';
 import { route } from '../router';
 import Plunk from '@plunk/node';
+import { PUBLIC_URL } from '$env/static/public';
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -132,7 +133,7 @@ export const sendPasswordResetEmail = async (email: string, resetToken: string) 
 		<p>We've received a request to reset your password. If you didn't make the request, just ignore this email. Otherwise, you can reset your password using the link below.</p>
 
 		<p>
-		<a href="http://localhost:5173${route('/auth/password-reset')}?token=${resetToken}" style="color: #337ab7; text-decoration: none;">Reset your password</a>
+		<a href="${PUBLIC_URL}${route('/auth/password-reset')}?token=${resetToken}" style="color: #337ab7; text-decoration: none;">Reset your password</a>
 		</p>
 
 		<p>If you need help or have any questions, please contact our support team. We're here to help!</p>

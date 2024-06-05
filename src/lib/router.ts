@@ -48,7 +48,8 @@ const ACTIONS = {
 	'resetPassword /auth/reset-password': `?/resetPassword`,
 	'logout /dashboard': `?/logout`,
 	'changePassword /dashboard': `?/changePassword`,
-	'deleteAllUsers /dashboard': `/dashboard?/deleteAllUsers`
+	'deleteAllUsers /dashboard': `/dashboard?/deleteAllUsers`,
+	'deleteUser /dashboard': `?/deleteUser`
 };
 
 /**
@@ -160,6 +161,7 @@ export type KIT_ROUTES = {
 		'resetPassword /auth/reset-password': never;
 		'logout /dashboard': never;
 		'changePassword /dashboard': never;
+		'deleteUser /dashboard': never;
 		'deleteAllUsers /dashboard': never;
 		'createProject protected/projects': never;
 		'updateProject protected/projects': never;

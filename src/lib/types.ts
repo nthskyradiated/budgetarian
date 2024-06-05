@@ -152,9 +152,12 @@ export type DeleteProjectProps = {
 	projectId: string;
 	onDeleteProject: (projectId: string) => void;
 };
+export type DeleteUserProps = {
+	onDeleteUser: () => void;
+};
 
 export type InputFieldProps = {
-	// export { className as class };
+
 	type: HTMLInputAttributes['type'];
 	value: string | number | null | undefined;
 	name: string;
@@ -167,5 +170,5 @@ export type InputFieldProps = {
 	minlength?: number | undefined;
 	errorMessage?: object | undefined;
 	className?: HTMLInputAttributes['class']
-	step?: string
+	step?: HTMLInputAttributes['step']
 }

@@ -5,7 +5,7 @@
 
 	// export { className as class };
 
-	let { value = $bindable(), className, type, label, name = '', placeholder = '', spellcheck = true, autocomplete = 'on', enterkeyhint = 'next', maxlength = undefined, minlength = undefined, errorMessage = undefined} : InputFieldProps = $props()
+	let { value = $bindable(), className, type, label, step, name = '', placeholder = '', spellcheck = true, autocomplete = 'on', enterkeyhint = 'next', maxlength = undefined, minlength = undefined, errorMessage = undefined} : InputFieldProps = $props()
 
 	let valueLength = $derived(value?.toString().length);
 </script>
@@ -38,6 +38,7 @@
 		{placeholder}
 		{autocomplete}
 		{enterkeyhint}
+		{step}
 		aria-label={label}
 		class={cn('rounded border bg-transparent px-3 py-2', className)}
 		aria-invalid={errorMessage ? 'true' : undefined}

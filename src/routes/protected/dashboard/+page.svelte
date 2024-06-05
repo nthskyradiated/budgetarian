@@ -1,10 +1,12 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar';
-	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
+	// import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 	import { route } from '@/lib/router';
 	import PasswordChangeForm from '@/lib/components/form/PasswordChangeForm.svelte';
 	import Card from '@/lib/components/ui/card/card.svelte';
 	import { goto } from '$app/navigation';
+	import DeleteUser from '@/lib/components/DeleteUser.svelte';
+	import { toast } from 'svelte-sonner';
 	let { data } = $props();
 
 	const { loggedInUser, recentProjects } = data;
@@ -17,32 +19,48 @@
 		const ID = event;
 		goto(`/protected/project/${ID}`);
 	};
+
+	const handleDeleteUser = async () => {
+		const response = await fetch('/protected/dashboard', {
+			method: 'DELETE'
+		});
+
+		if (response.ok) {
+			goto('/');
+			toast.success('Deleted Your Account successfully');
+		} else {
+			toast.error('Failed to delete Account');
+		}
+	};
 </script>
 
 <section class="mx-auto my-12 w-80 gap-4 md:ml-12 md:w-full">
-	<div class="flex flex-col gap-8">
+	<div class="flex flex-col gap-8 w-1/2">
 		<h1 class="mb-5 text-2xl">
 			<span class="font-bold"
 				>{loggedInUser.name || loggedInUser.username || loggedInUser.email}'s Dashboard</span
 			>
 		</h1>
-		<Avatar.Root class="size-20">
-			<Avatar.Image src={data.user?.avatarUrl} alt="User Avatar" />
-			<Avatar.Fallback class="text-5xl">
-				{nameInitial || emailInitial}
-			</Avatar.Fallback>
-		</Avatar.Root>
-		<div class="flex gap-2">
-			<form method="post" action={route('logout /dashboard')}>
-				<SubmitButton>Logout</SubmitButton>
-			</form>
+		<div class="flex flex-row gap-16 align-middle items-center">
+			<Avatar.Root class="size-20">
+				<Avatar.Image src={data.user?.avatarUrl} alt="User Avatar" />
+				<Avatar.Fallback class="text-5xl">
+					{nameInitial || emailInitial}
+				</Avatar.Fallback>
+			</Avatar.Root>
+			<div class="flex gap-2 flex-col items-center align-middle w-auto mt-8">
+				<DeleteUser
+				onDeleteUser={handleDeleteUser}
+				 />
+				{#if isOnlyOauthUser === false}
+					<PasswordChangeForm
+						formData={data.passwordResetFormData}
+						formAction={route('changePassword /dashboard')}
+					/>
+				{/if}
+			</div>
 
-			{#if isOnlyOauthUser === false}
-				<PasswordChangeForm
-					formData={data.passwordResetFormData}
-					formAction={route('changePassword /dashboard')}
-				/>
-			{/if}
+
 		</div>
 	</div>
 </section>
