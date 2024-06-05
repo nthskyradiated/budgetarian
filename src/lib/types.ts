@@ -5,7 +5,7 @@ import type {
 	transactionZodSchema,
 	updateProjectZodSchema
 } from './zodValidators/zodProjectValidation';
-import type { HTMLButtonAttributes } from 'svelte/elements';
+import type { HTMLButtonAttributes, HTMLInputAttributes } from 'svelte/elements';
 import type { Snippet } from 'svelte';
 
 export type AlertMessageType = {
@@ -152,3 +152,20 @@ export type DeleteProjectProps = {
 	projectId: string;
 	onDeleteProject: (projectId: string) => void;
 };
+
+export type InputFieldProps = {
+	// export { className as class };
+	type: HTMLInputAttributes['type'];
+	value: string | number | null | undefined;
+	name: string;
+	label?: string;
+	placeholder?: string;
+	spellcheck?: boolean;
+	autocomplete?: string;
+	enterkeyhint?: EnterKeyHintType;
+	maxlength?: number | undefined;
+	minlength?: number | undefined;
+	errorMessage?: object | undefined;
+	className?: HTMLInputAttributes['class']
+	step?: string
+}
