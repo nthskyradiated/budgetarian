@@ -2,16 +2,12 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import { buttonVariants } from '../ui/button';
-	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import InputField from './InputField.svelte';
 	import SubmitButton from './SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
-	import {
-		TransactionZodSchema,
-		type transactionZodSchema
-	} from '@/lib/zodValidators/zodProjectValidation';
+	import { TransactionZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import {
 		maxNameLen,
 		minNameLen,
@@ -22,6 +18,7 @@
 	import { Switch } from '$lib/components/ui/switch/index';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Textarea } from '../ui/textarea';
+	import type { TransactionFormProps } from '@/lib/types';
 
 	let {
 		onAddTransaction,
@@ -31,15 +28,7 @@
 		dialogTriggerBtn,
 		dialogDescription,
 		dialogSubmitBtn
-	} = $props<{
-		formData: SuperValidated<transactionZodSchema>;
-		formAction: string;
-		dialogTitle: string;
-		dialogTriggerBtn: string;
-		dialogDescription: string;
-		dialogSubmitBtn: string;
-		onAddTransaction: () => void;
-	}>();
+	}: TransactionFormProps = $props();
 
 	let open = $state(false);
 

@@ -5,24 +5,16 @@
 	import { buttonVariants } from '../ui/button';
 	import SubmitButton from './SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
-	import { superForm, type SuperValidated } from 'sveltekit-superforms/client';
-	import {
-		ProjectZodSchema,
-		type projectZodSchema
-	} from '@/lib/zodValidators/zodProjectValidation';
+	import { superForm } from 'sveltekit-superforms/client';
+	import { ProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+	import type { CreateProjectFormProps } from '@/lib/types';
 	let {
 		createProjectFormData,
 		createProjectFormAction,
 		dialogName,
 		dialogTitle,
 		dialogDescription
-	} = $props<{
-		createProjectFormData: SuperValidated<projectZodSchema>;
-		createProjectFormAction: string;
-		dialogName: string;
-		dialogTitle: string;
-		dialogDescription: string;
-	}>();
+	}: CreateProjectFormProps = $props();
 
 	let open = $state(false);
 

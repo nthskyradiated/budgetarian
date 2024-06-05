@@ -5,12 +5,9 @@
 	import { buttonVariants } from '../ui/button';
 	import SubmitButton from './SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
-	// import { toast } from 'svelte-sonner';
-	import { superForm, type SuperValidated } from 'sveltekit-superforms/client';
-	import {
-		UpdateProjectZodSchema,
-		type updateProjectZodSchema
-	} from '@/lib/zodValidators/zodProjectValidation';
+	import { superForm } from 'sveltekit-superforms/client';
+	import { UpdateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+	import type { UpdateProjectFormProps } from '@/lib/types';
 
 	let {
 		updateProjectFormData,
@@ -22,17 +19,7 @@
 		updateFundsPlaceHolder,
 		nameDefaultVal,
 		detailsDefaultVal
-	} = $props<{
-		updateProjectFormData: SuperValidated<updateProjectZodSchema>;
-		updateProjectFormAction: string;
-		dialogName: string;
-		dialogTitle: string;
-		dialogDescription: string;
-		projectId: string;
-		updateFundsPlaceHolder: number;
-		nameDefaultVal: string;
-		detailsDefaultVal: string;
-	}>();
+	}: UpdateProjectFormProps = $props();
 
 	let open = $state(false);
 	let additionalClasses = 'w-full transform -translate-y-10';

@@ -29,13 +29,15 @@
 
 	ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, BarElement, LineElement);
 
-	let chartCanvas: HTMLCanvasElement;
-	let chart: ChartJS | null = null;
-	let { transactions, viewType, chartType } = $props<{
+	type ChartProps = {
 		transactions: Transaction[];
 		viewType: 'total' | 'category' | 'inflows' | 'expenses' | 'all';
 		chartType: ChartType;
-	}>();
+	};
+
+	let chartCanvas: HTMLCanvasElement;
+	let chart: ChartJS | null = null;
+	let { transactions, viewType, chartType }: ChartProps = $props();
 
 	function updateChartType(type: ChartType) {
 		if (chart && chart.config.data.datasets[0]?.type !== type) {

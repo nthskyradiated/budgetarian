@@ -2,13 +2,9 @@
 	import { page } from '$app/stores';
 
 	import { toast } from 'svelte-sonner';
-	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	import {
-		PasswordResetZodSchema,
-		type passwordResetZodSchema
-	} from '@/lib/zodValidators/zodAuthValidation';
+	import { PasswordResetZodSchema } from '@/lib/zodValidators/zodAuthValidation';
 	import { maxPwrdLen } from '@/lib/zodValidators/zodParams';
 
 	import InputField from './InputField.svelte';
@@ -16,16 +12,13 @@
 	import { zod } from 'sveltekit-superforms/adapters';
 	import * as Dialog from '@/lib/components/ui/dialog';
 	import { buttonVariants } from '@/lib/components/ui/button';
+	import type { PasswordChangeFormProps } from '@/lib/types';
 
 	let {
 		formData,
 		isPasswordResetTokenRequired = false,
 		formAction
-	} = $props<{
-		formData: SuperValidated<passwordResetZodSchema>;
-		isPasswordResetTokenRequired: boolean;
-		formAction: string;
-	}>();
+	}: PasswordChangeFormProps = $props();
 
 	let open = $state(false);
 

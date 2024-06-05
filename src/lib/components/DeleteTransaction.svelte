@@ -2,12 +2,9 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Icon from '@iconify/svelte';
+	import type { DeleteTransactionProps } from '../types';
 
-	let { transactionId, ID, onDeleteTransaction } = $props<{
-		ID: string;
-		transactionId: string;
-		onDeleteTransaction: (transactionId: string, ID: string) => void;
-	}>();
+	let { transactionId, ID, onDeleteTransaction }: DeleteTransactionProps = $props();
 
 	const confirmDeleteTransaction = () => {
 		onDeleteTransaction(transactionId, ID);

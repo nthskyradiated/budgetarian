@@ -3,11 +3,9 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
+	import type { DeleteProjectProps } from '../types';
 
-	let { projectId, onDeleteProject } = $props<{
-		projectId: string;
-		onDeleteProject: (projectId: string) => void;
-	}>();
+	let { projectId, onDeleteProject }: DeleteProjectProps = $props();
 
 	const confirmDelete = async () => {
 		onDeleteProject(projectId);

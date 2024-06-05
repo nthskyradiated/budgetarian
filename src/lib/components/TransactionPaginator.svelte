@@ -1,11 +1,9 @@
 <script lang="ts">
 	import * as Pagination from '$lib/components/ui/pagination';
 	import { page } from '$app/stores';
-	let { count, perPage, onPageChange } = $props<{
-		count: number;
-		perPage: number;
-		onPageChange: (newPage: number) => void;
-	}>();
+	import type { TransactionPaginatorProps } from '../types';
+
+	let { count, perPage, onPageChange }: TransactionPaginatorProps = $props();
 
 	let siblingCount = 1;
 
