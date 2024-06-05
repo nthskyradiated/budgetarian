@@ -5,10 +5,11 @@ import { emailVerificationCodesTable } from '@/db/schema';
 import { createDate, isWithinExpirationDate, TimeSpan } from 'oslo';
 import type { EmailParams } from '../types';
 import { Resend } from 'resend';
-import { PLUNK_API_KEY, RESEND_API_KEY } from '$env/static/private';
+import { DEV_URL, NODE_ENV, PLUNK_API_KEY, RESEND_API_KEY } from '$env/static/private';
 import { eq } from 'drizzle-orm';
 import { route } from '../router';
 import Plunk from '@plunk/node';
+import { PUBLIC_URL } from '$env/static/public';
 
 const resend = new Resend(RESEND_API_KEY);
 
@@ -131,13 +132,15 @@ export const verifyEmailVerificationCode = async (userId: string, code: string) 
 };
 
 export const sendPasswordResetEmail = async (email: string, resetToken: string) => {
+	let host
+	NODE_ENV === 'production' ? host = PUBLIC_URL : host = DEV_URL
 	const htmlContent = `
 	<div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
 		<h1>Password Reset Request</h1>
 		<p>We've received a request to reset your password. If you didn't make the request, just ignore this email. Otherwise, you can reset your password using the link below.</p>
 
 		<p>
-		<a href="http://localhost:5173${route('/auth/password-reset')}?token=${resetToken}" style="color: #337ab7; text-decoration: none;">Reset your password</a>
+		<a href="${host}${route('/auth/password-reset')}?token=${resetToken}" style="color: #337ab7; text-decoration: none;">Reset your password</a>
 		</p>
 
 		<p>If you need help or have any questions, please contact our support team. We're here to help!</p>
