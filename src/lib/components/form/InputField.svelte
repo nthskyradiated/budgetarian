@@ -1,11 +1,24 @@
 <script lang="ts">
-
-	import type {  InputFieldProps } from '$lib/types';
+	import type { InputFieldProps } from '$lib/types';
 	import { cn } from '$lib/utils';
 
 	// export { className as class };
 
-	let { value = $bindable(), className, type, label, step, name = '', placeholder = '', spellcheck = true, autocomplete = 'on', enterkeyhint = 'next', maxlength = undefined, minlength = undefined, errorMessage = undefined} : InputFieldProps = $props()
+	let {
+		value = $bindable(),
+		className,
+		type,
+		label,
+		step,
+		name = '',
+		placeholder = '',
+		spellcheck = true,
+		autocomplete = 'on',
+		enterkeyhint = 'next',
+		maxlength = undefined,
+		minlength = undefined,
+		errorMessage = undefined
+	}: InputFieldProps = $props();
 
 	let valueLength = $derived(value?.toString().length);
 </script>
@@ -27,7 +40,7 @@
 		<p class="text-red-500">{errorMessage}</p>
 	{/if}
 
-		<input
+	<input
 		{name}
 		{...{ type }}
 		dir="auto"
@@ -42,7 +55,7 @@
 		aria-label={label}
 		class={cn('rounded border bg-transparent px-3 py-2', className)}
 		aria-invalid={errorMessage ? 'true' : undefined}
-		/>
-	</label>
-	
-	<!-- {...$$restProps} -->
+	/>
+</label>
+
+<!-- {...$$restProps} -->

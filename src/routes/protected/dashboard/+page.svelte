@@ -35,23 +35,21 @@
 </script>
 
 <section class="mx-auto my-12 w-80 gap-4 md:ml-12 md:w-full">
-	<div class="flex flex-col gap-8 w-1/2">
+	<div class="flex w-1/2 flex-col gap-8">
 		<h1 class="mb-5 text-2xl">
 			<span class="font-bold"
 				>{loggedInUser.name || loggedInUser.username || loggedInUser.email}'s Dashboard</span
 			>
 		</h1>
-		<div class="flex flex-row gap-16 align-middle items-center">
+		<div class="flex flex-row items-center gap-16 align-middle">
 			<Avatar.Root class="size-20">
 				<Avatar.Image src={data.user?.avatarUrl} alt="User Avatar" />
 				<Avatar.Fallback class="text-5xl">
 					{nameInitial || emailInitial}
 				</Avatar.Fallback>
 			</Avatar.Root>
-			<div class="flex gap-2 flex-col items-center align-middle w-auto mt-8">
-				<DeleteUser
-				onDeleteUser={handleDeleteUser}
-				 />
+			<div class="mt-8 flex w-auto flex-col items-center gap-2 align-middle">
+				<DeleteUser onDeleteUser={handleDeleteUser} />
 				{#if isOnlyOauthUser === false}
 					<PasswordChangeForm
 						formData={data.passwordResetFormData}
@@ -59,8 +57,6 @@
 					/>
 				{/if}
 			</div>
-
-
 		</div>
 	</div>
 </section>
