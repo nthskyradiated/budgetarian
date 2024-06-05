@@ -1,7 +1,7 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
 
 export function createBaseMetaTags(url: URL): MetaTagsProps {
-	const title = 'Budgetarian';
+	const title = 'Budgetarian!';
 	const description = 'Expense Tracker Visualizer made with SvelteKit';
 	const canonicalUrl = new URL(url.pathname, url.origin).href;
 

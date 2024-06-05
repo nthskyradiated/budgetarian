@@ -13,7 +13,7 @@ function createRateLimiter(cookieName: string, cookieSecret: string) {
 		*/
 			name: cookieName, // Unique cookie name for this limiter
 			secret: cookieSecret,
-			rate: [2, 'm'], // Allows up to  2 requests per minute from the same browser session
+			rate: [3, 'm'], // Allows up to  2 requests per minute from the same browser session
 			preflight: true // Require preflight call (see load function)
 		}
 	});

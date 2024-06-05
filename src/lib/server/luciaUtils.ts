@@ -1,13 +1,9 @@
 import { dev } from '$app/environment';
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import sqlite from 'better-sqlite3';
 import { usersTable, sessionsTable } from '@/db/schema';
 import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
-import { DATABASE_URL } from '$env/static/private';
 import { Lucia, TimeSpan } from 'lucia';
+import db from '@/db';
 
-const sqliteDB = sqlite(DATABASE_URL);
-const db = drizzle(sqliteDB);
 const adapter = new DrizzleSQLiteAdapter(db, sessionsTable, usersTable);
 
 export const lucia = new Lucia(adapter, {

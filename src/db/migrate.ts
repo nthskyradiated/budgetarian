@@ -1,4 +1,4 @@
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
+import { migrate } from 'drizzle-orm/libsql/migrator';
 import config from '$/drizzle.config';
 import { db, connection } from '@/db';
 import env from '@/env';

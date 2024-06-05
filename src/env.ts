@@ -26,7 +26,9 @@ const EnvSchema = z.object({
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
 	RESEND_API_KEY: z.string(),
-	PLUNK_API_KEY: z.string()
+	PLUNK_API_KEY: z.string(),
+	TURSO_CONNECTION_URL: z.string(),
+	TURSO_AUTH_TOKEN: z.string()
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;
