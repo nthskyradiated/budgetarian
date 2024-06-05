@@ -5,7 +5,8 @@ import type {
 	transactionZodSchema,
 	updateProjectZodSchema
 } from './zodValidators/zodProjectValidation';
-// import type { HTMLButtonAttributes } from 'svelte/elements';
+import type { HTMLButtonAttributes } from 'svelte/elements';
+import type { Snippet } from 'svelte';
 
 export type AlertMessageType = {
 	alertType: 'success' | 'error' | 'warning' | 'info';
@@ -94,8 +95,8 @@ export type BtnProps = {
 	disabled?: boolean;
 	formaction?: string | null;
 	showSpinner?: boolean | null;
-	class?: string | null
-	// className?: HTMLButtonAttributes['class']
+	class?: string | HTMLButtonAttributes['class']
+	children: Snippet
 };
 
 export type PasswordChangeFormProps = {

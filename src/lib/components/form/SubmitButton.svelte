@@ -6,11 +6,12 @@
 	import Button from '../ui/button/button.svelte';
 	import type { BtnProps } from '@/lib/types';
 
-	let className: HTMLButtonAttributes['class'] = undefined;
+	let className: HTMLButtonAttributes['class'];
 
+	let { disabled = false, formaction = null, showSpinner = null, children }: BtnProps = $props();
 	export { className as class };
+	console.log('className:', className);
 
-	let { disabled = false, formaction = null, showSpinner = null, class}: BtnProps = $props();
 </script>
 
 <Button
@@ -24,8 +25,6 @@
 		<iconify-icon icon="eos-icons:bubble-loading"></iconify-icon>
 	{/if}
 
-	<!-- svelte-ignore slot_element_deprecated -->
-	<span>
-		<slot>Submit</slot>
-	</span>
+	{@render children()}
+
 </Button>
