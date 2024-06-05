@@ -95,7 +95,8 @@ export type BtnProps = {
 	disabled?: boolean;
 	formaction?: string | null;
 	showSpinner?: boolean | null;
-	class?: string | HTMLButtonAttributes['class']
+	// class?: string | HTMLButtonAttributes['class']
+	className?: HTMLButtonAttributes['class']
 	children: Snippet
 };
 

@@ -81,6 +81,6 @@
 			label="Password"
 		/>
 
-		<SubmitButton class="w-1/6">Register</SubmitButton>
+		<SubmitButton className="w-1/6">Register</SubmitButton>
 	</form>
 </div>

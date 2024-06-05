@@ -96,7 +96,7 @@
 		/>
 
 		<div class="flex flex-col justify-between gap-4 sm:flex-initial sm:flex-row sm:flex-wrap">
-			<SubmitButton disabled={$loginDelayed} class="flex-grow"
+			<SubmitButton disabled={$loginDelayed} className="flex-grow"
 				>Login in with your email</SubmitButton
 			>
 

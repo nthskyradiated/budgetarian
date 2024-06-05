@@ -61,7 +61,7 @@
 			errorMessage={$errors.verificationCode}
 		/>
 
-		<SubmitButton class="w-full" disabled={$delayed}>Verify</SubmitButton>
+		<SubmitButton className="w-full" disabled={$delayed}>Verify</SubmitButton>
 	</form>
 
 	<form
@@ -80,6 +80,6 @@
 		}}
 		class="mt-4"
 	>
-		<SubmitButton class="w-full">Send New Code</SubmitButton>
+		<SubmitButton className="w-full">Send New Code</SubmitButton>
 	</form>
 </div>

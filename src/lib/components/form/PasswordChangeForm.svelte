@@ -81,7 +81,7 @@
 				/>
 			{/if}
 
-			<SubmitButton disabled={$delayed} />
+			<SubmitButton disabled={$delayed}>Change Password</SubmitButton>
 		</form>
 	</Dialog.Content>
 </Dialog.Root>

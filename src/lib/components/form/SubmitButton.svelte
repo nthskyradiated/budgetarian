@@ -1,15 +1,15 @@
 <script lang="ts">
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	// import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	import { cn } from '$lib/utils';
 
 	import Button from '../ui/button/button.svelte';
 	import type { BtnProps } from '@/lib/types';
 
-	let className: HTMLButtonAttributes['class'];
+	// let className: HTMLButtonAttributes['class'];
 
-	let { disabled = false, formaction = null, showSpinner = null, children }: BtnProps = $props();
-	export { className as class };
+	let { disabled = false, formaction = null, showSpinner = null, children, className }: BtnProps = $props();
+	// export { className as class };
 	console.log('className:', className);
 
 </script>
