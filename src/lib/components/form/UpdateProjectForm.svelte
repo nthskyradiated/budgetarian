@@ -64,7 +64,7 @@
 					type="text"
 					name="name"
 					label="Project Name"
-					value={$updateProjectForm.name}
+					bind:value={$updateProjectForm.name}
 					errorMessage={$updateProjectErrors.name}
 					maxlength={maxNameLen}
 					minlength={minNameLen}
@@ -74,7 +74,7 @@
 					type="text"
 					name="details"
 					label="Project Details"
-					value={$updateProjectForm.details}
+					bind:value={$updateProjectForm.details}
 					errorMessage={$updateProjectErrors.details}
 					maxlength={maxNameLen}
 					minlength={minNameLen}
@@ -86,7 +86,7 @@
 					label="Initial Amount"
 					step="0.01"
 					placeholder={updateFundsPlaceHolder.toString()}
-					value={$updateProjectForm.startingFunds}
+					bind:value={$updateProjectForm.startingFunds}
 					errorMessage={$updateProjectErrors.startingFunds}
 				/>
 
