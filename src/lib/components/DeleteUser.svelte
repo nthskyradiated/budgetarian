@@ -13,8 +13,7 @@
 
 <AlertDialog.Root>
 	<AlertDialog.Trigger asChild let:builder>
-			<Button builders={[builder]} variant="destructive" class="-mt-8 px-6">Delete Account</Button>
-
+		<Button builders={[builder]} variant="destructive" class="-mt-8 px-6">Delete Account</Button>
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>

@@ -96,8 +96,8 @@ export type BtnProps = {
 	formaction?: string | null;
 	showSpinner?: boolean | null;
 	// class?: string | HTMLButtonAttributes['class']
-	className?: HTMLButtonAttributes['class']
-	children: Snippet
+	className?: HTMLButtonAttributes['class'];
+	children: Snippet;
 };
 
 export type PasswordChangeFormProps = {
@@ -157,7 +157,6 @@ export type DeleteUserProps = {
 };
 
 export type InputFieldProps = {
-
 	type: HTMLInputAttributes['type'];
 	value: string | number | null | undefined;
 	name: string;
@@ -169,6 +168,6 @@ export type InputFieldProps = {
 	maxlength?: number | undefined;
 	minlength?: number | undefined;
 	errorMessage?: object | undefined;
-	className?: HTMLInputAttributes['class']
-	step?: HTMLInputAttributes['step']
-}
+	className?: HTMLInputAttributes['class'];
+	step?: HTMLInputAttributes['step'];
+};

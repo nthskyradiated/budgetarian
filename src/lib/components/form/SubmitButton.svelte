@@ -3,9 +3,13 @@
 	import Button from '../ui/button/button.svelte';
 	import type { BtnProps } from '@/lib/types';
 
-
-	let { disabled = false, formaction = null, showSpinner = null, children, className }: BtnProps = $props();
-
+	let {
+		disabled = false,
+		formaction = null,
+		showSpinner = null,
+		children,
+		className
+	}: BtnProps = $props();
 </script>
 
 <Button
@@ -20,5 +24,4 @@
 	{/if}
 
 	{@render children()}
-
 </Button>

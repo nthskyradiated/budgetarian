@@ -5,7 +5,15 @@ import projects from '@/db/schema/projectsSchema/projects';
 import { json, redirect } from '@sveltejs/kit';
 import users from '@/db/schema/usersSchema/users';
 import { lucia } from '@/lib/server/luciaUtils';
-import { emailVerificationCodesTable, expensesTable, inflowsTable, oAuthTable, passwordResetTokensTable, projectsTable, sessionsTable } from '@/db/schema';
+import {
+	emailVerificationCodesTable,
+	expensesTable,
+	inflowsTable,
+	oAuthTable,
+	passwordResetTokensTable,
+	projectsTable,
+	sessionsTable
+} from '@/db/schema';
 
 export const GET: RequestHandler = async ({ locals }) => {
 	if (!locals.user) {
@@ -28,8 +36,6 @@ export const GET: RequestHandler = async ({ locals }) => {
 	}
 };
 
-
-
 export const DELETE: RequestHandler = async ({ locals, cookies }) => {
 	if (!locals.user) {
 		redirect(302, '/auth/login');
@@ -51,15 +57,19 @@ export const DELETE: RequestHandler = async ({ locals, cookies }) => {
 			await db.transaction(async (trx) => {
 				// Delete related sessions
 				await trx.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
-				
+
 				// Delete related password reset tokens
-				await trx.delete(passwordResetTokensTable).where(eq(passwordResetTokensTable.userId, userId));
+				await trx
+					.delete(passwordResetTokensTable)
+					.where(eq(passwordResetTokensTable.userId, userId));
 
 				// Delete related OAuth entries
 				await trx.delete(oAuthTable).where(eq(oAuthTable.userId, userId));
 
 				// Delete related email verification codes
-				await trx.delete(emailVerificationCodesTable).where(eq(emailVerificationCodesTable.userId, userId));
+				await trx
+					.delete(emailVerificationCodesTable)
+					.where(eq(emailVerificationCodesTable.userId, userId));
 
 				// Delete related expenses
 				await trx.delete(expensesTable).where(eq(expensesTable.userId, userId));
@@ -74,11 +84,11 @@ export const DELETE: RequestHandler = async ({ locals, cookies }) => {
 				await trx.delete(users).where(eq(users.id, userId));
 			});
 
-			return json({ message: 'Account deleted successfully.'}, { status: 200 });
+			return json({ message: 'Account deleted successfully.' }, { status: 200 });
 		} catch (error) {
 			console.error('Error deleting user:', error);
 			return json({ error: 'An error occurred while deleting the user.' }, { status: 500 });
 		}
 	}
 	return json({ message: 'No User ID provided' }, { status: 400 });
-}
+};

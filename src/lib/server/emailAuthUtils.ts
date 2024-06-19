@@ -127,8 +127,8 @@ export const verifyEmailVerificationCode = async (userId: string, code: string) 
 };
 
 export const sendPasswordResetEmail = async (email: string, resetToken: string) => {
-	let host
-	NODE_ENV === 'production' ? host = PUBLIC_URL : host = DEV_URL
+	let host;
+	NODE_ENV === 'production' ? (host = PUBLIC_URL) : (host = DEV_URL);
 	const htmlContent = `
 	<div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
 		<h1>Password Reset Request</h1>

@@ -163,7 +163,6 @@ export type KIT_ROUTES = {
 		'changePassword /dashboard': never;
 		'deleteUser /dashboard': never;
 		'deleteAllUsers /dashboard': never;
-		'deleteUser /dashboard': never;
 		'createProject protected/projects': never;
 		'updateProject protected/projects': never;
 		'deleteProject protected/projects': never;
