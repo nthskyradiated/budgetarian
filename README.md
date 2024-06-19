@@ -6,4 +6,3 @@ Sveltekit)
 
 - ChartJS for charting ✅
 - Uses Shadcn-svelte for its component library ✅
- 

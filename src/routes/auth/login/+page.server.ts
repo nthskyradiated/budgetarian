@@ -76,7 +76,7 @@ export const actions: Actions = {
 				},
 				cookies
 			);
-		} else{
+		} else {
 			// If the user doesn't have a password, it means they registered with OAuth
 			return message(
 				userLoginFormData,
@@ -156,8 +156,7 @@ export const actions: Actions = {
 
 					{
 						status: 403 // This status code indicates that the server understood the request, but it refuses to authorize it because the user's email is not verified.
-					},
-					
+					}
 				);
 			}
 

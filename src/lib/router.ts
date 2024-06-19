@@ -161,6 +161,7 @@ export type KIT_ROUTES = {
 		'resetPassword /auth/reset-password': never;
 		'logout /dashboard': never;
 		'changePassword /dashboard': never;
+		'deleteUser /dashboard': never;
 		'deleteAllUsers /dashboard': never;
 		'deleteUser /dashboard': never;
 		'createProject protected/projects': never;

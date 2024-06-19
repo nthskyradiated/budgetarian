@@ -1,11 +1,9 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-
 	import { route } from '$lib/router';
 	import { Button } from '$lib/components/ui/button/index';
 	import PasswordChangeForm from '@/lib/components/form/PasswordChangeForm.svelte';
 
-	export let data: PageData;
+	let { data } = $props();
 </script>
 
 <div

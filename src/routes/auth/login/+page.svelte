@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { toast } from 'svelte-sonner';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { route } from '$lib/router';
@@ -14,8 +13,8 @@
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
 
-	export let data: PageData;
-	$: open = false;
+	let { data } = $props();
+	let open = $state(false);
 
 	// For login form
 	const {
@@ -97,7 +96,7 @@
 		/>
 
 		<div class="flex flex-col justify-between gap-4 sm:flex-initial sm:flex-row sm:flex-wrap">
-			<SubmitButton disabled={$loginDelayed} class="flex-grow"
+			<SubmitButton disabled={$loginDelayed} className="flex-grow"
 				>Login in with your email</SubmitButton
 			>
 

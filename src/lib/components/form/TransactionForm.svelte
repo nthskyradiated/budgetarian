@@ -2,16 +2,12 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import { buttonVariants } from '../ui/button';
-	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 	import InputField from './InputField.svelte';
 	import SubmitButton from './SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
-	import {
-		TransactionZodSchema,
-		type transactionZodSchema
-	} from '@/lib/zodValidators/zodProjectValidation';
+	import { TransactionZodSchema } from '@/lib/zodValidators/zodProjectValidation';
 	import {
 		maxNameLen,
 		minNameLen,
@@ -22,18 +18,23 @@
 	import { Switch } from '$lib/components/ui/switch/index';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Textarea } from '../ui/textarea';
-	import { createEventDispatcher } from 'svelte';
-	// import SuperDebug from 'sveltekit-superforms';
+	import type { TransactionFormProps } from '@/lib/types';
 
-	export let formData: SuperValidated<transactionZodSchema>;
-	export let formAction: string;
-	export let dialogTitle: string;
-	export let dialogTriggerBtn: string;
-	export let dialogDescription: string;
-	export let dialogSubmitBtn: string;
-	$: open = false;
+	let {
+		onAddTransaction,
+		formData,
+		formAction,
+		dialogTitle,
+		dialogTriggerBtn,
+		dialogDescription,
+		dialogSubmitBtn
+	}: TransactionFormProps = $props();
 
-	const dispatch = createEventDispatcher();
+	let open = $state(false);
+
+	const transactionAdded = () => {
+		onAddTransaction();
+	};
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
 		resetForm: true,
@@ -55,24 +56,25 @@
 			}
 
 			if (alertType === 'success') {
-				dispatch('transactionAdded');
+				transactionAdded();
 				toast.success(alertText);
 			}
 		}
 	});
 
 	let selectedTransactionType = $form.transactionType.transactionType;
-	let selectedCategory: string | undefined = $form.transactionType.categories;
-	let categoriesValues =
-		selectedTransactionType === 'income' ? INFLOWS_CATEGORIES.options : EXPENSES_CATEGORIES.options;
+	let selectedCategory: string | undefined = $state($form.transactionType.categories);
+	let categoriesValues = $state(
+		selectedTransactionType === 'income' ? INFLOWS_CATEGORIES.options : EXPENSES_CATEGORIES.options
+	);
 
-	$: {
+	$effect(() => {
 		if ($form.transactionType.transactionType === 'income') {
 			categoriesValues = [...INFLOWS_CATEGORIES.options];
 		} else if ($form.transactionType.transactionType === 'expenses') {
 			categoriesValues = [...EXPENSES_CATEGORIES.options];
 		}
-	}
+	});
 
 	function handleTransactionTypeChange(event: 'income' | 'expenses') {
 		selectedTransactionType = event;
@@ -82,12 +84,11 @@
 				: EXPENSES_CATEGORIES.options;
 	}
 
-	$: {
-		selectedTransactionType,
-			(selectedCategory = $form.transactionType.categories
-				? $form.transactionType.categories
-				: undefined);
-	}
+	$effect(() => {
+		selectedCategory = $form.transactionType.categories
+			? $form.transactionType.categories
+			: undefined;
+	});
 
 	export const getTransactionHistory = async (ID: string) => {
 		try {
@@ -141,16 +142,12 @@
 				<Switch id="recurring" bind:checked={$form.isRecurring} />
 				<Label for="isRecurring">Toggle Recurring</Label>
 
-				<RadioGroup.Root
-					bind:value={$form.transactionType.transactionType}
-					class="grid gap-2"
-					{...$$restProps}
-				>
+				<RadioGroup.Root bind:value={$form.transactionType.transactionType} class="grid gap-2">
 					<div class="flex items-center space-x-2">
 						<RadioGroup.Item
 							value="income"
 							id="r1"
-							on:click={() => handleTransactionTypeChange('income')}
+							onclick={() => handleTransactionTypeChange('income')}
 						/>
 						<Label for="r1">inflow</Label>
 					</div>
@@ -158,7 +155,7 @@
 						<RadioGroup.Item
 							value="expenses"
 							id="r2"
-							on:click={() => handleTransactionTypeChange('expenses')}
+							onclick={() => handleTransactionTypeChange('expenses')}
 						/>
 						<Label for="r2">expense</Label>
 					</div>

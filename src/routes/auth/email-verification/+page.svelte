@@ -7,11 +7,10 @@
 	// import Input from "@/lib/components/ui/input/input.svelte";
 	// import Button from "@/lib/components/ui/button/button.svelte";
 	import { EmailVerificationCodeZodSchema } from '@/lib/zodValidators/zodAuthValidation';
-	import type { PageData } from './$types';
 	import InputField from '@/lib/components/form/InputField.svelte';
 	import SubmitButton from '@/lib/components/form/SubmitButton.svelte';
 
-	export let data: PageData;
+	let { data } = $props();
 
 	const {
 		form,
@@ -62,7 +61,7 @@
 			errorMessage={$errors.verificationCode}
 		/>
 
-		<SubmitButton class="w-full" disabled={$delayed}>Verify</SubmitButton>
+		<SubmitButton className="w-full" disabled={$delayed}>Verify</SubmitButton>
 	</form>
 
 	<form
@@ -81,6 +80,6 @@
 		}}
 		class="mt-4"
 	>
-		<SubmitButton class="w-full">Send New Code</SubmitButton>
+		<SubmitButton className="w-full">Send New Code</SubmitButton>
 	</form>
 </div>

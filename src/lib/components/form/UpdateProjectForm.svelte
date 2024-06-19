@@ -5,22 +5,23 @@
 	import { buttonVariants } from '../ui/button';
 	import SubmitButton from './SubmitButton.svelte';
 	import { zod } from 'sveltekit-superforms/adapters';
-	// import { toast } from 'svelte-sonner';
-	import { superForm, type SuperValidated } from 'sveltekit-superforms/client';
-	import {
-		UpdateProjectZodSchema,
-		type updateProjectZodSchema
-	} from '@/lib/zodValidators/zodProjectValidation';
-	export let updateProjectFormData: SuperValidated<updateProjectZodSchema>;
-	export let updateProjectFormAction: string;
-	export let dialogName: string;
-	export let dialogTitle: string;
-	export let dialogDescription: string;
-	export let projectId: string;
-	export let updateFundsPlaceHolder: number;
-	export let nameDefaultVal: string;
-	export let detailsDefaultVal: string;
-	$: open = false;
+	import { superForm } from 'sveltekit-superforms/client';
+	import { UpdateProjectZodSchema } from '@/lib/zodValidators/zodProjectValidation';
+	import type { UpdateProjectFormProps } from '@/lib/types';
+
+	let {
+		updateProjectFormData,
+		updateProjectFormAction,
+		dialogName,
+		dialogTitle,
+		dialogDescription,
+		projectId,
+		updateFundsPlaceHolder,
+		nameDefaultVal,
+		detailsDefaultVal
+	}: UpdateProjectFormProps = $props();
+
+	let open = $state(false);
 	let additionalClasses = 'w-full transform -translate-y-10';
 	const {
 		enhance: updateProjectFormEnhance,
@@ -63,7 +64,7 @@
 					type="text"
 					name="name"
 					label="Project Name"
-					value={$updateProjectForm.name}
+					bind:value={$updateProjectForm.name}
 					errorMessage={$updateProjectErrors.name}
 					maxlength={maxNameLen}
 					minlength={minNameLen}
@@ -73,7 +74,7 @@
 					type="text"
 					name="details"
 					label="Project Details"
-					value={$updateProjectForm.details}
+					bind:value={$updateProjectForm.details}
 					errorMessage={$updateProjectErrors.details}
 					maxlength={maxNameLen}
 					minlength={minNameLen}
@@ -85,7 +86,7 @@
 					label="Initial Amount"
 					step="0.01"
 					placeholder={updateFundsPlaceHolder.toString()}
-					value={$updateProjectForm.startingFunds}
+					bind:value={$updateProjectForm.startingFunds}
 					errorMessage={$updateProjectErrors.startingFunds}
 				/>
 

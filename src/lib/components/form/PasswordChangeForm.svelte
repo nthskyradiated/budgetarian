@@ -2,13 +2,9 @@
 	import { page } from '$app/stores';
 
 	import { toast } from 'svelte-sonner';
-	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	import {
-		PasswordResetZodSchema,
-		type passwordResetZodSchema
-	} from '@/lib/zodValidators/zodAuthValidation';
+	import { PasswordResetZodSchema } from '@/lib/zodValidators/zodAuthValidation';
 	import { maxPwrdLen } from '@/lib/zodValidators/zodParams';
 
 	import InputField from './InputField.svelte';
@@ -16,12 +12,15 @@
 	import { zod } from 'sveltekit-superforms/adapters';
 	import * as Dialog from '@/lib/components/ui/dialog';
 	import { buttonVariants } from '@/lib/components/ui/button';
+	import type { PasswordChangeFormProps } from '@/lib/types';
 
-	export let formData: SuperValidated<passwordResetZodSchema>;
-	export let isPasswordResetTokenRequired: boolean = false;
-	export let formAction;
+	let {
+		formData,
+		isPasswordResetTokenRequired = false,
+		formAction
+	}: PasswordChangeFormProps = $props();
 
-	$: open = false;
+	let open = $state(false);
 
 	const { enhance, form, errors, message, delayed } = superForm(formData, {
 		resetForm: true,
@@ -82,7 +81,7 @@
 				/>
 			{/if}
 
-			<SubmitButton disabled={$delayed} />
+			<SubmitButton disabled={$delayed}>Change Password</SubmitButton>
 		</form>
 	</Dialog.Content>
 </Dialog.Root>

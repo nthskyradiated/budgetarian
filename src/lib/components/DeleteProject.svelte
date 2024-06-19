@@ -3,13 +3,12 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
-	import { createEventDispatcher } from 'svelte';
+	import type { DeleteProjectProps } from '../types';
 
-	export let projectId;
-	const dispatch = createEventDispatcher();
+	let { projectId, onDeleteProject }: DeleteProjectProps = $props();
 
-	const confirmDelete = () => {
-		dispatch('confirmDelete', projectId);
+	const confirmDelete = async () => {
+		onDeleteProject(projectId);
 	};
 </script>
 
@@ -38,7 +37,7 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={confirmDelete}>Continue</AlertDialog.Action>
+			<AlertDialog.Action onclick={confirmDelete}>Continue</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

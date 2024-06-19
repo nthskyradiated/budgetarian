@@ -2,13 +2,12 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Icon from '@iconify/svelte';
-	import { createEventDispatcher } from 'svelte';
+	import type { DeleteTransactionProps } from '../types';
 
-	export let transactionId;
-	const dispatch = createEventDispatcher();
+	let { transactionId, ID, onDeleteTransaction }: DeleteTransactionProps = $props();
 
 	const confirmDeleteTransaction = () => {
-		dispatch('confirmDeleteTransaction', transactionId);
+		onDeleteTransaction(transactionId, ID);
 	};
 </script>
 
@@ -32,7 +31,7 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={confirmDeleteTransaction}>Continue</AlertDialog.Action>
+			<AlertDialog.Action onclick={confirmDeleteTransaction}>Continue</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

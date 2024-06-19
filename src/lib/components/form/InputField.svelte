@@ -1,23 +1,13 @@
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
 
-	import type { EnterKeyHintType } from '$lib/types';
+	import type {  InputFieldProps } from '$lib/types';
 	import { cn } from '$lib/utils';
 
-	let className: HTMLInputAttributes['class'] = undefined;
-	export { className as class };
-	export let type: HTMLInputAttributes['type'];
-	export let value: string | number | null | undefined = '';
-	export let name: string = '';
-	export let label: string = '';
-	export let placeholder: string = '';
-	export let spellcheck: boolean = true;
-	export let autocomplete: string = 'on';
-	export let enterkeyhint: EnterKeyHintType = 'next';
-	export let maxlength: number | undefined = undefined;
-	export let errorMessage: object | undefined = undefined;
+	// export { className as class };
 
-	$: valueLength = value?.toString().length;
+	let { value = $bindable(), className, type, label, step, name = '', placeholder = '', spellcheck = true, autocomplete = 'on', enterkeyhint = 'next', maxlength = undefined, minlength = undefined, errorMessage = undefined} : InputFieldProps = $props()
+
+	let valueLength = $derived(value?.toString().length);
 </script>
 
 <label
@@ -37,19 +27,22 @@
 		<p class="text-red-500">{errorMessage}</p>
 	{/if}
 
-	<input
+		<input
 		{name}
 		{...{ type }}
 		dir="auto"
 		bind:value
 		{maxlength}
+		{minlength}
 		{spellcheck}
 		{placeholder}
 		{autocomplete}
 		{enterkeyhint}
+		{step}
 		aria-label={label}
 		class={cn('rounded border bg-transparent px-3 py-2', className)}
 		aria-invalid={errorMessage ? 'true' : undefined}
-		{...$$restProps}
-	/>
-</label>
+		/>
+	</label>
+	
+	<!-- {...$$restProps} -->

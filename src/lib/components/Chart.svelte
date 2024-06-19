@@ -29,12 +29,15 @@
 
 	ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, BarElement, LineElement);
 
+	type ChartProps = {
+		transactions: Transaction[];
+		viewType: 'total' | 'category' | 'inflows' | 'expenses' | 'all';
+		chartType: ChartType;
+	};
+
 	let chartCanvas: HTMLCanvasElement;
 	let chart: ChartJS | null = null;
-
-	export let transactions: Transaction[] = [];
-	export let viewType: 'total' | 'category' | 'inflows' | 'expenses' | 'all' = 'total';
-	export let chartType: ChartType = 'doughnut';
+	let { transactions, viewType, chartType }: ChartProps = $props();
 
 	function updateChartType(type: ChartType) {
 		if (chart && chart.config.data.datasets[0]?.type !== type) {
@@ -81,22 +84,24 @@
 		}
 	});
 
-	$: if (chart) {
-		if (viewType === 'total') {
-			updateChartDataByTotalTransactions(transactions, chartData, chartType);
-		} else if (viewType === 'category') {
-			updateChartDataByCategory(transactions, chartData, chartType);
-		} else if (viewType === 'inflows') {
-			updateChartDataByInflowsCategory(transactions, chartData, chartType);
-		} else if (viewType === 'expenses') {
-			updateChartDataByExpensesCategory(transactions, chartData, chartType);
-		} else if (viewType === 'all') {
-			updateChartDataForAllTransactions(transactions, chartData, chartType);
+	$effect(() => {
+		if (chart) {
+			if (viewType === 'total') {
+				updateChartDataByTotalTransactions(transactions, chartData, chartType);
+			} else if (viewType === 'category') {
+				updateChartDataByCategory(transactions, chartData, chartType);
+			} else if (viewType === 'inflows') {
+				updateChartDataByInflowsCategory(transactions, chartData, chartType);
+			} else if (viewType === 'expenses') {
+				updateChartDataByExpensesCategory(transactions, chartData, chartType);
+			} else if (viewType === 'all') {
+				updateChartDataForAllTransactions(transactions, chartData, chartType);
+			}
+			updateChartType(chartType);
+			chart.data = get(chartData);
+			chart.update();
 		}
-		updateChartType(chartType);
-		chart.data = get(chartData);
-		chart.update();
-	}
+	});
 
 	onDestroy(() => {
 		if (chart) {

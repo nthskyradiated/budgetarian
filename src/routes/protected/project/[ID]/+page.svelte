@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Card from '@/lib/components/ui/card/card.svelte';
-	import type { PageData } from './$types';
 	import TransactionForm from '$lib/components/form/TransactionForm.svelte';
 	import { route } from '@/lib/router';
 	import { onMount } from 'svelte';
@@ -16,9 +15,8 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
 	import { chartData, updateChartDataByTotalTransactions } from '@/lib/utils/chartUtils';
-	// import SuperDebug from 'sveltekit-superforms';
 
-	export let data: PageData;
+	let { data } = $props();
 
 	const {
 		project,
@@ -29,18 +27,18 @@
 		ID
 	} = data;
 
-	let currProject = project;
-	let totalCount: number;
-	let perPage: number;
-	let viewType: 'total' | 'category' | 'inflows' | 'expenses' = 'category';
-	let chartType: 'doughnut' | 'bar' | 'line' = 'doughnut';
+	let currProject = $state(project);
+	let allTransactions = $state([...transactionHistory]);
+	let paginatedTransactions = $state([...initialPaginatedTransactions]);
+	let totalCount: number = $state(pagination?.totalCount ?? 0);
+	let perPage: number = $state(pagination?.pageSize ?? 10);
+
+	let viewType: 'total' | 'category' | 'inflows' | 'expenses' = $state('category');
+	let chartType: 'doughnut' | 'bar' | 'line' = $state('doughnut');
 
 	// Initialize variables with initial data
-	$: allTransactions = [...transactionHistory];
-	$: currProject = project;
-	$: paginatedTransactions = [...initialPaginatedTransactions];
-	$: totalCount = pagination?.totalCount ?? 0
-	$: perPage = pagination?.pageSize ?? 10;
+	// $: totalCount = pagination?.totalCount ?? 0
+	// $: perPage = pagination?.pageSize ?? 10;
 
 	const handlePageChange = async (newPage: number) => {
 		const url = new URL($page.url.href);
@@ -59,7 +57,9 @@
 
 		goto(url.toString(), { replaceState: true });
 	};
-	$: $page.url.searchParams.get('page'); // Re-trigger when page param changes
+	$effect(() => {
+		$page.url.searchParams.get('page'); // Re-trigger when page param changes
+	});
 
 	const { message: updateProjectFormMessage } = superForm(updateProjectFormData!, {
 		onUpdated: async () => {
@@ -158,7 +158,7 @@
 			<Card class="mt-2 h-full w-full p-4">
 				<Chart transactions={allTransactions} {viewType} {chartType} />
 			</Card>
-			<Card class="my-2 h-max w-full p-6 md:flex-1" on:transactionAdded={handleTransactionAdded}>
+			<Card class="my-2 h-max w-full p-6 md:flex-1">
 				<div class="flex flex-col gap-4">
 					<div class="items-left flex flex-col gap-6 sm:flex-row sm:justify-between">
 						<h1 class="text-4xl font-bold">{currProject?.name}</h1>
@@ -174,7 +174,7 @@
 								nameDefaultVal={project?.name!}
 								detailsDefaultVal={project?.details!}
 							/>
-							<DeleteProject projectId={ID} on:confirmDelete={() => handleDeleteProject(ID)} />
+							<DeleteProject projectId={ID as string} onDeleteProject={handleDeleteProject} />
 						</div>
 					</div>
 					<hr class="mb-8" />
@@ -225,8 +225,7 @@
 							dialogDescription="Input all the necessary information to create a new transaction."
 							dialogTriggerBtn="Add New Transaction"
 							dialogSubmitBtn="add"
-							DialogID={data.ID as string}
-							on:transactionAdded={handleTransactionAdded}
+							onAddTransaction={handleTransactionAdded}
 						/>
 					{/if}
 				</div>
@@ -249,20 +248,21 @@
 						{#each paginatedTransactions as transaction}
 							<span class=" relative inline-flex gap-8 text-nowrap pl-4 font-semibold">
 								<DeleteTransaction
+									ID={data.ID as string}
 									transactionId={transaction.id}
-									on:confirmDeleteTransaction={() => handleDeleteTransaction(transaction.id, ID)}
+									onDeleteTransaction={handleDeleteTransaction}
 								/>
 
 								<Tooltip.Root>
 									<Tooltip.Trigger>{transaction.name}</Tooltip.Trigger>
 									<Tooltip.Content>
-										<p>- {transaction.type}</p>
-										<p>- {transaction.amount}</p>
+										<p>✔️ {transaction.type}</p>
+										<p>💱 {transaction.amount}</p>
 										{#if transaction.isRecurring}
-											<p>- recurring transaction</p>
+											<p>❗ recurring transaction</p>
 										{/if}
 										{#if transaction.remarks}
-											<p>- {transaction.remarks}</p>
+											<p>👌 {transaction.remarks}</p>
 										{/if}
 									</Tooltip.Content>
 								</Tooltip.Root>
