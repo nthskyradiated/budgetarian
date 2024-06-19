@@ -29,7 +29,7 @@
 	<Pagination.Content>
 		<Pagination.Item>
 			<Pagination.PrevButton
-				on:click={() => changePage(currentPage ? currentPage + 1 : 1)}
+				onclick={() => changePage(currentPage ? currentPage + 1 : 1)}
 				disabled={currentPage === 1}
 			/>
 		</Pagination.Item>
@@ -43,7 +43,7 @@
 					<Pagination.Link
 						{page}
 						isActive={currentPage == page.value}
-						on:click={() => changePage(page.value)}
+						onclick={() => changePage(page.value)}
 					>
 						{page.value}
 					</Pagination.Link>
@@ -52,7 +52,7 @@
 		{/each}
 		<Pagination.Item>
 			<Pagination.NextButton
-				on:click={() => changePage(currentPage ? currentPage + 1 : 1)}
+				onclick={() => changePage(currentPage ? currentPage + 1 : 1)}
 				disabled={currentPage === pages.length}
 			/>
 		</Pagination.Item>
