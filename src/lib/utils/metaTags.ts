@@ -18,13 +18,13 @@ export function createBaseMetaTags(url: URL): MetaTagsProps {
 			'Data Table',
 			'Data Visualization',
 			'Budget App',
-			'D3'
+			'ChartsJS',
 		],
 
 		openGraph: {
 			type: 'website',
 			url: canonicalUrl,
-			locale: 'en_IE',
+			locale: 'en',
 			title: title,
 			description: description,
 			siteName: 'Budgetarian',
@@ -52,22 +52,14 @@ export function createBaseMetaTags(url: URL): MetaTagsProps {
 
 		additionalLinkTags: [
 			{
-				rel: 'apple-touch-icon',
-				href: '/favicons/apple-touch-icon.png'
-			},
-			{
 				rel: 'icon',
-				type: 'image/png',
-				href: '/favicon.png'
-			},
-			{
-				rel: 'mask-icon',
-				href: '/favicons/mask-icon.svg'
+				type: 'image/icon',
+				href: '/favicon.ico'
 			},
 			{
 				rel: 'alternate icon',
-				type: 'image/png',
-				href: '/favicons/favicon-32x32.png'
+				type: 'image/webp',
+				href: '/budgetarian.webp'
 			},
 			{
 				rel: 'manifest',
