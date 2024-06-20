@@ -129,7 +129,7 @@
 					<p class="inline text-right">{project?.createdAt}</p>
 				</div>
 
-				<Button variant={'outline'} class="mt-8" on:click={() => mySelectionHandler(project.id)}
+				<Button variant={'outline'} class="mt-8" onclick={() => mySelectionHandler(project.id)}
 					>Go to Project Page</Button
 				>
 				<UpdateProjectForm
