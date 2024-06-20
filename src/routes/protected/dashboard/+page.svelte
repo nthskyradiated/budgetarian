@@ -69,7 +69,7 @@
 		{#each recentProjects as project}
 			<Card
 				class="mx-auto my-2 w-full p-6 sm:mx-3 lg:w-1/3"
-				on:click={() => mySelectionHandler(project.id)}
+				onclick={() => mySelectionHandler(project.id)}
 			>
 				<div class="flex flex-col gap-4">
 					<div class="flex justify-between px-4">

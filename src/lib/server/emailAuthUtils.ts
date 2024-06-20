@@ -135,7 +135,7 @@ export const sendPasswordResetEmail = async (email: string, resetToken: string) 
 		<p>We've received a request to reset your password. If you didn't make the request, just ignore this email. Otherwise, you can reset your password using the link below.</p>
 
 		<p>
-		<a href="${PUBLIC_URL}${route('/auth/password-reset')}?token=${resetToken}" style="color: #337ab7; text-decoration: none;">Reset your password</a>
+		<a href="${host}${route('/auth/password-reset')}?token=${resetToken}" style="color: #337ab7; text-decoration: none;">Reset your password</a>
 
 		</p>
 

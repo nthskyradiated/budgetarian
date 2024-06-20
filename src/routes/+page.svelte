@@ -4,20 +4,20 @@
 	import { Icons } from '@/lib/components/icons';
 	import Icon from '@iconify/svelte';
 
-	let isLoading = false;
+	let isLoading = $state(false);
 </script>
 
 <main class="mx-auto min-h-96 w-auto items-center">
 	<div class="flex w-64 flex-col gap-4">
 		<Button
 			type="button"
-			on:click={() => {
+			onclick={() => {
 				goto('auth/login');
 			}}>Log in with Email</Button
 		>
 		<Button
 			type="button"
-			on:click={() => {
+			onclick={() => {
 				goto('auth/register');
 			}}>Register</Button
 		>
@@ -30,7 +30,7 @@
 			variant="outline"
 			type="button"
 			disabled={isLoading}
-			on:click={() => {
+			onclick={() => {
 				goto('/auth/github');
 			}}
 		>
@@ -45,7 +45,7 @@
 			variant="outline"
 			type="button"
 			disabled={isLoading}
-			on:click={() => {
+			onclick={() => {
 				goto('/auth/google');
 			}}
 		>
