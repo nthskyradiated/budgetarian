@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	let { side }: { side: 'top' | 'right' | 'bottom' | 'left' } = $props()
+	let { side }: { side: 'top' | 'right' | 'bottom' | 'left' } = $props();
 </script>
 
 <DropdownMenu.Root>
