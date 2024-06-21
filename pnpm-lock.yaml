@@ -143,7 +143,7 @@ importers:
         version: 5.0.0-next.136
       svelte-check:
         specifier: ^3.8.1
-        version: 3.8.1(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.6))(postcss@8.4.38)(svelte@5.0.0-next.136)
+        version: 3.8.1(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.7))(postcss@8.4.38)(svelte@5.0.0-next.136)
       svelte-meta-tags:
         specifier: ^3.1.2
         version: 3.1.2(svelte@5.0.0-next.136)(typescript@5.5.2)
@@ -166,8 +166,8 @@ importers:
         specifier: ^2.6.3
         version: 2.6.3
       tsx:
-        specifier: ^4.15.6
-        version: 4.15.6
+        specifier: ^4.15.7
+        version: 4.15.7
       typescript:
         specifier: ^5.5.2
         version: 5.5.2
@@ -3045,8 +3045,8 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
-  tsx@4.15.6:
-    resolution: {integrity: sha512-is0VQQlfNZRHEuSSTKA6m4xw74IU4AizmuB6lAYLRt9XtuyeQnyJYexhNZOPCB59SqC4JzmSzPnHGBXxf3k0hA==}
+  tsx@4.15.7:
+    resolution: {integrity: sha512-u3H0iSFDZM3za+VxkZ1kywdCeHCn+8/qHQS1MNoO2sONDgD95HlWtt8aB23OzeTmFP9IU4/8bZUdg58Uu5J4cg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -5397,13 +5397,13 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.38
 
-  postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.6):
+  postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.7):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.4.5
     optionalDependencies:
       postcss: 8.4.38
-      tsx: 4.15.6
+      tsx: 4.15.7
     optional: true
 
   postcss-nested@6.0.1(postcss@8.4.38):
@@ -5715,7 +5715,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-check@3.8.1(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.6))(postcss@8.4.38)(svelte@5.0.0-next.136):
+  svelte-check@3.8.1(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.7))(postcss@8.4.38)(svelte@5.0.0-next.136):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 3.6.0
@@ -5724,7 +5724,7 @@ snapshots:
       picocolors: 1.0.1
       sade: 1.8.1
       svelte: 5.0.0-next.136
-      svelte-preprocess: 5.1.4(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.6))(postcss@8.4.38)(svelte@5.0.0-next.136)(typescript@5.5.2)
+      svelte-preprocess: 5.1.4(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.7))(postcss@8.4.38)(svelte@5.0.0-next.136)(typescript@5.5.2)
       typescript: 5.5.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -5758,7 +5758,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  svelte-preprocess@5.1.4(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.6))(postcss@8.4.38)(svelte@5.0.0-next.136)(typescript@5.5.2):
+  svelte-preprocess@5.1.4(postcss-load-config@5.1.0(postcss@8.4.38)(tsx@4.15.7))(postcss@8.4.38)(svelte@5.0.0-next.136)(typescript@5.5.2):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -5768,7 +5768,7 @@ snapshots:
       svelte: 5.0.0-next.136
     optionalDependencies:
       postcss: 8.4.38
-      postcss-load-config: 5.1.0(postcss@8.4.38)(tsx@4.15.6)
+      postcss-load-config: 5.1.0(postcss@8.4.38)(tsx@4.15.7)
       typescript: 5.5.2
 
   svelte-radix@1.1.0(svelte@5.0.0-next.136):
@@ -5942,7 +5942,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tsx@4.15.6:
+  tsx@4.15.7:
     dependencies:
       esbuild: 0.21.5
       get-tsconfig: 4.7.5
