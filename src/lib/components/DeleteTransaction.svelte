@@ -12,16 +12,18 @@
 </script>
 
 <AlertDialog.Root>
-	<AlertDialog.Trigger asChild let:builder>
-		<Button
-			size="icon"
-			builders={[builder]}
-			variant="ghost"
-			class="absolute -left-8 -top-1 rounded-full"
-		>
-			<Icon icon="line-md:close-circle" class="text-xl text-red-600" />
-		</Button>
-	</AlertDialog.Trigger>
+	<AlertDialog.Trigger asChild >
+		{#snippet children({ builder })}
+				<Button
+				size="icon"
+				builders={[builder]}
+				variant="ghost"
+				class="absolute -left-8 -top-1 rounded-full"
+			>
+				<Icon icon="line-md:close-circle" class="text-xl text-red-600" />
+			</Button>
+					{/snippet}
+		</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you sure?</AlertDialog.Title>

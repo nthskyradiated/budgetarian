@@ -1,10 +1,15 @@
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
+	interface Props {
+		[key: string]: any
+	}
+
+	let { ...rest }: Props = $props();
 
 	type $$Props = SVGAttributes<SVGElement>;
 </script>
 
-<svg viewBox="0 0 25 25" fill="none" {...$$restProps}>
+<svg viewBox="0 0 25 25" fill="none" {...rest}>
 	<path d="M12 25C7.58173 25 4 21.4183 4 17C4 12.5817 7.58173 9 12 9V25Z" fill="currentcolor" />
 	<path d="M12 0H4V8H12V0Z" fill="currentcolor" />
 	<path

@@ -1,10 +1,15 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
+	interface Props {
+		[key: string]: any
+	}
+
+	let { ...rest }: Props = $props();
 
 	type $$Props = HTMLAttributes<SVGElement>;
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" {...$$restProps}>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" {...rest}>
 	<rect width="256" height="256" fill="none" />
 	<line
 		x1="208"
