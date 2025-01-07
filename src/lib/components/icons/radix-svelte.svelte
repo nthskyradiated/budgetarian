@@ -1,10 +1,15 @@
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
+	interface Props {
+		[key: string]: any
+	}
+
+	let { ...rest }: Props = $props();
 
 	type $$Props = SVGAttributes<SVGElement>;
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" {...$$restProps}>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" {...rest}>
 	<path
 		fill-rule="evenodd"
 		clip-rule="evenodd"
