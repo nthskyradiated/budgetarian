@@ -12,10 +12,12 @@
 </script>
 
 <AlertDialog.Root>
-	<AlertDialog.Trigger asChild let:builder>
-			<Button builders={[builder]} variant="destructive" class="-mt-8 px-6">Delete Account</Button>
+	<AlertDialog.Trigger asChild >
+			{#snippet children({ builder })}
+				<Button builders={[builder]} variant="destructive" class="-mt-8 px-6">Delete Account</Button>
 
-	</AlertDialog.Trigger>
+					{/snippet}
+		</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
 			<AlertDialog.Title>Are you sure?</AlertDialog.Title>

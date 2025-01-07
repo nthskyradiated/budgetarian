@@ -1,5 +1,10 @@
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
+	interface Props {
+		[key: string]: any
+	}
+
+	let { ...rest }: Props = $props();
 
 	type $$Props = SVGAttributes<SVGElement>;
 </script>
@@ -10,7 +15,7 @@
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"
 	class="h-5 w-5"
-	{...$$restProps}
+	{...rest}
 >
 	<path
 		d="M3 5H11"
