@@ -33,8 +33,6 @@ import Npm from './npm.svelte';
 import PayPal from './paypal.svelte';
 import Pnpm from './pnpm.svelte';
 import RadixSvelte from './radix-svelte.svelte';
-import Tailwind from './tailwind.svelte';
-import Twitter from './twitter.svelte';
 import Yarn from './yarn.svelte';
 
 export type Icon = SvelteComponent;
@@ -58,7 +56,6 @@ export const Icons = {
 	arrowRight: ArrowRight,
 	help: CircleHelp,
 	pizza: Pizza,
-	twitter: Twitter,
 	check: Check,
 	copy: Copy,
 	copyDone: ClipboardCheck,
@@ -72,7 +69,6 @@ export const Icons = {
 	npm: Npm,
 	yarn: Yarn,
 	pnpm: Pnpm,
-	tailwind: Tailwind,
 	google: Google,
 	apple: Apple,
 	paypal: PayPal,
