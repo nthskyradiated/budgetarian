@@ -1,34 +1,26 @@
-import { lucia } from '@/lib/server/luciaUtils';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { AUTH_ROUTES, DASHBOARD_ROUTE } from '@/lib/utils/navLinks';
+import {
+	deleteSessionTokenCookie,
+	setSessionTokenCookie,
+	validateSessionToken
+} from './lib/server/authUtils';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const sessionId = event.cookies.get(lucia.sessionCookieName);
-	if (!sessionId) {
+	const token = event.cookies.get('session') ?? null;
+	if (!token) {
 		event.locals.user = null;
 		event.locals.session = null;
 		return resolve(event);
 	}
 
-	const { session, user } = await lucia.validateSession(sessionId);
-	if (session?.fresh) {
-		const sessionCookie = lucia.createSessionCookie(session.id);
-		// sveltekit types deviates from the de-facto standard
-		// you can use 'as any' too
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
-	}
+	const { session, user } = await validateSessionToken(token);
 	if (!session) {
-		const sessionCookie = lucia.createBlankSessionCookie();
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
+		deleteSessionTokenCookie(event.cookies);
 	}
 
 	if (session && AUTH_ROUTES.includes(event.url.pathname)) {
+		setSessionTokenCookie(event, token, session.expiresAt);
 		redirect(303, DASHBOARD_ROUTE);
 	}
 

@@ -12,11 +12,10 @@ import {
 } from '@/lib/zodValidators/zodProjectValidation.js';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms/server';
-import { lucia } from '@/lib/server/luciaUtils';
 import type { Actions } from './$types';
 import { getProjectById, insertNewProject, updateProject } from '@/lib/utils/projectUtils';
 import type { AlertMessageType } from '@/lib/types';
-import { generateIdFromEntropySize } from 'lucia';
+import { generateIdFromEntropySize, getUserSessions, invalidateSession } from '@/lib/server/authUtils';
 
 export const load = async ({ locals }) => {
 	if (!locals.user) {
@@ -71,13 +70,13 @@ export const actions: Actions = {
 			});
 		}
 
-		const allUserSessions = await lucia.getUserSessions(userId);
+		const allUserSessions = await getUserSessions(userId);
 
 		try {
 			for (const session of allUserSessions) {
 				if (session.id === currentSessionId) continue;
 
-				await lucia.invalidateSession(session.id);
+				await invalidateSession(session.id);
 			}
 			const projectId = generateIdFromEntropySize(10);
 			await insertNewProject({
@@ -125,15 +124,15 @@ export const actions: Actions = {
 			});
 		}
 
-		const allUserSessions = await lucia.getUserSessions(userId);
+		const allUserSessions = await getUserSessions(userId);
 
 		try {
 			for (const session of allUserSessions) {
 				if (session.id === currentSessionId) continue;
 
-				await lucia.invalidateSession(session.id);
+				await invalidateSession(session.id);
 			}
-			const project = await getProjectById(updateProjectFormData.data.id as string);
+			const project = await getProjectById(updateProjectFormData.data.id);
 
 			if (!project) {
 				return message(

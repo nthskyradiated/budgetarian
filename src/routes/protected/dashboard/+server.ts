@@ -4,7 +4,6 @@ import { desc, eq } from 'drizzle-orm';
 import projects from '@/db/schema/projectsSchema/projects';
 import { json, redirect } from '@sveltejs/kit';
 import users from '@/db/schema/usersSchema/users';
-import { lucia } from '@/lib/server/luciaUtils';
 import {
 	emailVerificationCodesTable,
 	expensesTable,
@@ -14,6 +13,7 @@ import {
 	projectsTable,
 	sessionsTable
 } from '@/db/schema';
+import { deleteSessionTokenCookie, invalidateSession } from '@/lib/server/authUtils';
 
 export const GET: RequestHandler = async ({ locals }) => {
 	if (!locals.user) {
@@ -45,12 +45,8 @@ export const DELETE: RequestHandler = async ({ locals, cookies }) => {
 	if (userId) {
 		const session = locals.session;
 		if (session) {
-			lucia.invalidateSession(session.id);
-			const sessionCookie = lucia.createBlankSessionCookie();
-			cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes
-			});
+			invalidateSession(session.id);
+			deleteSessionTokenCookie(cookies);
 		}
 		try {
 			// Start a transaction
