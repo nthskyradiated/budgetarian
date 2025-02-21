@@ -18,9 +18,8 @@ import {
 	updateProject,
 	validateCategory
 } from '@/lib/utils/projectUtils';
-import { generateIdFromEntropySize } from 'lucia';
+import { generateIdFromEntropySize, getUserSessions, invalidateSession } from '@/lib/server/authUtils';
 // import { inflowsTable, expensesTable } from '@/db/schema/index';
-import { lucia } from '@/lib/server/luciaUtils';
 import type { AlertMessageType } from '@/lib/types';
 
 export const load = (async ({ locals, params, url }) => {
@@ -172,15 +171,15 @@ export const actions: Actions = {
 			});
 		}
 
-		const allUserSessions = await lucia.getUserSessions(userId);
+		const allUserSessions = await getUserSessions(userId);
 
 		try {
 			for (const session of allUserSessions) {
 				if (session.id === currentSessionId) continue;
 
-				await lucia.invalidateSession(session.id);
+				await invalidateSession(session.id);
 			}
-			const project = await getProjectById(updateProjectFormData.data.id as string);
+			const project = await getProjectById(updateProjectFormData.data.id);
 
 			if (!project) {
 				return message(

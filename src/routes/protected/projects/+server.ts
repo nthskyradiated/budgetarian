@@ -1,7 +1,7 @@
 // src/routes/protected/projects/+server.ts
 
 import type { RequestHandler } from '@sveltejs/kit';
-import db from '@/db'; // Adjust the import to match your project's structure
+import db from '@/db';
 import { desc, eq } from 'drizzle-orm';
 import projects from '@/db/schema/projectsSchema/projects';
 import { json, redirect } from '@sveltejs/kit';

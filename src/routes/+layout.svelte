@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.css';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { getFlash } from 'sveltekit-flash-message';
 	import { toast } from 'svelte-sonner';
 	import { Toaster } from '$lib/components/ui/sonner';
@@ -21,7 +21,7 @@
 			toast.info($flash.message);
 		}
 	});
-	let metaTags = $state(extend(true, {}, data.baseMetaTags, $page.data.pageMetaTags));
+	let metaTags = $state(extend(true, {}, data.baseMetaTags, page.data.pageMetaTags));
 
 	setupViewTransition();
 </script>

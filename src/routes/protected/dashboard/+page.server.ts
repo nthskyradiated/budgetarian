@@ -1,10 +1,9 @@
 import type { Actions, PageServerLoad } from './$types';
 import { eq, desc } from 'drizzle-orm';
-import { Argon2id } from 'oslo/password';
+import { Argon2id } from '@/lib/utils/argon2id';
 import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms/client';
 import { route } from '$lib/router';
-import { lucia } from '$lib/server/luciaUtils';
 import { usersTable } from '@/db/schema';
 import type { AlertMessageType } from '@/lib/types';
 import { db } from '@/db/index';
@@ -14,7 +13,7 @@ import {
 } from '@/lib/zodValidators/zodAuthValidation';
 import { passwordResetDashboardPageActionRateLimiter } from '@/lib/server/rateLimiterUtils';
 import { zod } from 'sveltekit-superforms/adapters';
-import { deleteSessionCookie, isSameAsOldPassword } from '@/lib/server/authUtils';
+import { deleteSessionTokenCookie, getUserSessions, invalidateSession, isSameAsOldPassword } from '@/lib/server/authUtils';
 import projects from '@/db/schema/projectsSchema/projects';
 
 export const load = (async (event) => {
@@ -58,9 +57,8 @@ export const actions: Actions = {
 	logout: async ({ cookies, locals }) => {
 		if (!locals.session?.id) return;
 
-		await lucia.invalidateSession(locals.session.id);
-
-		await deleteSessionCookie(lucia, cookies);
+		invalidateSession(locals.session.id);
+		deleteSessionTokenCookie(cookies);
 
 		throw redirect(303, '/');
 	},
@@ -118,13 +116,13 @@ export const actions: Actions = {
 				);
 			}
 
-			const allUserSessions = await lucia.getUserSessions(userId);
+			const allUserSessions = await getUserSessions(userId);
 
 			// Invalidate all user sessions except the current session for security reasons
 			for (const session of allUserSessions) {
 				if (session.id === currentSessionId) continue;
 
-				await lucia.invalidateSession(session.id);
+				await invalidateSession(session.id);
 			}
 
 			// Hash the new password

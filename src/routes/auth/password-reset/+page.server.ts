@@ -3,13 +3,14 @@ import { error, type Actions } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { eq } from 'drizzle-orm';
-import { Argon2id } from 'oslo/password';
+import { Argon2id } from '@/lib/utils/argon2id';
 import { db } from '@/db/index';
-import { lucia } from '$lib/server/luciaUtils';
 import type { AlertMessageType } from '$lib/types';
 import { passwordResetPageActionRateLimiter } from '@/lib/server/rateLimiterUtils';
 import {
 	createAndSetSession,
+	generateSessionToken,
+	invalidateAllSessions,
 	isSameAsOldPassword,
 	verifyPasswordResetToken
 } from '@/lib/server/authUtils';
@@ -125,7 +126,7 @@ export const actions: Actions = {
 				const hashedPassword = await new Argon2id().hash(passwordResetFormData.data.newPassword);
 
 				// Invalidate all user sessions before updating the password for security reasons
-				await lucia.invalidateUserSessions(userId);
+				await invalidateAllSessions(userId);
 
 				await db.transaction(async (trx) => {
 					// Delete the password reset token from the database
@@ -140,8 +141,8 @@ export const actions: Actions = {
 						.where(eq(usersTable.id, userId));
 				});
 
-				// create session to log the user in
-				await createAndSetSession(lucia, userId, event.cookies);
+				const sessionToken = generateSessionToken();
+				await createAndSetSession(userId, sessionToken, event.cookies);
 			}
 		} catch (error) {
 			console.error('Error in resetPassword action:', error);

@@ -1,4 +1,4 @@
-import { lucia } from '@/lib/server/luciaUtils';
+import { invalidateSession, deleteSessionTokenCookie } from '@/lib/server/authUtils.js';
 import { fail, redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {
@@ -7,12 +7,8 @@ export const GET = async (event) => {
 	}
 	const session = event.locals.session;
 	if (session) {
-		lucia.invalidateSession(session.id);
-		const sessionCookie = lucia.createBlankSessionCookie();
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
+		invalidateSession(session.id);
+		deleteSessionTokenCookie(event.cookies);
 	}
 	return redirect(302, '/');
 };

@@ -1,13 +1,11 @@
 import { github, github_oauth_state_cookieName } from '@/lib/server/OAuthUtils';
-import { lucia } from '@/lib/server/luciaUtils';
 import { OAuth2RequestError } from 'arctic';
 import { type RequestEvent } from '@sveltejs/kit';
 import { db } from '@/db';
 import { oAuthTable, usersTable } from '@/db/schema';
 import { and, eq } from 'drizzle-orm';
-import { generateIdFromEntropySize } from 'lucia';
+import { generateIdFromEntropySize, createAndSetSession, generateSessionToken } from '@/lib/server/authUtils';
 import { route } from '@/lib/router';
-import { createAndSetSession } from '@/lib/server/authUtils';
 import type { GitHubUser, GitHubEmail } from '@/lib/types';
 
 export async function GET(event: RequestEvent): Promise<Response> {
@@ -91,7 +89,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				});
 			}
 
-			await createAndSetSession(lucia, existingUser.id, event.cookies);
+			const sessionToken = generateSessionToken();
+			await createAndSetSession(existingUser.id, sessionToken, event.cookies);
 		} else {
 			const userId = generateIdFromEntropySize(10);
 			await db.transaction(async (trx) => {
@@ -110,7 +109,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 					providerUserId: githubUser.id.toString()
 				});
 			});
-			await createAndSetSession(lucia, userId, event.cookies);
+			const sessionToken = generateSessionToken();
+			await createAndSetSession(userId, sessionToken, event.cookies);
 		}
 		return new Response(null, {
 			status: 302,

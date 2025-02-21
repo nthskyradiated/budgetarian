@@ -1,14 +1,15 @@
 import { redirect as flashMessageRedirect } from 'sveltekit-flash-message/server';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { Argon2id } from 'oslo/password';
+import { Argon2id } from '@/lib/utils/argon2id';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { route } from '$lib/router';
 import type { AlertMessageType } from '$lib/types';
 import {
 	checkIfCurrUserExists,
 	createAndSetSession,
-	createPasswordResetToken
+	createPasswordResetToken,
+	generateSessionToken
 } from '@/lib/server/authUtils';
 import { passwordResetEmailRateLimiter } from '@/lib/server/rateLimiterUtils';
 import { sendPasswordResetEmail } from '@/lib/server/emailAuthUtils';
@@ -20,7 +21,6 @@ import type {
 	passwordResetEmailZodSchema,
 	userLoginZodSchema
 } from '@/lib/zodValidators/zodAuthValidation';
-import { lucia } from '@/lib/server/luciaUtils';
 import { zod } from 'sveltekit-superforms/adapters';
 import { PROJECTS_ROUTE } from '@/lib/utils/navLinks';
 
@@ -105,8 +105,8 @@ export const actions: Actions = {
 				cookies
 			);
 		}
-
-		await createAndSetSession(lucia, existingUser.id, cookies);
+		const sessionToken = generateSessionToken()
+		await createAndSetSession( existingUser.id, sessionToken, cookies);
 
 		redirect(303, PROJECTS_ROUTE);
 	},

@@ -1,14 +1,13 @@
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms/server';
-import { generateIdFromEntropySize } from 'lucia';
 import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '@/db/index';
 import { usersTable } from '@/db/schema';
 import { eq } from 'drizzle-orm/expressions';
-import { Argon2id } from 'oslo/password';
+import { Argon2id } from '@/lib/utils/argon2id';
 import { RegisterUserZodSchema } from '@/lib/zodValidators/zodAuthValidation';
-import { checkIfUserExists, insertNewUser } from '@/lib/server/authUtils';
+import { checkIfUserExists, insertNewUser, generateIdFromEntropySize } from '@/lib/server/authUtils';
 import {
 	sendEmailVerificationCode,
 	generateEmailVerificationCode,
