@@ -30,7 +30,7 @@
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/eslint": "^8.56.12",
-		"@types/node": "^20.17.27",
+		"@types/node": "^20.17.28",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
 		"autoprefixer": "^10.4.21",
@@ -82,5 +82,10 @@
 		"svelte-sonner": "^0.3.28",
 		"tailwind-merge": "^2.6.0",
 		"tailwind-variants": "^0.2.1"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"better-sqlite3"
+		]
 	}
 }
