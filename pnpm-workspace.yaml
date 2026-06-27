@@ -1,4 +1,5 @@
 allowBuilds:
+  '@sveltejs/kit': true
   better-sqlite3: true
   es5-ext: true
   esbuild: true
